@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Offline - Hotel Booking System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .offline-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .offline-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        h1 {
+            color: #1f2937;
+            font-size: 28px;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        p {
+            color: #6b7280;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .status {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 16px;
+            margin: 24px 0;
+            text-align: left;
+            border-radius: 4px;
+            color: #92400e;
+            font-size: 14px;
+        }
+
+        .suggestions {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .suggestions h3 {
+            color: #15803d;
+            font-size: 14px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .suggestions ul {
+            list-style: none;
+            color: #166534;
+            font-size: 14px;
+        }
+
+        .suggestions li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .suggestions li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .action-button {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 24px;
+            transition: background-color 0.2s;
+        }
+
+        .action-button:hover {
+            background: #4338ca;
+        }
+
+        .action-button:active {
+            transform: scale(0.98);
+        }
+
+        .footer-text {
+            margin-top: 32px;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        a {
+            color: #4f46e5;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon">📡</div>
+
+        <h1>You're Offline</h1>
+        <p>It looks like you've lost internet connection. Don't worry, the site will work again once you're online.</p>
+
+        <div class="status">
+            <strong>Current Status:</strong> No internet connection detected
+        </div>
+
+        <div class="suggestions">
+            <h3>What you can do</h3>
+            <ul>
+                <li>Check your internet connection</li>
+                <li>Wait a moment and try refreshing the page</li>
+                <li>Review your previously browsed pages (cached)</li>
+                <li>Your booking information will be saved when you return online</li>
+            </ul>
+        </div>
+
+        <button class="action-button" onclick="location.reload()">
+            Try Again
+        </button>
+
+        <div class="footer-text">
+            <p>🏨 Sinan Han Hotel Booking System</p>
+            <p>Offline support enabled via Service Worker</p>
+        </div>
+    </div>
+
+    <script>
+        // Listen for online event
+        window.addEventListener('online', () => {
+            // Auto-refresh when connection returns
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+        });
+
+        // Periodically check for connection
+        setInterval(() => {
+            fetch('/').then(() => {
+                // Connection restored
+                location.reload();
+            }).catch(() => {
+                // Still offline
+            });
+        }, 5000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="Sinan Han Hotel Booking System - Reserve your perfect room with ease">
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sinan Han">
+
+    <title>Book Your Stay at Sinan Han Boutique Hotel | Easy Online Booking</title>
+    <meta name="description" content="Book your room at Sinan Han Boutique Hotel in Mostar. Secure online reservations for our unique suites with panoramic Old Bridge views. Best rates guaranteed.">
+    <meta name="keywords" content="Sinan Han booking, hotel booking Mostar, reserve room online, boutique hotel Mostar">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://sinanhanhotel.com/booking">
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R0Z8HFEEVT"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        // Analytics will be initialized in analytics.js after DOM is ready
+    </script>
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%234f46e5' width='180' height='180'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='100' fill='white' font-family='Arial'>🏨</text></svg>">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Tailwind config: Add font-display swap for better performance
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://ipgtest.monri.com/v2/monri.js"></script>
+    <style>
+        /* Font loading optimization */
+        @font-face {
+            font-family: system-ui;
+            font-display: swap;
+        }
+        /* Accessibility: Skip to Main Content Link */
+        .skip-to-content {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #4f46e5;
+            color: white;
+            padding: 8px;
+            z-index: 100;
+        }
+        .skip-to-content:focus {
+            top: 0;
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+        .sr-only:not(.focus\:not-sr-only):focus {
+            position: static;
+            width: auto;
+            height: auto;
+            margin: 0;
+            overflow: visible;
+            clip: auto;
+            white-space: normal;
+        }
+
+        /* Enhanced Focus Indicators - WCAG 2.1 AA */
+        input:focus-visible,
+        select:focus-visible,
+        button:focus-visible,
+        textarea:focus-visible {
+            outline: 3px solid #4f46e5;
+            outline-offset: 2px;
+        }
+
+        /* Hamburger Menu Accessibility */
+        #navHamburger {
+            position: relative;
+            padding: 8px;
+        }
+        #navHamburger:focus-visible {
+            outline: 3px solid #4f46e5;
+            outline-offset: 2px;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Hamburger Button Styling */
+        .nav-hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            min-width: 44px;
+            min-height: 44px;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+        }
+
+        .nav-hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: currentColor;
+            transition: transform 0.3s ease, opacity 0.2s ease;
+            transform-origin: center;
+        }
+
+        /* Hamburger active state (X animation) */
+        .nav-hamburger.active span:nth-child(1) {
+            transform: translateY(6px) rotate(45deg);
+        }
+
+        .nav-hamburger.active span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+
+        .nav-hamburger.active span:nth-child(3) {
+            transform: translateY(-6px) rotate(-45deg);
+        }
+
+        /* Show hamburger on mobile */
+        @media (max-width: 767px) {
+            .nav-hamburger {
+                display: flex;
+            }
+        }
+
+        /* Hamburger Menu Styling */
+        #navHamburger.active .hamburger-line:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+        #navHamburger.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+        #navHamburger.active .hamburger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Navigation Menu Mobile - CLEAR AND SIMPLE */
+        #navMenu {
+            position: absolute !important;
+            top: 100% !important;
+            left: 0 !important;
+            right: 0 !important;
+            display: none !important;
+            flex-direction: column !important;
+            gap: 1rem !important;
+            background: white !important;
+            padding: 1rem !important;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+            z-index: 30 !important;
+        }
+
+        #navMenu.active {
+            display: flex !important;
+        }
+
+        /* Desktop: Always show, reset position */
+        @media (min-width: 768px) {
+            #navMenu {
+                position: static !important;
+                display: flex !important;
+                flex-direction: row !important;
+                gap: 2rem !important;
+                background: transparent !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+            }
+        }
+
+        /* Room Cards Responsive and Centered */
+        @media (max-width: 768px) {
+            #roomsList {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
+            }
+
+            .room-card {
+                width: 100%;
+                text-align: center;
+            }
+
+            .room-card .flex {
+                flex-direction: column !important;
+                align-items: center !important;
+            }
+
+            .room-card .text-right {
+                text-align: center !important;
+                margin-top: 1rem;
+            }
+
+            /* Touch-friendly hover states */
+            .room-card {
+                padding: 1.5rem !important;
+                border-radius: 0.5rem;
+                background: white;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
+            }
+
+            .room-card:active {
+                transform: scale(0.98);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            }
+        }
+
+        /* Desktop hover effects */
+        @media (min-width: 769px) {
+            .room-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15) !important;
+            }
+            .room-card:focus-visible {
+                outline: 3px solid #4f46e5;
+                outline-offset: 2px;
+            }
+        }
+
+        /* Unified room card base styles */
+        .room-card {
+            display: block;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem;
+        }
+
+        /* Room card overlay hover effect */
+        .room-card .room-overlay {
+            transition: opacity 0.3s ease !important;
+        }
+
+        .room-card:hover .room-overlay {
+            opacity: 1 !important;
+        }
+
+        .room-card:not(:hover) .room-overlay {
+            opacity: 0 !important;
+        }
+
+        /* Back to Top Button */
+        .back-to-top.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .back-to-top {
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+        }
+        .back-to-top:focus-visible {
+            outline: 3px solid white;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <!-- Skip to Main Content Link -->
+    <a href="#main-content" class="skip-to-content sr-only focus:not-sr-only">Skip to main content</a>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar bg-white shadow-md sticky top-0 z-40">
+        <div class="container mx-auto max-w-6xl px-4 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-indigo-600">🏨 Sinan Han</div>
+
+            <!-- Mobile: Language Selector + Hamburger (Grouped) - Hidden on Desktop -->
+            <div class="flex md:hidden items-center gap-2">
+                <!-- Mobile Language Dropdown (Outside Hamburger Menu) -->
+                <div class="relative">
+                    <button id="language-dropdown-btn" aria-label="Select language" class="px-3 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white cursor-pointer font-semibold flex items-center gap-1 min-w-fit">
+                        🌐
+                        <span class="text-xs">▼</span>
+                    </button>
+                    <div id="language-dropdown-menu" class="hidden absolute right-0 top-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-50 min-w-[140px] max-w-[180px]">
+                        <button data-lang="en" class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition font-semibold whitespace-nowrap">🇬🇧 English</button>
+                        <button data-lang="de" class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition font-semibold whitespace-nowrap">🇩🇪 Deutsch</button>
+                        <button data-lang="bs" class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition font-semibold whitespace-nowrap">🇧🇦 Bosanski</button>
+                    </div>
+                </div>
+
+                <!-- Hamburger Menu Button -->
+                <button class="nav-hamburger" id="navHamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navMenu">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+
+            <!-- Navigation Menu -->
+            <div id="navMenu">
+                <a href="#booking" class="nav-link-active text-gray-700 hover:text-indigo-600 transition font-semibold">Booking</a>
+                <a href="#rooms" class="nav-link-active text-gray-700 hover:text-indigo-600 transition font-semibold">Rooms</a>
+                <a href="#contact" class="nav-link-active text-gray-700 hover:text-indigo-600 transition font-semibold">Contact</a>
+
+                <!-- Desktop Language Selector - Only shown on Desktop -->
+                <select id="language-selector" aria-label="Select language" class="hidden md:inline-block px-3 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white cursor-pointer font-semibold">
+                    <option value="en">🇬🇧 English</option>
+                    <option value="de">🇩🇪 Deutsch</option>
+                    <option value="bs">🇧🇦 Bosanski</option>
+                </select>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto max-w-6xl px-4 py-8">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2" data-i18n="header-title">🏨 Hotel Booking System</h1>
+            <p class="text-gray-600" data-i18n="header-subtitle">Reserve your perfect room with ease</p>
+        </header>
+
+        <!-- Main Content -->
+        <main id="main-content" role="main">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+                <!-- Booking Form Section -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-lg shadow-lg p-8" role="region" aria-label="Booking Information">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6">Booking Information</h2>
+
+                        <!-- Room Price Info -->
+                        <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-4 mb-6">
+                            <div class="flex items-start justify-between flex-wrap gap-3">
+                                <div>
+                                    <h3 class="font-bold text-gray-800 text-base">Two-Bedroom Deluxe Apartment</h3>
+                                    <p class="text-sm text-gray-500 mt-1">65 m² · Up to 6 guests · 2 Queen Beds + Sofa Bed</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm text-gray-400 line-through">BAM 297</p>
+                                    <p class="text-2xl font-bold text-indigo-600">BAM 262</p>
+                                    <p class="text-xs text-gray-500">+ BAM 4 tourist tax / night</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 1: Reservation Details -->
+                        <div id="step-1" class="fade-in">
+                            <form id="bookingForm" class="space-y-6">
+
+                                <!-- Name -->
+                                <div>
+                                    <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+                                        Full Name <span aria-label="required">*</span>
+                                    </label>
+                                    <input type="text" id="name" required aria-required="true" aria-describedby="name-error" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition" placeholder="John Doe">
+                                    <span id="name-error" class="sr-only"></span>
+                                </div>
+
+                                <!-- Email -->
+                                <div>
+                                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                                        Email Address <span aria-label="required">*</span>
+                                    </label>
+                                    <input type="email" id="email" required aria-required="true" aria-describedby="email-error" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition" placeholder="john@example.com">
+                                    <span id="email-error" class="sr-only"></span>
+                                </div>
+
+                                <!-- Dates -->
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="checkin_date" class="block text-sm font-medium text-gray-700 mb-2">
+                                            Check-in Date <span aria-label="required">*</span>
+                                        </label>
+                                        <input type="date" id="checkin_date" required aria-required="true" aria-describedby="checkin-error" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition">
+                                        <span id="checkin-error" class="sr-only"></span>
+                                    </div>
+                                    <div>
+                                        <label for="checkout_date" class="block text-sm font-medium text-gray-700 mb-2">
+                                            Check-out Date <span aria-label="required">*</span>
+                                        </label>
+                                        <input type="date" id="checkout_date" required aria-required="true" aria-describedby="checkout-error" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition">
+                                        <span id="checkout-error" class="sr-only"></span>
+                                    </div>
+                                </div>
+
+                                <!-- Number of Guests -->
+                                <div>
+                                    <label for="adults_number" class="block text-sm font-medium text-gray-700 mb-2">
+                                        Number of Adults <span aria-label="required">*</span>
+                                    </label>
+                                    <select id="adults_number" required aria-required="true" aria-describedby="adults-error" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition">
+                                        <option value="">Select number of adults</option>
+                                        <option value="1">1 Adult</option>
+                                        <option value="2">2 Adults</option>
+                                        <option value="3">3 Adults</option>
+                                        <option value="4">4 Adults</option>
+                                        <option value="5">5 Adults</option>
+                                    </select>
+                                    <span id="adults-error" class="sr-only"></span>
+                                </div>
+
+                                <!-- Button -->
+                                <button type="button" onclick="searchRooms()" aria-label="Search for available hotel rooms" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg transition duration-200 transform hover:scale-105">
+                                    Search Available Rooms
+                                </button>
+                            </form>
+                        </div>
+
+                    <!-- Step 2: Room Selection -->
+                    <div id="step-2" class="hidden fade-in">
+                        <div id="roomsList" class="space-y-4">
+                            <!-- Rooms will be populated here -->
+                        </div>
+                        <button type="button" onclick="goBackToForm()" class="w-full mt-6 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 rounded-lg transition">
+                            ← Back
+                        </button>
+                    </div>
+
+                    <!-- Loading Indicator -->
+                    <div id="loading" class="hidden text-center py-8">
+                        <div class="inline-block">
+                            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+                        </div>
+                        <p class="text-gray-600 mt-4" data-i18n="loading-message">Please wait while we search for available rooms...</p>
+                    </div>
+
+                    <!-- Error Message -->
+                    <div id="error" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg" role="alert" aria-live="assertive">
+                        <p id="errorMessage"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Price Preview Section -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow-lg p-8 sticky top-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-6">Booking Summary</h3>
+
+                    <div id="summary" class="space-y-3 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Check-in:</span>
+                            <span id="summary-checkin" class="font-semibold text-gray-800">-</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Check-out:</span>
+                            <span id="summary-checkout" class="font-semibold text-gray-800">-</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Guests:</span>
+                            <span id="summary-guests" class="font-semibold text-gray-800">-</span>
+                        </div>
+                        <hr class="my-3">
+                        <div class="flex justify-between text-lg">
+                            <span class="text-gray-800 font-bold">Total Price:</span>
+                            <span id="summary-price" class="font-bold text-indigo-600">-</span>
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-500">
+                            <span>Currency:</span>
+                            <span id="summary-currency">BAM</span>
+                        </div>
+                    </div>
+
+                    <div id="payment-method" class="hidden mt-8 pt-8 border-t">
+                        <h4 class="font-semibold text-gray-800 mb-4">Payment Method</h4>
+                        <div id="monri-container" class="mb-4">
+                            <!-- Monri Lightbox will be embedded here -->
+                        </div>
+                        <button id="payBtn" type="button" onclick="proceedToPayment()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition duration-200">
+                            Proceed to Payment
+                        </button>
+                    </div>
+
+                    <!-- Success Message -->
+                    <div id="success-message" class="hidden bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mt-4">
+                        <p data-i18n="success-message">✓ Reservation confirmed! Check your email for details.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main></div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl p-8 max-w-md w-full mx-4">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">Complete Payment</h3>
+            <div id="monri-lightbox"></div>
+            <button type="button" onclick="closePaymentModal()" class="w-full mt-4 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 rounded-lg transition">
+                Cancel
+            </button>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top fixed bottom-8 right-8 bg-indigo-600 text-white p-3 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity z-30 hover:bg-indigo-700" aria-label="Back to top">
+        ↑
+    </button>
+
+    <!-- Hotel API Integration (defer for non-blocking load) -->
+    <script defer src="js/api.min.js"></script>
+
+    <!-- Analytics Module (defer loading until after page interactive) -->
+    <script defer src="js/analytics.min.js"></script>
+
+    <!-- Main Application Module (defer for non-blocking load) -->
+    <script defer src="js/main.min.js"></script>
+
+    <!-- Lazy-load Monri payment SDK only when needed -->
+    <script>
+        window.loadPaymentSDK = function() {
+            if (!window.monriSDKLoaded) {
+                const script = document.createElement('script');
+                script.src = 'https://ipgtest.monri.com/v2/monri.js';
+                script.async = true;
+                document.head.appendChild(script);
+                window.monriSDKLoaded = true;
+            }
+        };
+
+        // Load payment SDK when user interacts with booking form
+        document.addEventListener('focus', function(e) {
+            if (e.target && e.target.closest && (
+                e.target.closest('[data-booking-form]') ||
+                e.target.closest('#completeBooking') ||
+                e.target.closest('.payment-form')
+            )) {
+                loadPaymentSDK();
+            }
+        }, true);
+
+        // Alternative: Load on click for better user experience
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.closest && e.target.closest('#completeBooking')) {
+                loadPaymentSDK();
+            }
+        });
+    </script>
+
+    <script>
+        // State Management
+        let currentBooking = {
+            name: '',
+            email: '',
+            checkin_date: '',
+            checkout_date: '',
+            adults_number: 0,
+            hotel_id: 127621,
+            room_id: '',
+            price: 0,
+            currency: 'BAM'
+        };
+
+        let monriInstance = null;
+
+        // Initialize minimum dates
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Google Analytics 4
+            if (typeof initializeAnalytics === 'function') {
+                const measurementId = 'G-R0Z8HFEEVT'; // Replace with your GA4 Measurement ID
+                initializeAnalytics(measurementId);
+            }
+
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('checkin_date').min = today;
+            document.getElementById('checkout_date').min = today;
+        });
+
+        // Date validation
+        document.getElementById('checkout_date').addEventListener('change', function() {
+            const checkin = new Date(document.getElementById('checkin_date').value);
+            const checkout = new Date(this.value);
+            if (checkout <= checkin) {
+                showError(translator.get('error-checkout-after-checkin'));
+                this.value = '';
+            }
+        });
+
+        function showError(message) {
+            const errorEl = document.getElementById('error');
+            const errorMsg = document.getElementById('errorMessage');
+            errorMsg.textContent = message;
+            errorEl.classList.remove('hidden');
+        }
+
+        function hideError() {
+            document.getElementById('error').classList.add('hidden');
+        }
+
+        function showLoading() {
+            document.getElementById('loading').classList.remove('hidden');
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').classList.add('hidden');
+        }
+
+        async function searchRooms() {
+            hideError();
+
+            // Get form values
+            currentBooking.name = document.getElementById('name').value.trim();
+            currentBooking.email = document.getElementById('email').value.trim();
+            currentBooking.checkin_date = document.getElementById('checkin_date').value;
+            currentBooking.checkout_date = document.getElementById('checkout_date').value;
+            currentBooking.adults_number = parseInt(document.getElementById('adults_number').value);
+
+            // Validate inputs
+            if (!currentBooking.name || !currentBooking.email || !currentBooking.checkin_date ||
+                !currentBooking.checkout_date || !currentBooking.adults_number) {
+                showError(translator.get('error-fill-fields'));
+                return;
+            }
+
+            // Track form start and set user ID for analytics
+            trackFormStart();
+            if (currentBooking.email && typeof setUserID === 'function') {
+                setUserID(currentBooking.email);
+            }
+
+            // Update summary
+            updateSummary();
+
+            showLoading();
+
+            try {
+                const response = await fetch('/api/rooms', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        hotel_id: currentBooking.hotel_id,
+                        checkin_date: currentBooking.checkin_date,
+                        checkout_date: currentBooking.checkout_date,
+                        adults_number: currentBooking.adults_number
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to fetch rooms');
+                }
+
+                // Track room search event
+                const stayDays = (new Date(currentBooking.checkout_date) - new Date(currentBooking.checkin_date)) / (1000 * 60 * 60 * 24);
+                trackRoomSearch(data.rooms.length);
+                if (typeof trackStayDuration === 'function') {
+                    trackStayDuration(stayDays);
+                }
+
+                displayRooms(data.rooms);
+                document.getElementById('step-1').classList.add('hidden');
+                document.getElementById('step-2').classList.remove('hidden');
+                // Reset room selection and payment method when searching again
+                document.getElementById('payment-method').classList.add('hidden');
+                document.getElementById('summary-price').textContent = '-';
+
+            } catch (error) {
+                showError(error.message);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        function displayRooms(rooms) {
+            const roomsList = document.getElementById('roomsList');
+            roomsList.innerHTML = '';
+
+            if (rooms.length === 0) {
+                roomsList.innerHTML = '<p class="text-gray-600 text-center py-8">' + translator.get('error-no-rooms') + '</p>';
+                return;
+            }
+
+            rooms.forEach(room => {
+                const roomCard = document.createElement('div');
+                roomCard.className = 'room-card border border-gray-200 rounded-lg overflow-hidden cursor-pointer bg-white';
+                roomCard.style.minHeight = '350px';
+                roomCard.style.position = 'relative';
+                roomCard.onclick = () => selectRoom(room);
+
+                const pricePerNight = (room.price / (new Date(currentBooking.checkout_date) - new Date(currentBooking.checkin_date)) / (1000 * 60 * 60 * 24)).toFixed(2);
+
+                // Build specifications HTML with enhanced details
+                let specsHTML = '';
+
+                // Bedroom information
+                if (room.bedrooms) {
+                    specsHTML += `<p style="font-size: 0.85rem; color: #374151; margin-bottom: 0.4rem; font-weight: 500;">🛏️ ${room.bedrooms}</p>`;
+                }
+
+                // Living room information
+                if (room.living_room) {
+                    specsHTML += `<p style="font-size: 0.85rem; color: #374151; margin-bottom: 0.4rem; font-weight: 500;">🛋️ ${room.living_room}</p>`;
+                }
+
+                // Size information
+                if (room.size) {
+                    specsHTML += `<p style="font-size: 0.85rem; color: #374151; margin-bottom: 0.4rem; font-weight: 500;">📏 Entire apartment ${room.size} m²</p>`;
+                }
+
+                // Key amenities (show top 6 in a grid)
+                if (room.amenities && room.amenities.length > 0) {
+                    const amenityIcons = {
+                        'wifi': '📶',
+                        'free wifi': '📶',
+                        'kitchen': '🍳',
+                        'private kitchen': '🍳',
+                        'air conditioning': '❄️',
+                        'tv': '📺',
+                        'flat-screen tv': '📺',
+                        'terrace': '🌿',
+                        'patio': '🌿',
+                        'view': '🏞️',
+                        'garden view': '🏞️',
+                        'mountain view': '⛰️',
+                        'city view': '🏙️',
+                        'bathroom': '🚿',
+                        'attached bathroom': '🚿',
+                        'soundproof': '🔇',
+                        'coffee machine': '☕',
+                        'minibar': '🍷'
+                    };
+                    const topAmenities = room.amenities.slice(0, 6);
+                    specsHTML += `<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; margin-top: 0.75rem;">`;
+                    topAmenities.forEach(amenity => {
+                        const amenityLower = amenity.toLowerCase();
+                        const icon = Object.keys(amenityIcons).find(key => amenityLower.includes(key));
+                        const displayIcon = icon ? amenityIcons[icon] : '✓';
+                        specsHTML += `<span style="font-size: 0.8rem; color: #4b5563; background: #f3f4f6; padding: 0.4rem 0.6rem; border-radius: 0.375rem; display: flex; align-items: center; gap: 0.25rem;">${displayIcon} ${amenity}</span>`;
+                    });
+                    specsHTML += `</div>`;
+
+                    // Show "and X more" if there are more amenities
+                    if (room.amenities.length > 6) {
+                        const moreCount = room.amenities.length - 6;
+                        specsHTML += `<p style="font-size: 0.75rem; color: #6b7280; margin-top: 0.5rem; font-style: italic;">+ ${moreCount} more amenities</p>`;
+                    }
+                }
+
+                roomCard.innerHTML = `
+                    <div style="display: flex; flex-direction: column; height: 100%; padding: 1rem;">
+                        <div style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                                <h4 style="font-weight: bold; color: #1f2937; font-size: 1.125rem; margin: 0;">${room.room_name}</h4>
+                                <div style="text-align: right; background: #eef2ff; padding: 0.5rem; border-radius: 0.5rem;">
+                                    <p style="font-size: 1.5rem; font-weight: bold; color: #4f46e5; margin: 0;">BAM ${room.price.toFixed(2)}</p>
+                                    <p style="font-size: 0.75rem; color: #6b7280; margin: 0;">≈ ${pricePerNight}/night</p>
+                                </div>
+                            </div>
+                            <p style="font-size: 0.875rem; color: #4b5563; margin-bottom: 0.75rem; line-height: 1.5;">${room.description || ''}</p>
+                            ${specsHTML}
+                        </div>
+                        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
+                            <button
+                                onclick="event.stopPropagation(); openRoomDetails('${room.room_type_id || 'standard-double'}', ${JSON.stringify(room).replace(/"/g, '&quot;')})"
+                                style="background: transparent; color: #4f46e5; font-weight: 600; padding: 0.5rem; border: 1px solid #4f46e5; border-radius: 0.375rem; cursor: pointer; font-size: 0.875rem; transition: all 0.2s; width: 100%;"
+                                onmouseover="this.style.background='#4f46e5'; this.style.color='white';"
+                                onmouseout="this.style.background='transparent'; this.style.color='#4f46e5';"
+                                aria-label="View details for ${room.room_name}">
+                                View Full Details & Specifications
+                            </button>
+                        </div>
+                    </div>
+                    <div class="room-overlay" style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(55, 48, 163, 0.9) 0%, rgba(79, 70, 229, 0.8) 50%, rgba(79, 70, 229, 0) 100%); opacity: 0; transition: opacity 0.3s ease; display: flex; flex-direction: column; justify-content: flex-end; padding: 1rem; border-radius: 0.5rem; z-index: 10;">
+                        <button style="background: white; color: #4f46e5; font-weight: bold; padding: 0.5rem 1.5rem; border: none; border-radius: 0.375rem; cursor: pointer; font-size: 0.95rem; transition: all 0.3s ease; margin-bottom: 0.5rem; width: 100%;" aria-label="Select ${room.room_name}">
+                            Select This Room - BAM ${room.price.toFixed(2)}
+                        </button>
+                        <p style="color: white; font-size: 0.875rem; text-align: center; margin: 0;">Click to select and book</p>
+                    </div>
+                `;
+                roomsList.appendChild(roomCard);
+            });
+        }
+
+        function selectRoom(room) {
+            currentBooking.room_id = room.room_id;
+            currentBooking.price = room.price;
+            currentBooking.currency = room.currency;
+
+            // Track room selection event
+            if (typeof trackRoomSelected === 'function') {
+                trackRoomSelected(room.room_id, room.price, room.room_name);
+            }
+
+            document.getElementById('summary-price').textContent = room.price.toFixed(2) + ' ' + room.currency;
+            document.getElementById('payment-method').classList.remove('hidden');
+            // Find the clicked room card and highlight it
+            const roomCards = document.getElementById('roomsList').querySelectorAll('.room-card');
+            roomCards.forEach(card => {
+                if (card.textContent.includes(room.room_name)) {
+                    card.classList.add('border-indigo-400', 'border-2');
+                    card.setAttribute('aria-selected', 'true');
+                } else {
+                    card.classList.remove('border-indigo-400', 'border-2');
+                    card.setAttribute('aria-selected', 'false');
+                }
+            });
+        };
+
+        function updateSummary() {
+            document.getElementById('summary-checkin').textContent = new Date(currentBooking.checkin_date).toLocaleDateString();
+            document.getElementById('summary-checkout').textContent = new Date(currentBooking.checkout_date).toLocaleDateString();
+            document.getElementById('summary-guests').textContent = currentBooking.adults_number + ' Adult(s)';
+        }
+
+        function goBackToForm() {
+            document.getElementById('step-2').classList.add('hidden');
+            document.getElementById('step-1').classList.remove('hidden');
+            document.getElementById('payment-method').classList.add('hidden');
+        }
+
+        async function proceedToPayment() {
+            const payBtn = document.getElementById('payBtn');
+            payBtn.disabled = true;
+            payBtn.textContent = 'Processing...';
+
+            // Track payment initiation
+            if (typeof trackPaymentInit === 'function') {
+                trackPaymentInit(currentBooking.price, currentBooking.currency);
+            }
+
+            try {
+                const response = await fetch('/api/payment/init', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(currentBooking)
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Payment initialization failed');
+                }
+
+                // Initialize Monri Lightbox
+                initializeMonri(data);
+
+            } catch (error) {
+                showError(error.message);
+                // Track payment failure
+                if (typeof trackPaymentFailed === 'function') {
+                    trackPaymentFailed(error.message);
+                }
+                payBtn.disabled = false;
+                payBtn.textContent = 'Proceed to Payment';
+            }
+        }
+
+        function initializeMonri(paymentData) {
+            const options = {
+                merchant: paymentData.merchantId,
+                amount: paymentData.amount,
+                currency: paymentData.currency,
+                order_number: paymentData.orderNumber,
+                digest: paymentData.digest,
+                // Callback URLs
+                redirect_url: window.location.href,
+                notification_url: '/webhook/monri',
+                language: 'en',
+                // Optional customer info
+                customer_email: currentBooking.email,
+                customer_name: currentBooking.name
+            };
+
+            // Create Monri Lightbox instance
+            if (window.Monri) {
+                monriInstance = new window.Monri.Lightbox(options);
+                monriInstance.open();
+
+                // Monitor payment status
+                setTimeout(() => {
+                    pollPaymentStatus(paymentData.orderNumber);
+                }, 2000);
+            } else {
+                showError('Payment system is not available. Please try again.');
+            }
+        }
+
+        let paymentCheckCount = 0;
+        const maxPaymentChecks = 30; // Check for 30 seconds
+
+        async function pollPaymentStatus(orderNumber) {
+            paymentCheckCount++;
+
+            if (paymentCheckCount > maxPaymentChecks) {
+                console.log('Payment status check timeout');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/booking/${orderNumber}`);
+                const data = await response.json();
+
+                if (data.booking.status === 'paid') {
+                    // Track payment complete event
+                    if (typeof trackPaymentComplete === 'function') {
+                        trackPaymentComplete(currentBooking.price, orderNumber);
+                    }
+
+                    document.getElementById('paymentModal').classList.add('hidden');
+                    document.getElementById('payment-method').classList.add('hidden');
+                    document.getElementById('success-message').classList.remove('hidden');
+
+                    // Reset form after 3 seconds
+                    setTimeout(() => {
+                        location.reload();
+                    }, 3000);
+                } else {
+                    // Check again in 1 second
+                    setTimeout(() => pollPaymentStatus(orderNumber), 1000);
+                }
+            } catch (error) {
+                // Continue polling even on error
+                setTimeout(() => pollPaymentStatus(orderNumber), 1000);
+            }
+        }
+    </script>
+
+    <!-- Update Notification Banner -->
+    <div id="updateBanner" class="hidden fixed bottom-4 right-4 bg-blue-600 text-white px-6 py-4 rounded-lg shadow-lg z-40 max-w-sm">
+        <div class="flex items-start justify-between">
+            <div>
+                <h3 class="font-bold mb-2">✨ Update Available</h3>
+                <p class="text-sm mb-3">A new version of the site is ready. Reload to get the latest features!</p>
+                <div class="flex gap-2">
+                    <button onclick="window.location.reload()" class="bg-white text-blue-600 px-4 py-2 rounded font-bold hover:bg-gray-100">
+                        Reload Now
+                    </button>
+                    <button onclick="dismissUpdate()" class="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-800">
+                        Later
+                    </button>
+                </div>
+            </div>
+            <button onclick="dismissUpdate()" class="text-xl ml-3">×</button>
+        </div>
+    </div>
+
+    <!-- Offline Indicator -->
+    <div id="offlineBanner" class="hidden fixed top-0 left-0 right-0 bg-red-600 text-white text-center py-2 z-50">
+        📡 You are offline - some features may not work
+    </div>
+
+    <!-- Footer with SEO Links -->
+    <footer class="bg-gray-900 text-white py-12 mt-16">
+        <div class="container mx-auto max-w-6xl px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Hotel Info -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">🏨 Sinan Han</h3>
+                    <p class="text-gray-400 mb-4">Boutique hotel in Mostar, 100m from the Old Bridge. Heritage hospitality with modern comfort.</p>
+                    <p class="text-gray-500 text-sm">Mostar, Bosnia and Herzegovina</p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#booking" class="text-gray-400 hover:text-indigo-400 transition">Book a Room</a></li>
+                        <li><a href="#rooms" class="text-gray-400 hover:text-indigo-400 transition">View Rooms</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-indigo-400 transition">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Policies -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4" data-i18n="footer-policies-title">Policies</h4>
+                    <ul class="space-y-2">
+                        <li><a href="https://www.booking.com/hotel/ba/sinan-han.en-gb.html?aid=2375516&label=01J1X42R3M4D4ZBF77BKWAKKWV_01KJYSEFYH68GT6ZJXMJVZXK8K&sid=f7a6b00623c7c93c3c26551ddff2dbd5&age=10&all_sr_blocks=187755904_360715149_3_2_0&checkin=2026-03-13&checkout=2026-03-15&dest_id=-89574&dest_type=city&dist=0&group_adults=2&group_children=1&hapos=1&highlighted_blocks=187755904_360715149_3_2_0&hpos=1&matching_block_id=187755904_360715149_3_2_0&no_rooms=1&req_adults=2&req_age=10&req_children=1&room1=A%2CA%2C10&sb_price_type=total&sr_order=popularity&sr_pri_blocks=187755904_360715149_3_2_0__12158&srepoch=1772707339&srpvid=1a214b43f7c304a6&type=total&ucfs=1&activeTab=main&chal_t=1773647176681&force_referer=#policies" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-indigo-400 transition" data-i18n="footer-house-rules" data-i18n-title="footer-house-rules-title" title="View our house rules and policies on Booking.com">House Rules</a></li>
+                        <li><a href="https://www.booking.com/hotel/ba/sinan-han.en-gb.html?aid=2375516&label=01J1X42R3M4D4ZBF77BKWAKKWV_01KJYSEFYH68GT6ZJXMJVZXK8K&sid=f7a6b00623c7c93c3c26551ddff2dbd5&age=10&all_sr_blocks=187755904_360715149_3_2_0&checkin=2026-03-13&checkout=2026-03-15&dest_id=-89574&dest_type=city&dist=0&group_adults=2&group_children=1&hapos=1&highlighted_blocks=187755904_360715149_3_2_0&hpos=1&matching_block_id=187755904_360715149_3_2_0&no_rooms=1&req_adults=2&req_age=10&req_children=1&room1=A%2CA%2C10&sb_price_type=total&sr_order=popularity&sr_pri_blocks=187755904_360715149_3_2_0__12158&srepoch=1772707339&srpvid=1a214b43f7c304a6&type=total&ucfs=1&activeTab=main&chal_t=1773647176681&force_referer=#important_info" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-indigo-400 transition" data-i18n="footer-important-info" data-i18n-title="footer-important-info-title" title="View important legal information on Booking.com">Important Legal & Info</a></li>
+                        <li><a href="https://www.booking.com/hotel/ba/sinan-han.en-gb.html?aid=2375516&label=01J1X42R3M4D4ZBF77BKWAKKWV_01KJYSEFYH68GT6ZJXMJVZXK8K&sid=f7a6b00623c7c93c3c26551ddff2dbd5&age=10&all_sr_blocks=187755904_360715149_3_2_0&checkin=2026-03-13&checkout=2026-03-15&dest_id=-89574&dest_type=city&dist=0&group_adults=2&group_children=1&hapos=1&highlighted_blocks=187755904_360715149_3_2_0&hpos=1&matching_block_id=187755904_360715149_3_2_0&no_rooms=1&req_adults=2&req_age=10&req_children=1&room1=A%2CA%2C10&sb_price_type=total&sr_order=popularity&sr_pri_blocks=187755904_360715149_3_2_0__12158&srepoch=1772707339&srpvid=1a214b43f7c304a6&type=total&ucfs=1&activeTab=main&chal_t=1773647176681&force_referer=#tab-reviews" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-indigo-400 transition" data-i18n="footer-guest-reviews-link" data-i18n-title="footer-guest-reviews-title" title="Read guest reviews on Booking.com">Guest Reviews</a></li>
+                    </ul>
+                </div>
+
+                <!-- Social & Booking Links -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Find Us On</h4>
+                    <div class="flex flex-wrap gap-3">
+                        <!-- Booking.com Link -->
+                        <a href="https://www.booking.com/hotel/ba/sinan-han.en-gb.html?aid=2375516"
+                           rel="noopener noreferrer"
+                           aria-label="Book on Booking.com - Opens in new window"
+                           title="Sinan Han Hotel on Booking.com"
+                           class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition text-sm font-medium">
+                            Booking.com
+                        </a>
+
+                        <!-- Instagram Link -->
+                        <a href="https://www.instagram.com/hotelsinanhan/"
+                           rel="noopener noreferrer"
+                           aria-label="Follow us on Instagram - Opens in new window"
+                           title="Sinan Han Hotel Instagram"
+                           class="inline-block bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-lg transition text-sm font-medium">
+                            Instagram
+                        </a>
+
+                        <!-- Facebook Link -->
+                        <a href="https://www.facebook.com/p/Sinan-Han-Motel-100069814340938/"
+                           rel="noopener noreferrer"
+                           aria-label="Follow us on Facebook - Opens in new window"
+                           title="Sinan Han Hotel Facebook Page"
+                           class="inline-block bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded-lg transition text-sm font-medium">
+                            Facebook
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2026 Sinan Han Boutique Hotel. All rights reserved. | <a href="#" class="hover:text-indigo-400 transition">Privacy Policy</a> | <a href="#" class="hover:text-indigo-400 transition">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Schema.org Structured Data for Local Business SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Hotel",
+        "name": "Sinan Han Boutique Hotel",
+        "description": "Heritage boutique hotel in Mostar, 100m from the Old Bridge with 6 unique rooms and suites",
+        "url": "https://sinanhanhotel.com",
+        "telephone": "+387 36 551 500",
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "BA",
+            "addressLocality": "Mostar",
+            "addressRegion": "Mostar"
+        },
+        "image": "https://sinanhanhotel.com/Rooms/Superior%20Apartment/714582257.jpg",
+        "sameAs": [
+            "https://www.booking.com/hotel/ba/sinan-han.en-gb.html",
+            "https://www.instagram.com/hotelsinanhan/",
+            "https://www.facebook.com/p/Sinan-Han-Motel-100069814340938/"
+        ],
+        "priceRange": "$$",
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.5",
+            "ratingCount": "156",
+            "bestRating": "5",
+            "worstRating": "1"
+        }
+    }
+    </script>
+
+    <!-- Service Worker Registration and Update Handler -->
+    <script>
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('✅ Service Worker registered:', registration);
+
+                        // Check for updates periodically
+                        setInterval(() => {
+                            registration.update();
+                        }, 60000); // Check every minute
+
+                        // Listen for updates
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'activated') {
+                                    // New service worker is ready
+                                    showUpdateBanner();
+                                }
+                            });
+                        });
+                    })
+                    .catch((error) => {
+                        console.warn('Service Worker registration failed:', error);
+                    });
+
+                // Listen for messages from Service Worker
+                navigator.serviceWorker.addEventListener('message', (event) => {
+                    if (event.data.type === 'UPDATE_AVAILABLE') {
+                        console.log('📦 Update available! Version:', event.data.version);
+                        showUpdateBanner();
+                    }
+                });
+            });
+        }
+
+        // Show update banner
+        function showUpdateBanner() {
+            const banner = document.getElementById('updateBanner');
+            if (banner) {
+                banner.classList.remove('hidden');
+            }
+        }
+
+        // Dismiss update banner
+        function dismissUpdate() {
+            const banner = document.getElementById('updateBanner');
+            if (banner) {
+                banner.classList.add('hidden');
+            }
+        }
+
+        // Monitor online/offline status
+        window.addEventListener('online', () => {
+            const offlineBanner = document.getElementById('offlineBanner');
+            if (offlineBanner) {
+                offlineBanner.classList.add('hidden');
+            }
+            console.log('🟢 Back online!');
+        });
+
+        window.addEventListener('offline', () => {
+            const offlineBanner = document.getElementById('offlineBanner');
+            if (offlineBanner) {
+                offlineBanner.classList.remove('hidden');
+            }
+            console.log('🔴 You are offline');
+        });
+
+        // Check initial online status
+        if (!navigator.onLine) {
+            const offlineBanner = document.getElementById('offlineBanner');
+            if (offlineBanner) {
+                offlineBanner.classList.remove('hidden');
+            }
+        }
+    </script>
+
+</body></html>

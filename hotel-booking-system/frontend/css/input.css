@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom font loading optimization */
+@layer base {
+  @font-face {
+    font-family: system-ui;
+    font-display: swap;
+  }
+
+  html {
+    font-display: swap;
+  }
+}
+
+/* Performance: Reduce animation complexity on mobile */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

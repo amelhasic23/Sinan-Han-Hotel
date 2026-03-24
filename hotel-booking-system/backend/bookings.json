@@ -1,0 +1,52 @@
+{
+  "bookings": [
+    {
+      "order_number": "BK1773825106893",
+      "status": "paid",
+      "name": "Test User",
+      "email": "test@example.com",
+      "hotel_id": "127621",
+      "room_id": "room_1",
+      "checkin_date": "2026-03-20",
+      "checkout_date": "2026-03-22",
+      "adults_number": 2,
+      "price": 150,
+      "currency": "BAM",
+      "created_at": "2026-03-18T09:11:46.902Z",
+      "paid_at": "2026-03-18T09:12:39.816Z",
+      "transaction_id": "TXN123456789"
+    },
+    {
+      "order_number": "BK1773825125374",
+      "status": "pending",
+      "name": "Test User",
+      "email": "test@example.com",
+      "hotel_id": "127621",
+      "room_id": "room_1",
+      "checkin_date": "2026-03-20",
+      "checkout_date": "2026-03-22",
+      "adults_number": 2,
+      "price": 150.5,
+      "currency": "BAM",
+      "created_at": "2026-03-18T09:12:05.374Z",
+      "paid_at": null,
+      "transaction_id": null
+    },
+    {
+      "order_number": "BK1773825880492",
+      "status": "paid",
+      "name": "John Smith",
+      "email": "john.smith@example.com",
+      "hotel_id": "127621",
+      "room_id": "room_1",
+      "checkin_date": "2026-03-25",
+      "checkout_date": "2026-03-27",
+      "adults_number": 2,
+      "price": 200,
+      "currency": "BAM",
+      "created_at": "2026-03-18T09:24:40.500Z",
+      "paid_at": "2026-03-18T09:25:25.622Z",
+      "transaction_id": "MONRI_TXN_1773825925"
+    }
+  ]
+}

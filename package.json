@@ -1,0 +1,48 @@
+{
+  "name": "sinan-han-hotel-booking",
+  "version": "1.0.0",
+  "description": "Sinan Han Boutique Hotel - Mostar | Enterprise-Grade Booking System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "build": "npm run minify:js && npm run minify:css && npm run minify:html && npm run copy:assets",
+    "minify:js": "node scripts/minify-js.js",
+    "minify:css": "node scripts/minify-css.js",
+    "minify:html": "node scripts/minify-html.js",
+    "copy:assets": "node scripts/copy-assets.js",
+    "convert:webp": "node scripts/convert-to-webp.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "hotel",
+    "booking",
+    "mostar",
+    "sinan-han",
+    "boutique",
+    "secure",
+    "responsive"
+  ],
+  "author": "Sinan Han Hotel",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "spdy": "^4.0.2"
+  },
+  "devDependencies": {
+    "cssnano-cli": "^1.0.5",
+    "csso-cli": "^4.0.2",
+    "html-minifier-terser": "^7.2.0",
+    "nodemon": "^3.0.1",
+    "sharp": "^0.33.5",
+    "terser": "^5.46.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

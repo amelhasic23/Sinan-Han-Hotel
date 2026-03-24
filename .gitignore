@@ -1,0 +1,45 @@
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build files
+*.min.js
+*.min.css
+*.min.html
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/
+.claude/
+.qodo/
+
+# Database files (if using local DB)
+*.db
+*.sqlite
+
+# Cache
+.cache/
+dist/
+build/

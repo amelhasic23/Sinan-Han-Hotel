@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  # Hotel Booking System Application
+  app:
+    build: .
+    container_name: hotel-booking-app
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - HOST=0.0.0.0
+      - BOOKING_API_KEY=${BOOKING_API_KEY}
+      - BOOKING_API_HOST=${BOOKING_API_HOST}
+      - MONRI_MERCHANT_ID=${MONRI_MERCHANT_ID}
+      - MONRI_MERCHANT_PASSWORD=${MONRI_MERCHANT_PASSWORD}
+      - MONRI_CHECKOUT_URL=${MONRI_CHECKOUT_URL}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - SMTP_FROM=${SMTP_FROM}
+      - GA4_MEASUREMENT_ID=${GA4_MEASUREMENT_ID}
+      - CACHE_TTL=${CACHE_TTL:-3600}
+    volumes:
+      - ./backend/bookings.json:/app/backend/bookings.json
+      - ./frontend:/app/frontend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/hotel"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    depends_on:
+      - nginx
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: hotel-booking-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./frontend:/usr/share/nginx/html:ro
+      - ./certs:/etc/nginx/certs:ro
+    depends_on:
+      - app
+    restart: unless-stopped
+
+volumes:
+  bookings:
+    driver: local
+
+networks:
+  default:
+    name: hotel-booking-network
