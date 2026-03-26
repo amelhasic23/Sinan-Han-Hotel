@@ -1678,19 +1678,48 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-function updateActiveNavLink() {
+// ============================================
+// PERFORMANCE: CACHED SECTION POSITIONS
+// Prevents forced reflow by caching offsetTop values
+// ============================================
+let sectionPositions = [];
+let navLinksCache = null;
+let parallaxLayersCache = null;
+
+function cacheSectionPositions() {
     const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-link-active');
+    sectionPositions = Array.from(sections).map(section => ({
+        id: section.getAttribute('id'),
+        top: section.offsetTop
+    }));
+    navLinksCache = document.querySelectorAll('.nav-link-active');
+    parallaxLayersCache = document.querySelectorAll('.paralax-layer');
+}
 
+// Recalculate positions on resize (debounced)
+let cacheTimer;
+window.addEventListener('resize', function() {
+    clearTimeout(cacheTimer);
+    cacheTimer = setTimeout(cacheSectionPositions, 250);
+});
+
+// Initial cache on load
+document.addEventListener('DOMContentLoaded', cacheSectionPositions);
+
+function updateActiveNavLink() {
+    if (!sectionPositions.length || !navLinksCache) return;
+
+    const scrollY = window.scrollY;
     let current = '';
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        if (window.scrollY >= sectionTop - 200) {
-            current = section.getAttribute('id');
-        }
-    });
 
-    navLinks.forEach(link => {
+    // Use cached positions - no forced reflow
+    for (let i = 0; i < sectionPositions.length; i++) {
+        if (scrollY >= sectionPositions[i].top - 200) {
+            current = sectionPositions[i].id;
+        }
+    }
+
+    navLinksCache.forEach(link => {
         link.classList.remove('active');
         if (link.getAttribute('href') === `#${current}`) {
             link.classList.add('active');
@@ -1698,20 +1727,35 @@ function updateActiveNavLink() {
     });
 }
 
-window.addEventListener('scroll', updateActiveNavLink);
-
 function updateParallax() {
-    const parallaxLayers = document.querySelectorAll('.paralax-layer');
+    if (!parallaxLayersCache) return;
     const scrollY = window.scrollY;
 
-    parallaxLayers.forEach(layer => {
+    parallaxLayersCache.forEach(layer => {
         const depth = parseFloat(layer.getAttribute('data-depth'));
         const offset = scrollY * depth;
         layer.style.transform = `translateY(${offset}px)`;
     });
 }
 
-window.addEventListener('scroll', updateParallax);
+// ============================================
+// PERFORMANCE: THROTTLED SCROLL HANDLERS
+// Uses requestAnimationFrame to batch scroll updates
+// ============================================
+let scrollTicking = false;
+
+function onScroll() {
+    if (!scrollTicking) {
+        requestAnimationFrame(() => {
+            updateActiveNavLink();
+            updateParallax();
+            scrollTicking = false;
+        });
+        scrollTicking = true;
+    }
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
 
 if (typeof AOS === 'undefined') {
     const script = document.createElement('script');
@@ -1939,14 +1983,44 @@ if (contactForm) {
     });
 }
 
-window.addEventListener('scroll', function () {
+// Navbar scroll effect (uses shared throttled scroll handler)
+let navbarScrolled = false;
+function updateNavbar() {
     const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
+    if (!navbar) return;
+    const shouldBeScrolled = window.scrollY > 50;
+    if (shouldBeScrolled !== navbarScrolled) {
+        navbarScrolled = shouldBeScrolled;
+        navbar.classList.toggle('scrolled', shouldBeScrolled);
     }
-});
+}
+
+// Back-to-top visibility (uses shared throttled scroll handler)
+let backToTopVisible = false;
+function updateBackToTop() {
+    const backToTopBtn = document.querySelector('.back-to-top');
+    if (!backToTopBtn) return;
+    const shouldBeVisible = window.scrollY > 300;
+    if (shouldBeVisible !== backToTopVisible) {
+        backToTopVisible = shouldBeVisible;
+        backToTopBtn.classList.toggle('visible', shouldBeVisible);
+    }
+}
+
+// Combined throttled scroll handler
+let combinedScrollTicking = false;
+function onCombinedScroll() {
+    if (!combinedScrollTicking) {
+        requestAnimationFrame(() => {
+            updateNavbar();
+            updateBackToTop();
+            combinedScrollTicking = false;
+        });
+        combinedScrollTicking = true;
+    }
+}
+
+window.addEventListener('scroll', onCombinedScroll, { passive: true });
 
 // Image Lazy Loading with Fallback
 function loadImages() {
@@ -1987,14 +2061,7 @@ if (document.readyState === 'loading') {
 
 const backToTopBtn = document.querySelector('.back-to-top');
 if (backToTopBtn) {
-    window.addEventListener('scroll', function () {
-        if (window.scrollY > 300) {
-            backToTopBtn.classList.add('visible');
-        } else {
-            backToTopBtn.classList.remove('visible');
-        }
-    });
-
+    // Visibility is now handled by updateBackToTop() in throttled scroll handler
     backToTopBtn.addEventListener('click', function () {
         window.scrollTo({
             top: 0,
@@ -2004,8 +2071,14 @@ if (backToTopBtn) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    updateActiveNavLink();
-    updateParallax();
+    // Initial cache is done automatically by cacheSectionPositions
+    // Trigger initial state updates
+    setTimeout(() => {
+        updateActiveNavLink();
+        updateParallax();
+        updateNavbar();
+        updateBackToTop();
+    }, 100);
 });
 
 function lockScroll() {
@@ -2016,13 +2089,7 @@ function unlockScroll() {
     document.body.style.overflow = '';
 }
 
-let resizeTimer;
-window.addEventListener('resize', function () {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function () {
-        updateActiveNavLink();
-    }, 250);
-});
+// Resize handling is now done by cacheSectionPositions debounced handler
 
 // ============================================
 // BOOKING CONFIRMATION MODAL

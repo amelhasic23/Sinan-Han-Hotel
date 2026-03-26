@@ -28,7 +28,6 @@ html{
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-display: swap;
     color: var(--text);
     line-height: 1.6;
     overflow-x: hidden;
@@ -1707,7 +1706,7 @@ body.nav-open {
 }
 
 .footer-col p {
-    color: #bbb;
+    color: #d4d4d4;
     font-size: 0.95rem;
 }
 
@@ -1720,7 +1719,7 @@ body.nav-open {
 }
 
 .footer-col a {
-    color: #bbb;
+    color: #d4d4d4;
     text-decoration: none;
     transition: color 0.3s ease;
 }
@@ -1755,7 +1754,7 @@ body.nav-open {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     padding-top: 2rem;
     text-align: center;
-    color: #bbb;
+    color: #d4d4d4;
     font-size: 0.9rem;
 }
 
