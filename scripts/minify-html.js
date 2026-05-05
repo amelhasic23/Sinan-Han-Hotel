@@ -46,6 +46,6 @@ function minifyHTML(inputFile, outputFile) {
 }
 
 // Minify HTML
-minifyHTML('SinanHan.html', 'SinanHan.min.html');
+minifyHTML('index.html', 'index.min.html');
 
 console.log('\n✓ HTML minification complete!');

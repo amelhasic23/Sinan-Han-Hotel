@@ -3,9 +3,10 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const crypto = require('crypto');
-const axios = require('axios');
 const path = require('path');
+const fs = require('fs');
 const compression = require('compression');
+const nodemailer = require('nodemailer');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -199,115 +200,235 @@ const validators = {
     }
 };
 
-// === Booking API Proxy ===
+// === Booking API ===
+const BOOKINGS_FILE = path.join(__dirname, 'bookings.json');
+
+function loadBookings() {
+    if (!fs.existsSync(BOOKINGS_FILE)) return [];
+    try { return JSON.parse(fs.readFileSync(BOOKINGS_FILE, 'utf8')); } catch { return []; }
+}
+
+function saveBooking(booking) {
+    const bookings = loadBookings();
+    bookings.push(booking);
+    fs.writeFileSync(BOOKINGS_FILE, JSON.stringify(bookings, null, 2));
+}
+
+function createMailTransporter() {
+    const user = process.env.EMAIL_USER;
+    const pass = process.env.EMAIL_PASSWORD;
+    if (!user || !pass || user.includes('your_')) return null;
+    return nodemailer.createTransport({
+        host: process.env.EMAIL_HOST || 'smtp.gmail.com',
+        port: parseInt(process.env.EMAIL_PORT) || 587,
+        secure: false,
+        auth: { user, pass }
+    });
+}
+
 app.post('/api/bookings', async (req, res) => {
     try {
-        const { guestName, email, phone, checkIn, checkOut, roomType, guests } = req.body;
+        const { guestName, email, phone, checkIn, checkOut, roomType, guests, totalPrice, currency } = req.body;
 
-        // Validate inputs
         if (!validators.email(email)) {
             return res.status(400).json({ error: 'Invalid email' });
         }
-
-        if (!validators.phone(phone)) {
-            return res.status(400).json({ error: 'Invalid phone number' });
-        }
-
         if (!validators.dates(checkIn, checkOut)) {
             return res.status(400).json({ error: 'Invalid dates' });
         }
-
         if (!validators.guestCount(guests)) {
             return res.status(400).json({ error: 'Invalid guest count' });
         }
 
-        // Sanitize text inputs
-        const cleanData = {
-            guestName: validators.sanitize(guestName),
+        const bookingId = 'SH-' + Date.now() + '-' + crypto.randomBytes(3).toString('hex').toUpperCase();
+        const booking = {
+            bookingId,
+            guestName: validators.sanitize(guestName || ''),
             email: validators.sanitize(email),
-            phone: validators.sanitize(phone),
+            phone: validators.sanitize(phone || ''),
             checkIn,
             checkOut,
-            roomType: validators.sanitize(roomType),
-            guests
+            roomType: validators.sanitize(roomType || ''),
+            guests,
+            totalPrice,
+            currency: currency || 'BAM',
+            submittedAt: new Date().toISOString()
         };
 
-        // Forward to Booking.com API (use your actual implementation)
-        const bookingComResponse = await axios.post(
-            `${process.env.BOOKING_COM_BASE_URL}/bookings`,
-            cleanData,
-            {
-                headers: {
-                    'Authorization': `Bearer ${process.env.BOOKING_COM_API_KEY}`,
-                    'Content-Type': 'application/json'
-                }
-            }
-        );
+        saveBooking(booking);
 
-        res.json(bookingComResponse.data);
+        const hotelEmail = process.env.BOOKING_REQUEST_EMAIL || 'about@hotelsinanhan.com';
+        const transporter = createMailTransporter();
+
+        if (transporter) {
+            const hotelHtml = `
+                <h2>New Booking Request — Sinan Han Hotel</h2>
+                <table style="border-collapse:collapse;width:100%">
+                    <tr><td style="padding:8px;border:1px solid #ddd"><strong>Booking ID</strong></td><td style="padding:8px;border:1px solid #ddd">${booking.bookingId}</td></tr>
+                    <tr><td style="padding:8px;border:1px solid #ddd"><strong>Guest Name</strong></td><td style="padding:8px;border:1px solid #ddd">${booking.guestName}</td></tr>
+                    <tr><td style="padding:8px;border:1px solid #ddd"><strong>Guest Email</strong></td><td style="padding:8px;border:1px solid #ddd">${booking.email}</td></tr>
+                    <tr><td style="padding:8px;border:1px solid #ddd"><strong>Phone</strong></td><td style="padding:8px;border:1px solid #ddd">${booking.phone || 'N/A'}</td></tr>
+                    <tr><td style="padding:8px;border:1px solid #ddd"><strong>Room</strong></td><td style="padding:8px;border:1px solid #ddd">${booking.roomType}</td></tr>
+                    <tr><td style="padding:8px;border:1px solid #ddd"><strong>Check-in</strong></td><td style="padding:8px;border:1px solid #ddd">${booking.checkIn}</td></tr>
+                    <tr><td style="padding:8px;border:1px solid #ddd"><strong>Check-out</strong></td><td style="padding:8px;border:1px solid #ddd">${booking.checkOut}</td></tr>
+                    <tr><td style="padding:8px;border:1px solid #ddd"><strong>Guests</strong></td><td style="padding:8px;border:1px solid #ddd">${booking.guests}</td></tr>
+                    <tr><td style="padding:8px;border:1px solid #ddd"><strong>Total Price</strong></td><td style="padding:8px;border:1px solid #ddd">${booking.totalPrice ? booking.totalPrice + ' ' + booking.currency : 'N/A'}</td></tr>
+                    <tr><td style="padding:8px;border:1px solid #ddd"><strong>Submitted</strong></td><td style="padding:8px;border:1px solid #ddd">${new Date(booking.submittedAt).toLocaleString()}</td></tr>
+                </table>
+                <p>Please reply to the guest at <a href="mailto:${booking.email}">${booking.email}</a> to confirm the reservation.</p>
+            `;
+
+            const guestHtml = `
+                <h2>Booking Request Received — Sinan Han Hotel</h2>
+                <p>Dear ${booking.guestName},</p>
+                <p>Thank you for choosing Sinan Han Hotel in Mostar. We have received your booking request and will confirm it shortly.</p>
+                <table style="border-collapse:collapse;width:100%">
+                    <tr><td style="padding:8px;border:1px solid #ddd"><strong>Booking ID</strong></td><td style="padding:8px;border:1px solid #ddd">${booking.bookingId}</td></tr>
+                    <tr><td style="padding:8px;border:1px solid #ddd"><strong>Room</strong></td><td style="padding:8px;border:1px solid #ddd">${booking.roomType}</td></tr>
+                    <tr><td style="padding:8px;border:1px solid #ddd"><strong>Check-in</strong></td><td style="padding:8px;border:1px solid #ddd">${booking.checkIn}</td></tr>
+                    <tr><td style="padding:8px;border:1px solid #ddd"><strong>Check-out</strong></td><td style="padding:8px;border:1px solid #ddd">${booking.checkOut}</td></tr>
+                    <tr><td style="padding:8px;border:1px solid #ddd"><strong>Guests</strong></td><td style="padding:8px;border:1px solid #ddd">${booking.guests}</td></tr>
+                </table>
+                <p>If you have any questions, contact us at <a href="mailto:${hotelEmail}">${hotelEmail}</a>.</p>
+                <p>Warm regards,<br>Sinan Han Hotel Team<br>Mostar, Bosnia &amp; Herzegovina</p>
+            `;
+
+            try {
+                await transporter.sendMail({
+                    from: `"Sinan Han Hotel Booking" <${process.env.EMAIL_USER}>`,
+                    to: hotelEmail,
+                    replyTo: booking.email,
+                    subject: `New Booking Request from ${booking.guestName} — ${booking.bookingId}`,
+                    html: hotelHtml
+                });
+                await transporter.sendMail({
+                    from: `"Sinan Han Hotel" <${process.env.EMAIL_USER}>`,
+                    to: booking.email,
+                    subject: `Booking Request Received — Sinan Han Hotel (${booking.bookingId})`,
+                    html: guestHtml
+                });
+                console.log(`✅ Emails sent for booking ${bookingId}`);
+            } catch (mailErr) {
+                console.error('⚠️ Email send failed (booking still saved):', mailErr.message);
+            }
+        } else {
+            console.warn('⚠️ Email not configured. Set EMAIL_USER and EMAIL_PASSWORD in .env to enable email notifications.');
+        }
+
+        res.json({ success: true, bookingId });
     } catch (error) {
         console.error('Booking error:', error.message);
-        res.status(500).json({
-            error: 'Failed to process booking',
-            message: error.message
-        });
+        res.status(500).json({ error: 'Failed to process booking', message: error.message });
     }
 });
 
-// === Payment API Proxy ===
-app.post('/api/payments', async (req, res) => {
+// === Monri Payment Endpoints ===
+const MONRI_MERCHANT_ID = process.env.MONRI_MERCHANT_ID;
+const MONRI_SECRET_KEY = process.env.MONRI_SECRET_KEY;
+const PAYMENT_CURRENCY = process.env.PAYMENT_CURRENCY || 'BAM';
+
+function generateMonriDigest(merchantId, amountCents, currency, orderNumber, timestamp) {
+    const data = `${merchantId}|${amountCents}|${currency}|${orderNumber}|${timestamp}`;
+    return crypto.createHmac('sha256', MONRI_SECRET_KEY).update(data).digest('hex');
+}
+
+app.post('/api/payment/init', async (req, res) => {
     try {
-        const {
-            bookingId,
-            amount,
-            currency,
-            paymentMethod,
-            cardHolder,
-            cardLastFour,
-            expiryDate,
-            billingAddress
-        } = req.body;
+        const { guestName, email, checkIn, checkOut, roomType, guests, totalPrice, currency } = req.body;
 
-        // Basic validation
-        if (!bookingId || !amount || !paymentMethod) {
-            return res.status(400).json({ error: 'Missing required fields' });
+        if (!email || !validators.email(email)) {
+            return res.status(400).json({ error: 'Invalid email' });
+        }
+        if (!totalPrice || totalPrice <= 0) {
+            return res.status(400).json({ error: 'Invalid price' });
+        }
+        if (!MONRI_MERCHANT_ID || !MONRI_SECRET_KEY) {
+            return res.status(500).json({ error: 'Payment not configured' });
         }
 
-        if (amount <= 0) {
-            return res.status(400).json({ error: 'Invalid amount' });
-        }
+        const orderNumber = 'SH-' + Date.now();
+        const amountCents = Math.round(parseFloat(totalPrice) * 100);
+        const timestamp = Math.floor(Date.now() / 1000);
+        const usedCurrency = currency || PAYMENT_CURRENCY;
+        const digest = generateMonriDigest(MONRI_MERCHANT_ID, amountCents, usedCurrency, orderNumber, timestamp);
 
-        // Forward to payment API (sensitive card info should not be logged)
-        const paymentResponse = await axios.post(
-            `${process.env.MORI_BASE_URL}/payments`,
-            {
-                bookingId,
-                amount,
-                currency,
-                paymentMethod,
-                cardLastFour, // Only last 4 digits
-                billingAddress: validators.sanitize(JSON.stringify(billingAddress))
-            },
-            {
-                headers: {
-                    'Authorization': `Bearer ${process.env.MORI_API_KEY}`,
-                    'X-Merchant-ID': process.env.MORI_MERCHANT_ID,
-                    'Content-Type': 'application/json'
-                }
-            }
-        );
+        const booking = {
+            orderNumber,
+            bookingId: orderNumber,
+            guestName: validators.sanitize(guestName || ''),
+            email: validators.sanitize(email),
+            checkIn,
+            checkOut,
+            roomType: validators.sanitize(roomType || ''),
+            guests,
+            totalPrice,
+            currency: usedCurrency,
+            status: 'pending',
+            submittedAt: new Date().toISOString()
+        };
+        saveBooking(booking);
+
+        console.log(`🔐 Payment init: ${orderNumber} — ${guestName} — ${totalPrice} ${usedCurrency}`);
 
         res.json({
             success: true,
-            transactionId: paymentResponse.data.transactionId,
-            status: paymentResponse.data.status
+            merchantId: MONRI_MERCHANT_ID,
+            amount: amountCents,
+            currency: usedCurrency,
+            orderNumber,
+            digest,
+            timestamp,
+            guestName: booking.guestName,
+            email: booking.email
         });
     } catch (error) {
-        console.error('Payment error:', error.message);
-        res.status(500).json({
-            error: 'Payment processing failed',
-            message: 'Please try again or contact support'
-        });
+        console.error('Payment init error:', error.message);
+        res.status(500).json({ error: 'Failed to initialize payment', message: error.message });
+    }
+});
+
+app.get('/api/booking/:orderNumber', (req, res) => {
+    const bookings = loadBookings();
+    const booking = bookings.find(b => b.orderNumber === req.params.orderNumber || b.bookingId === req.params.orderNumber);
+    if (!booking) return res.status(404).json({ error: 'Booking not found' });
+    res.json({ status: booking.status, bookingId: booking.orderNumber });
+});
+
+app.post('/webhook/monri', async (req, res) => {
+    try {
+        const { order_number, status, transaction_id } = req.body;
+        if (!order_number) return res.status(400).json({ error: 'Missing order_number' });
+
+        const bookings = loadBookings();
+        const idx = bookings.findIndex(b => b.orderNumber === order_number || b.bookingId === order_number);
+        if (idx === -1) return res.status(404).json({ error: 'Booking not found' });
+
+        const approved = ['approved', 'success', 'paid'].includes((status || '').toLowerCase());
+        bookings[idx].status = approved ? 'paid' : 'declined';
+        if (transaction_id) bookings[idx].transactionId = transaction_id;
+        bookings[idx].updatedAt = new Date().toISOString();
+        fs.writeFileSync(BOOKINGS_FILE, JSON.stringify(bookings, null, 2));
+
+        if (approved) {
+            const b = bookings[idx];
+            const hotelEmail = process.env.BOOKING_REQUEST_EMAIL || 'about@hotelsinanhan.com';
+            const transporter = createMailTransporter();
+            if (transporter) {
+                const confirmHtml = `<h2>Payment Confirmed — Sinan Han Hotel</h2><p>Booking <strong>${b.orderNumber}</strong> has been paid.</p><p>Guest: ${b.guestName} &lt;${b.email}&gt;</p><p>Room: ${b.roomType} | Check-in: ${b.checkIn} | Check-out: ${b.checkOut}</p><p>Amount: ${b.totalPrice} ${b.currency}</p>${transaction_id ? '<p>Transaction ID: ' + transaction_id + '</p>' : ''}`;
+                try {
+                    await transporter.sendMail({ from: `"Sinan Han Hotel" <${process.env.EMAIL_USER}>`, to: hotelEmail, subject: `✅ Payment Confirmed — ${b.orderNumber}`, html: confirmHtml });
+                    await transporter.sendMail({ from: `"Sinan Han Hotel" <${process.env.EMAIL_USER}>`, to: b.email, subject: `Your booking is confirmed — Sinan Han Hotel (${b.orderNumber})`, html: `<h2>Booking Confirmed!</h2><p>Dear ${b.guestName},</p><p>Your payment was successful. Booking ID: <strong>${b.orderNumber}</strong></p><p>Room: ${b.roomType} | Check-in: ${b.checkIn} | Check-out: ${b.checkOut}</p><p>We look forward to welcoming you!<br>Sinan Han Hotel, Mostar</p>` });
+                } catch (mailErr) {
+                    console.error('⚠️ Webhook email failed:', mailErr.message);
+                }
+            }
+            console.log(`✅ Payment confirmed: ${order_number}`);
+        }
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Webhook error:', error.message);
+        res.status(500).json({ error: error.message });
     }
 });
 
