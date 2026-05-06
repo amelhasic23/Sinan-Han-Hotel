@@ -1,0 +1,27 @@
+[
+  {
+    "bookingId": "SH-1778054233924-4BF5D3",
+    "guestName": "Test Guest",
+    "email": "about@hotelsinanhan.com",
+    "phone": "0601234567",
+    "checkIn": "2026-06-01",
+    "checkOut": "2026-06-03",
+    "roomType": "standard-double",
+    "guests": 2,
+    "totalPrice": 354,
+    "currency": "BAM",
+    "submittedAt": "2026-05-06T07:57:13.926Z"
+  },
+  {
+    "bookingId": "SH-1778054861318-38BC96",
+    "guestName": "Amel Hasić",
+    "email": "amelhasic23@outlook.com",
+    "phone": "060 310 3117",
+    "checkIn": "2026-06-07",
+    "checkOut": "2026-07-08",
+    "roomType": "superior-suite",
+    "guests": "2",
+    "currency": "BAM",
+    "submittedAt": "2026-05-06T08:07:41.324Z"
+  }
+]
