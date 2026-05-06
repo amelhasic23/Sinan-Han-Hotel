@@ -34,7 +34,8 @@
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 
     <!-- Favicon & PWA -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏨</text></svg>">
+    <link rel="icon" type="image/jpeg" href="LOGO SINAN HAN_page-0001.jpg">
+    <link rel="shortcut icon" href="LOGO SINAN HAN_page-0001.jpg">
     <link rel="manifest" href="manifest.json">
 
     <!-- Stylesheets -->
@@ -147,9 +148,9 @@
     <!-- Navigation -->
     <nav class="navbar" role="navigation" aria-label="Main navigation">
         <div class="nav-container">
-            <div class="nav-logo" role="img" aria-label="Sinan Han Hotel logo">
-                <i class="fas fa-crown" aria-hidden="true"></i>
-                <span data-i18n="hotel-name">Sinan Han</span>
+            <div class="nav-logo" role="img" aria-label="Sinan Han Hotel logo" style="display:flex;align-items:center;gap:10px;">
+                <img src="LOGO SINAN HAN_page-0001.jpg" alt="Sinan Han" style="height:58px;width:auto;object-fit:contain;display:block;border-radius:6px;">
+                <span style="font-family:'Georgia',serif;font-size:1.3rem;font-weight:600;color:#c19a6b;letter-spacing:0.04em;white-space:nowrap;">Sinan Han</span>
             </div>
 
             <!-- Mobile: Language + Hamburger (Outside Menu) -->
@@ -782,28 +783,33 @@
                     <form id="bookingForm" class="booking-form" novalidate>
                         <div class="form-group">
                             <label for="guestName" data-i18n="form-name-label">Guest Name</label>
-                            <input type="text" id="guestName" data-i18n-placeholder="placeholder-name" placeholder="Enter your name" autocomplete="name">
+                            <input type="text" id="guestName" name="name" data-i18n-placeholder="placeholder-name" placeholder="Enter your name" autocomplete="name">
                         </div>
 
                         <div class="form-group">
                             <label for="guestEmail" data-i18n="form-email-label">Email</label>
-                            <input type="email" id="guestEmail" data-i18n-placeholder="placeholder-email" placeholder="your@email.com" autocomplete="email">
+                            <input type="email" id="guestEmail" name="email" data-i18n-placeholder="placeholder-email" placeholder="your@email.com" autocomplete="email">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="guestPhone" data-i18n="form-phone-label">Phone Number</label>
+                            <input type="tel" id="guestPhone" name="phone" data-i18n-placeholder="placeholder-phone" placeholder="Enter your phone number" autocomplete="tel">
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="checkInDate" data-i18n="form-checkin-label">Check-in</label>
-                                <input type="date" id="checkInDate">
+                                <input type="date" id="checkInDate" name="checkIn">
                             </div>
                             <div class="form-group">
                                 <label for="checkOutDate" data-i18n="form-checkout-label">Check-out</label>
-                                <input type="date" id="checkOutDate">
+                                <input type="date" id="checkOutDate" name="checkOut">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="roomType" data-i18n="form-room-label">Room Type</label>
-                            <select id="roomType">
+                            <select id="roomType" name="room">
                                 <option value="">Select a room</option>
                                 <option value="standard-double" data-price="177">Standard Double Room - BAM 177/night (2 guests)</option>
                                 <option value="superior-suite" data-price="204">Superior Suite - BAM 204/night (2 guests)</option>
@@ -817,12 +823,12 @@
 
                         <div class="form-group">
                             <label for="numPersons" data-i18n="form-guests-label">Number of Guests</label>
-                            <input type="number" id="numPersons" min="1" max="8" value="2" data-i18n-placeholder="placeholder-guests" placeholder="Enter number of guests">
+                            <input type="number" id="numPersons" name="guests" min="1" max="8" value="2" data-i18n-placeholder="placeholder-guests" placeholder="Enter number of guests">
                         </div>
 
                         <div class="form-group">
                             <label for="currency" data-i18n="form-currency-label">Currency</label>
-                            <select id="currency">
+                            <select id="currency" name="currency">
                                 <option value="BAM" selected="selected">BAM (Bosnian Mark)</option>
                                 <option value="EUR">EUR (Euro)</option>
                             </select>
@@ -911,8 +917,8 @@
                 <div class="footer-col">
                     <h4 data-i18n="footer-policies-title">Policies</h4>
                     <ul>
-                        <li><a href="https://www.booking.com/hotel/ba/sinan-han.en-gb.html?aid=2375516&label=01J1X42R3M4D4ZBF77BKWAKKWV_01KJYSEFYH68GT6ZJXMJVZXK8K&sid=f7a6b00623c7c93c3c26551ddff2dbd5&age=10&all_sr_blocks=187755904_360715149_3_2_0&checkin=2026-03-13&checkout=2026-03-15&dest_id=-89574&dest_type=city&dist=0&group_adults=2&group_children=1&hapos=1&highlighted_blocks=187755904_360715149_3_2_0&hpos=1&matching_block_id=187755904_360715149_3_2_0&no_rooms=1&req_adults=2&req_age=10&req_children=1&room1=A%2CA%2C10&sb_price_type=total&sr_order=popularity&sr_pri_blocks=187755904_360715149_3_2_0__12158&srepoch=1772707339&srpvid=1a214b43f7c304a6&type=total&ucfs=1&activeTab=main&chal_t=1773647176681&force_referer=#policies" target="_blank" rel="noopener noreferrer" data-i18n="footer-house-rules" title="View our house rules and policies on Booking.com" data-i18n-title="footer-house-rules-title">House Rules</a></li>
-                        <li><a href="https://www.booking.com/hotel/ba/sinan-han.en-gb.html?aid=2375516&label=01J1X42R3M4D4ZBF77BKWAKKWV_01KJYSEFYH68GT6ZJXMJVZXK8K&sid=f7a6b00623c7c93c3c26551ddff2dbd5&age=10&all_sr_blocks=187755904_360715149_3_2_0&checkin=2026-03-13&checkout=2026-03-15&dest_id=-89574&dest_type=city&dist=0&group_adults=2&group_children=1&hapos=1&highlighted_blocks=187755904_360715149_3_2_0&hpos=1&matching_block_id=187755904_360715149_3_2_0&no_rooms=1&req_adults=2&req_age=10&req_children=1&room1=A%2CA%2C10&sb_price_type=total&sr_order=popularity&sr_pri_blocks=187755904_360715149_3_2_0__12158&srepoch=1772707339&srpvid=1a214b43f7c304a6&type=total&ucfs=1&activeTab=main&chal_t=1773647176681&force_referer=#important_info" target="_blank" rel="noopener noreferrer" data-i18n="footer-important-info" title="View important legal information on Booking.com" data-i18n-title="footer-important-info-title">Important Legal & Info</a></li>
+                        <li><a href="#" onclick="document.getElementById('houseRulesModal').style.display='flex';return false;">House Rules</a></li>
+                        <li><a href="#" onclick="document.getElementById('legalInfoModal').style.display='flex';return false;">Important Legal &amp; Info</a></li>
                         <li><a href="https://www.booking.com/hotel/ba/sinan-han.en-gb.html?aid=2375516&label=01J1X42R3M4D4ZBF77BKWAKKWV_01KJYSEFYH68GT6ZJXMJVZXK8K&sid=f7a6b00623c7c93c3c26551ddff2dbd5&age=10&all_sr_blocks=187755904_360715149_3_2_0&checkin=2026-03-13&checkout=2026-03-15&dest_id=-89574&dest_type=city&dist=0&group_adults=2&group_children=1&hapos=1&highlighted_blocks=187755904_360715149_3_2_0&hpos=1&matching_block_id=187755904_360715149_3_2_0&no_rooms=1&req_adults=2&req_age=10&req_children=1&room1=A%2CA%2C10&sb_price_type=total&sr_order=popularity&sr_pri_blocks=187755904_360715149_3_2_0__12158&srepoch=1772707339&srpvid=1a214b43f7c304a6&type=total&ucfs=1&activeTab=main&chal_t=1773647176681&force_referer=#tab-reviews" target="_blank" rel="noopener noreferrer" data-i18n="footer-guest-reviews" title="Read guest reviews on Booking.com" data-i18n-title="footer-guest-reviews-title">Guest Reviews</a></li>
                     </ul>
                 </div>
@@ -954,7 +960,7 @@
                     <p id="modalDescription"></p>
                     <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                         <button class="btn btn-primary btn-lg" id="modalBookBtn" data-i18n="modal-book-btn">Book This Room</button>
-                        <a href="https://www.booking.com/hotel/ba/sinan-han.en-gb.html?aid=2375516&label=01J1X42R3M4D4ZBF77BKWAKKWV_01KJYSEFYH68GT6ZJXMJVZXK8K&sid=f7a6b00623c7c93c3c26551ddff2dbd5&age=10&all_sr_blocks=187755904_360715149_3_2_0&checkin=2026-03-13&checkout=2026-03-15&dest_id=-89574&dest_type=city&dist=0&group_adults=2&group_children=1&hapos=1&highlighted_blocks=187755904_360715149_3_2_0&hpos=1&matching_block_id=187755904_360715149_3_2_0&no_rooms=1&req_adults=2&req_age=10&req_children=1&room1=A%2CA%2C10&sb_price_type=total&sr_order=popularity&sr_pri_blocks=187755904_360715149_3_2_0__12158&srepoch=1772707339&srpvid=1a214b43f7c304a6&type=total&ucfs=1&activeTab=main#policies" target="_blank" class="btn btn-secondary btn-lg" data-i18n="house-rules">House Rules & Policies</a>
+                        <button class="btn btn-secondary btn-lg" onclick="document.getElementById('houseRulesModal').style.display='flex'" data-i18n="house-rules">House Rules &amp; Policies</button>
                     </div>
                 </div>
             </div>
@@ -1756,6 +1762,72 @@
         #bookingSuccessModal.open { display:flex !important; }
         #successModalBtn:hover { opacity:0.88; }
     </style>
+
+    <!-- House Rules Modal -->
+    <div id="houseRulesModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
+        <div style="background:#fff;border-radius:12px;max-width:680px;width:100%;max-height:88vh;overflow-y:auto;padding:2rem;position:relative;">
+            <button onclick="document.getElementById('houseRulesModal').style.display='none'" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:26px;cursor:pointer;color:#666;">&times;</button>
+            <h2 style="color:#2c3e50;margin-bottom:1.5rem;font-size:1.5rem;" data-i18n="hr-title">House Rules</h2>
+            <p style="color:#888;font-style:italic;margin-bottom:1.5rem;" data-i18n="hr-special-requests">Hotel Sinan Han takes special requests — add in the next step!</p>
+
+            <div style="display:grid;gap:1.2rem;">
+                <div style="border-left:3px solid #c19a6b;padding-left:1rem;">
+                    <h4 style="color:#c19a6b;margin-bottom:.4rem;" data-i18n="hr-checkin-title">Check-in</h4>
+                    <p data-i18n="hr-checkin-time">From 14:00 to 00:00</p>
+                    <p style="color:#666;font-size:.9rem;" data-i18n="hr-checkin-note">You'll need to let the property know in advance what time you'll arrive.</p>
+                </div>
+                <div style="border-left:3px solid #c19a6b;padding-left:1rem;">
+                    <h4 style="color:#c19a6b;margin-bottom:.4rem;" data-i18n="hr-checkout-title">Check-out</h4>
+                    <p data-i18n="hr-checkout-time">From 07:00 to 11:00</p>
+                </div>
+                <div style="border-left:3px solid #c19a6b;padding-left:1rem;">
+                    <h4 style="color:#c19a6b;margin-bottom:.4rem;" data-i18n="hr-cancellation-title">Cancellation / Prepayment</h4>
+                    <p data-i18n="hr-cancellation-text">Cancellation and prepayment policies vary according to accommodation type. Please enter the dates of your stay and check the conditions of your required option.</p>
+                </div>
+                <div style="border-left:3px solid #c19a6b;padding-left:1rem;">
+                    <h4 style="color:#c19a6b;margin-bottom:.4rem;" data-i18n="hr-children-title">Children and Beds</h4>
+                    <p style="margin-bottom:.5rem;"><strong data-i18n="hr-child-policies">Child policies</strong></p>
+                    <p data-i18n="hr-children-welcome">Children of any age are welcome.</p>
+                    <p style="margin:.4rem 0;" data-i18n="hr-children-adult-charge">Children 7 years and above will be charged as adults at this property.</p>
+                    <p data-i18n="hr-children-under7">If you are travelling with children under 7 years, to ensure you pay the correct price please select a rate that has child occupancy specified.</p>
+                </div>
+                <div style="border-left:3px solid #c19a6b;padding-left:1rem;">
+                    <h4 style="color:#c19a6b;margin-bottom:.4rem;" data-i18n="hr-cot-title">Cot and Extra Bed Policies</h4>
+                    <p style="margin-bottom:.4rem;"><strong data-i18n="hr-cot-label">0 – 3 years:</strong> <span data-i18n="hr-cot-free">Cot upon request — Free</span></p>
+                    <p data-i18n="hr-cot-note">The number of cots allowed is dependent on the option you choose. Please check your selected option for more information.</p>
+                    <p style="margin-top:.4rem;" data-i18n="hr-no-extra-beds">There are no extra beds available at this property.</p>
+                    <p data-i18n="hr-cots-availability">All cots are subject to availability.</p>
+                </div>
+                <div style="border-left:3px solid #c19a6b;padding-left:1rem;">
+                    <h4 style="color:#c19a6b;margin-bottom:.4rem;" data-i18n="hr-age-title">Age Restriction</h4>
+                    <p data-i18n="hr-age-text">There is no age requirement for check-in.</p>
+                </div>
+                <div style="border-left:3px solid #c19a6b;padding-left:1rem;">
+                    <h4 style="color:#c19a6b;margin-bottom:.4rem;" data-i18n="hr-pets-title">Pets</h4>
+                    <p data-i18n="hr-pets-text">Pets are not allowed.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Important Legal & Info Modal -->
+    <div id="legalInfoModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
+        <div style="background:#fff;border-radius:12px;max-width:680px;width:100%;max-height:88vh;overflow-y:auto;padding:2rem;position:relative;">
+            <button onclick="document.getElementById('legalInfoModal').style.display='none'" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:26px;cursor:pointer;color:#666;">&times;</button>
+            <h2 style="color:#2c3e50;margin-bottom:1.5rem;font-size:1.5rem;" data-i18n="li-title">Important Legal &amp; Info</h2>
+
+            <div style="display:grid;gap:1.2rem;">
+                <div style="border-left:3px solid #c19a6b;padding-left:1rem;">
+                    <h4 style="color:#c19a6b;margin-bottom:.4rem;" data-i18n="li-arrival-title">Arrival Time</h4>
+                    <p data-i18n="li-arrival-text">Please inform Hotel Sinan Han in advance of your expected arrival time. You can use the Special Requests box when booking, or contact the property directly with the contact details provided in your confirmation.</p>
+                </div>
+                <div style="border-left:3px solid #c19a6b;padding-left:1rem;">
+                    <h4 style="color:#c19a6b;margin-bottom:.4rem;" data-i18n="li-health-title">Health &amp; Safety</h4>
+                    <p data-i18n="li-health-text">In response to Coronavirus (COVID-19), additional safety and sanitation measures are in effect at this property.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>

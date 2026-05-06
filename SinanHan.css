@@ -116,7 +116,7 @@ body.nav-open {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 70px;
+    height: 80px;
     padding: 0 2rem;
     max-width: 100%;
     border-bottom: 1px solid rgba(193, 154, 107, 0.1);
@@ -136,24 +136,14 @@ body.nav-open {
 }
 
 .nav-logo {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--primary);
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    letter-spacing: 2px;
     cursor: pointer;
-    transition: color 0.3s ease;
     text-decoration: none;
 }
 
 .nav-logo:hover {
-    color: var(--primary-dark);
-}
-
-.nav-logo i {
-    font-size: 2rem;
+    opacity: 0.9;
 }
 
 .nav-menu {
@@ -2209,7 +2199,7 @@ body.nav-open {
         padding: 1rem 0;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         z-index: 999;
-        max-height: calc(100vh - 70px);
+        max-height: calc(100vh - 80px);
         overflow-y: auto;
         animation: slideDown 0.3s ease forwards;
     }
@@ -2451,16 +2441,9 @@ body.nav-open {
 
     .navbar {
         padding: 0 0.75rem;
-        height: 65px;
+        height: 72px;
     }
 
-    .nav-logo span {
-        font-size: 1rem;
-    }
-
-    .nav-logo i {
-        font-size: 1.2rem;
-    }
 
     .hero-title {
         font-size: 1.5rem;
