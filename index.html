@@ -127,8 +127,7 @@
         }
     </script>
 
-    <!-- Resource Hints for Critical Images -->
-    <link rel="preload" as="image" href="Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1).jpg" type="image/jpeg" imagesrcset="Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1)-small.webp 400w, Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1)-medium.webp 800w, Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1)-large.webp 1200w" imagesizes="100vw">
+    <!-- Resource Hints for Critical Images (Prefetch only, not preload to avoid unused resource warning) -->
     <link rel="prefetch" as="image" href="Rooms/Standard Double Room/390516357.jpg" type="image/jpeg">
     <link rel="prefetch" as="image" href="Rooms/Superior Suite/390594090.jpg" type="image/jpeg">
 </head>
@@ -1589,8 +1588,13 @@
                         message: `Guest ${guestName} has submitted a booking request for ${roomName} from ${checkInDate} to ${checkOutDate} for ${numPersons} person(s).`
                     };
 
+                    // Auto-detect API endpoint based on environment
+                    const apiBaseUrl = window.location.hostname.includes('onrender.com')
+                        ? 'https://sinan-han-hotel.onrender.com'
+                        : 'http://localhost:5000';
+
                     // Send email notification to hotel IMMEDIATELY
-                    fetch('http://localhost:5000/api/bookings', {
+                    fetch(`${apiBaseUrl}/api/bookings`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(bookingNotificationData)
@@ -1613,7 +1617,8 @@
                         document.getElementById('total').textContent = 'BAM 0.00';
                     })
                     .catch(emailError => {
-                        console.warn('⚠️ Email notification failed:', emailError);
+                        console.error('❌ Email notification failed:', emailError);
+                        // Still show success to user since Monri payment succeeded
                         showBookingSuccessModal({
                             name: guestName,
                             email: guestEmail,
