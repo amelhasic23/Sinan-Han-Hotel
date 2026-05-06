@@ -3,10 +3,19 @@
 // ============================================
 
 class HotelAPIClient {
-  constructor(baseURL = 'http://localhost:5000') {
-    this.baseURL = baseURL;
+  constructor(baseURL = null) {
+    // Auto-detect environment: use production URL if on Render, otherwise localhost
+    if (!baseURL) {
+      const isProduction = window.location.hostname.includes('onrender.com');
+      this.baseURL = isProduction
+        ? 'https://sinan-han-hotel.onrender.com'
+        : 'http://localhost:5000';
+    } else {
+      this.baseURL = baseURL;
+    }
     this.cache = {};
     this.cacheTimeout = 3600000; // 1 hour
+    console.log(`🔗 API Client initialized with baseURL: ${this.baseURL}`);
   }
 
   /**
