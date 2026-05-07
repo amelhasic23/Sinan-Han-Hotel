@@ -5,8 +5,7 @@
 
 'use strict';
 
-// Currency conversion rate (1 BAM = 0.51 EUR approximately)
-const BAM_TO_EUR = 0.51;
+// Note: BAM_TO_EUR is provided by SiminHan.min.js
 
 // Room data
 const roomData = {
