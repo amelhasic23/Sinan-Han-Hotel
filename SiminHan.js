@@ -2421,14 +2421,19 @@ document.getElementById('bookingPaymentForm')?.addEventListener('submit', async 
 
     // Validate card details if credit/debit card selected
     if (['credit-card', 'debit-card'].includes(paymentMethod)) {
-        const cardHolder = document.getElementById('cardHolder').value.trim();
-        const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
-        const expiryDate = document.getElementById('expiryDate').value;
-        const cvv = document.getElementById('cvv').value;
-
-        if (!cardHolder || cardNumber.length < 13 || !expiryDate || cvv.length < 3) {
-            toast.error('Please enter valid card details');
-            return;
+        const cardHolderEl = document.getElementById('cardHolder');
+        const cardNumberEl = document.getElementById('cardNumber');
+        const expiryDateEl = document.getElementById('expiryDate');
+        const cvvEl = document.getElementById('cvv');
+        if (cardHolderEl && cardNumberEl && expiryDateEl && cvvEl) {
+            const cardHolder = cardHolderEl.value.trim();
+            const cardNumber = cardNumberEl.value.replace(/\s/g, '');
+            const expiryDate = expiryDateEl.value;
+            const cvv = cvvEl.value;
+            if (!cardHolder || cardNumber.length < 13 || !expiryDate || cvv.length < 3) {
+                toast.error('Please enter valid card details');
+                return;
+            }
         }
     }
 
@@ -2447,7 +2452,7 @@ document.getElementById('bookingPaymentForm')?.addEventListener('submit', async 
             currency: 'BAM',
             paymentMethod: paymentMethod,
             cardLastFour: ['credit-card', 'debit-card'].includes(paymentMethod)
-                ? document.getElementById('cardNumber').value.slice(-4)
+                ? (document.getElementById('cardNumber')?.value.slice(-4) ?? null)
                 : null,
             billingAddress: document.getElementById('billingAddress').checked ? {
                 street: document.getElementById('billingStreet').value,

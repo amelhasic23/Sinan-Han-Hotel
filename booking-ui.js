@@ -601,9 +601,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (confirmBtn) { confirmBtn.disabled = true; confirmBtn.textContent = 'Initializing...'; }
 
         try {
+            var csrfToken = typeof getValidCSRFToken === 'function'
+                ? await getValidCSRFToken()
+                : null;
+
             var initRes = await fetch('/api/payment/init', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: Object.assign(
+                    { 'Content-Type': 'application/json' },
+                    csrfToken ? { 'X-CSRF-Token': csrfToken } : {}
+                ),
                 credentials: 'include',
                 body: JSON.stringify({
                     guestName: bookingData.guestName || bookingData.name || '',

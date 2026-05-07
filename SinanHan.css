@@ -1744,6 +1744,10 @@ body.nav-open {
     background: rgba(0, 0, 0, 0.7);
     overflow-y: auto;
     animation: fadeIn 0.3s ease;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .modal.show {
@@ -1760,6 +1764,8 @@ body.nav-open {
     max-height: 90vh;
     overflow-y: auto;
     position: relative;
+    padding: 30px;
+    box-sizing: border-box;
 }
 
 .close {
