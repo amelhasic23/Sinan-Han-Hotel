@@ -1046,7 +1046,10 @@
         </div>
     </div>
 
-    <!-- Deferred Booking UI Module (Desktop Optimized - Phase 6) -->
+    <!-- Deferred script loading for non-blocking render - LOAD FIRST for CSRF functions -->
+    <script defer src="SiminHan.min.js"></script>
+
+    <!-- Deferred Booking UI Module (Desktop Optimized - Phase 6) - depends on SiminHan.min.js -->
     <script defer src="booking-ui.js"></script>
 
     <!-- Placeholder for legacy inline script - now externalized -->
@@ -1090,9 +1093,6 @@
             }
         });
     </script>
-
-    <!-- Deferred script loading for non-blocking render -->
-    <script defer src="SiminHan.min.js"></script>
 
     <script></script>
 
