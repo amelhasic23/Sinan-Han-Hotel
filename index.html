@@ -1098,15 +1098,52 @@
 
     <!-- Load Monri payment SDK -->
     <script>
+        // Global state for Monri SDK
+        window.monriSDKReady = false;
+        window.monriSDKLoading = false;
+        window.monriSDKPromise = null;
+
         window.loadPaymentSDK = function() {
-            if (!window.monriSDKLoaded) {
+            // Return existing promise if already loading
+            if (window.monriSDKPromise) {
+                return window.monriSDKPromise;
+            }
+
+            // Return resolved promise if already loaded
+            if (window.monriSDKReady && typeof Monri !== 'undefined') {
+                return Promise.resolve();
+            }
+
+            window.monriSDKLoading = true;
+
+            window.monriSDKPromise = new Promise(function(resolve, reject) {
                 const script = document.createElement('script');
                 script.src = 'https://ipgtest.monri.com/v2/monri.js';
                 script.async = true;
+
+                script.onload = function() {
+                    window.monriSDKReady = true;
+                    window.monriSDKLoading = false;
+                    console.log('Monri SDK loaded successfully');
+
+                    // Dispatch custom event for UI components
+                    window.dispatchEvent(new CustomEvent('monriSDKReady'));
+                    resolve();
+                };
+
+                script.onerror = function(error) {
+                    window.monriSDKLoading = false;
+                    window.monriSDKPromise = null; // Allow retry
+                    console.error('Failed to load Monri SDK:', error);
+                    reject(new Error('Failed to load payment SDK. Please check your connection.'));
+                };
+
                 document.head.appendChild(script);
-                window.monriSDKLoaded = true;
-            }
+            });
+
+            return window.monriSDKPromise;
         };
+
         // Load when page is interactive so it's ready when user reaches payment step
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', window.loadPaymentSDK);

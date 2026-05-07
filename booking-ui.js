@@ -581,6 +581,59 @@ document.addEventListener('DOMContentLoaded', function() {
     var paymentForm = document.getElementById('bookingPaymentForm');
     if (!paymentForm) return;
 
+    // Initialize payment button state based on SDK readiness
+    function initializePaymentButton() {
+        var confirmBtn = document.getElementById('confirmPaymentBtn');
+        if (!confirmBtn) return;
+
+        if (window.monriSDKReady && typeof Monri !== 'undefined') {
+            // SDK already loaded
+            confirmBtn.disabled = false;
+            confirmBtn.textContent = 'Complete Payment';
+            confirmBtn.title = '';
+        } else if (window.monriSDKLoading) {
+            // SDK currently loading
+            confirmBtn.disabled = true;
+            confirmBtn.textContent = 'Loading Payment System...';
+            confirmBtn.title = 'Please wait while payment system loads';
+        } else {
+            // SDK failed to load or not started
+            confirmBtn.disabled = true;
+            confirmBtn.textContent = 'Payment System Loading...';
+            confirmBtn.title = 'Initializing payment system';
+        }
+    }
+
+    // Listen for SDK ready event
+    window.addEventListener('monriSDKReady', function() {
+        var confirmBtn = document.getElementById('confirmPaymentBtn');
+        if (confirmBtn) {
+            confirmBtn.disabled = false;
+            confirmBtn.textContent = 'Complete Payment';
+            confirmBtn.title = '';
+        }
+    });
+
+    // Initialize button state when modal becomes visible
+    var modal = document.getElementById('bookingConfirmationModal');
+    if (modal) {
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.attributeName === 'style' || mutation.attributeName === 'class') {
+                    var isVisible = modal.style.display !== 'none' &&
+                                   modal.offsetParent !== null;
+                    if (isVisible) {
+                        initializePaymentButton();
+                    }
+                }
+            });
+        });
+        observer.observe(modal, { attributes: true });
+    }
+
+    // Also initialize on page load
+    initializePaymentButton();
+
     paymentForm.addEventListener('submit', async function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -628,8 +681,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error(payData.error || 'Payment initialization failed');
             }
 
+            // Ensure SDK is loaded (with retry option)
             if (typeof Monri === 'undefined') {
-                throw new Error('Monri SDK not loaded. Please refresh and try again.');
+                if (confirmBtn) confirmBtn.textContent = 'Loading Payment System...';
+
+                try {
+                    // Wait for SDK to load (or retry loading)
+                    await window.loadPaymentSDK();
+                } catch (sdkError) {
+                    // SDK failed to load - provide actionable error
+                    throw new Error('Payment system failed to load. Please check your internet connection and try again.');
+                }
+            }
+
+            // Final safety check (should never fail now)
+            if (typeof Monri === 'undefined') {
+                throw new Error('Payment system not available. Please refresh the page.');
             }
 
             var lightbox = Monri.Lightbox({
