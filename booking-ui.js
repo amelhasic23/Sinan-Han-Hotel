@@ -60,7 +60,7 @@ const roomData = {
     },
     'superior-apartment': {
         title: 'Superior Apartment',
-        price: 260,
+        price: 300,
         image: 'Rooms/Superior Apartment/706475998.jpg',
         images: [
             'Rooms/Superior Apartment/706475998.jpg',
@@ -89,7 +89,7 @@ const roomData = {
     },
     'two-bedroom-deluxe': {
         title: 'Two-Bedroom Deluxe Apartment',
-        price: 262,
+        price: 380,
         image: 'Rooms/Two Bedroom Deluxe Apartment/714582553.jpg',
         images: [
             'Rooms/Two Bedroom Deluxe Apartment/714582553.jpg',
@@ -119,11 +119,15 @@ function calculatePrice() {
     const roomTypeSelect = document.getElementById('roomType');
     const currency = document.getElementById('currency').value;
 
+    const isEUR = currency === 'EUR';
+    const currencySymbol = isEUR ? '€' : 'BAM';
+    const zeroDisplay = isEUR ? '€ 0.00' : 'BAM 0.00';
+
     if (!roomTypeSelect.value || !checkInDate || !checkOutDate) {
         document.getElementById('selectedRoom').textContent = '-';
         document.getElementById('nightsCount').textContent = '0';
-        document.getElementById('nightPrice').textContent = 'BAM 0.00';
-        document.getElementById('total').textContent = 'BAM 0.00';
+        document.getElementById('nightPrice').textContent = zeroDisplay;
+        document.getElementById('total').textContent = zeroDisplay;
         return;
     }
 
@@ -133,7 +137,7 @@ function calculatePrice() {
 
     if (nights <= 0) {
         showToast('Check-out date must be after check-in date');
-        document.getElementById('total').textContent = 'BAM 0.00';
+        document.getElementById('total').textContent = zeroDisplay;
         return;
     }
 
@@ -143,16 +147,16 @@ function calculatePrice() {
     const roomName = selectedOption.text.split(' - ')[0];
 
     let displayPrice = subtotal;
-    let currencySymbol = 'BAM';
+    let displayPerNight = pricePerNight;
 
-    if (currency === 'EUR') {
+    if (isEUR) {
         displayPrice = parseFloat((subtotal * BAM_TO_EUR).toFixed(2));
-        currencySymbol = '€';
+        displayPerNight = parseFloat((pricePerNight * BAM_TO_EUR).toFixed(2));
     }
 
     document.getElementById('selectedRoom').textContent = roomName;
     document.getElementById('nightsCount').textContent = nights;
-    document.getElementById('nightPrice').textContent = `${pricePerNight.toFixed(2)} ${currencySymbol}`;
+    document.getElementById('nightPrice').textContent = `${displayPerNight.toFixed(2)} ${currencySymbol}`;
     document.getElementById('total').textContent = `${displayPrice.toFixed(2)} ${currencySymbol}`;
 }
 
