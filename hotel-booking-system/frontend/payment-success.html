@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Payment Successful - Sinan Han Hotel</title>
+    <meta name="theme-color" content="#4f46e5">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-lg max-w-md w-full p-8 text-center">
+        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+            </svg>
+        </div>
+        <h1 class="text-2xl font-bold text-gray-900 mb-2">Payment Successful</h1>
+        <p class="text-gray-500 mb-2">Your booking is confirmed.</p>
+        <p id="order-info" class="text-sm text-gray-400 mb-8"></p>
+        <p class="text-sm text-gray-500 mb-8">A confirmation email has been sent to you. Our team looks forward to welcoming you at Sinan Han Hotel.</p>
+        <a href="/" class="inline-block bg-indigo-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-indigo-700 transition-colors">
+            Back to Hotel
+        </a>
+    </div>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const orderNumber = params.get('order_number');
+        if (orderNumber) {
+            document.getElementById('order-info').textContent = 'Order #' + orderNumber;
+        }
+    </script>
+</body>
+</html>

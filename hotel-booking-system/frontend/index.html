@@ -880,7 +880,7 @@
                 order_number: paymentData.orderNumber,
                 digest: paymentData.digest,
                 // Callback URLs
-                redirect_url: window.location.href,
+                redirect_url: window.location.origin + '/payment/result',
                 notification_url: '/webhook/monri',
                 language: 'en',
                 // Optional customer info

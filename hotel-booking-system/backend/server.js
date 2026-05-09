@@ -1269,6 +1269,20 @@ app.post('/webhook/monri', express.json(), async (req, res) => {
 });
 
 /**
+ * GET /payment/result
+ * Monri redirects here after payment; forwards to success or failed page
+ */
+app.get('/payment/result', (req, res) => {
+  const { order_number, status } = req.query;
+  const orderParam = order_number ? `?order_number=${order_number}` : '';
+  if (status === 'approved' || status === 'success' || status === 'paid') {
+    res.redirect(`/payment-success.html${orderParam}`);
+  } else {
+    res.redirect(`/payment-failed.html${orderParam}`);
+  }
+});
+
+/**
  * GET /api/bookings/list
  * View all booking requests (for hotel staff)
  */
