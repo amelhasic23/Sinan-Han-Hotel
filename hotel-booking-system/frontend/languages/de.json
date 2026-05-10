@@ -149,5 +149,7 @@
   "error-fill-fields": "Bitte füllen Sie alle erforderlichen Felder aus",
   "error-no-rooms": "Für die ausgewählten Termine sind keine Zimmer verfügbar",
   "error-checkout-after-checkin": "Check-out-Datum muss nach Check-in-Datum liegen",
-  "currency-symbol": "€"
+  "currency-symbol": "€",
+  "secure-payments-via": "Sichere Zahlung über",
+  "secure-payment-methods": "Sichere Zahlungsmethoden"
 }

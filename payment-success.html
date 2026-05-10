@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Payment Successful — Sinan Han Hotel</title>
+    <meta name="robots" content="noindex">
+    <meta name="theme-color" content="#22c55e">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#f0fdf4;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
+        .card{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.12);max-width:460px;width:100%;padding:48px 36px 40px;text-align:center}
+        .icon{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;margin:0 auto 28px;box-shadow:0 8px 24px rgba(34,197,94,.3)}
+        h1{font-size:1.8rem;color:#1a2e1a;margin-bottom:8px}
+        .subtitle{color:#6b7280;margin-bottom:6px;font-size:.95rem}
+        .order-info{color:#9ca3af;font-size:.85rem;margin-bottom:24px;min-height:1.2em}
+        .notice{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:14px 16px;font-size:.85rem;color:#166534;margin-bottom:28px;line-height:1.5}
+        .btn{display:inline-block;background:linear-gradient(135deg,#c19a6b,#9a7a52);color:#fff;padding:14px 36px;border-radius:12px;font-size:1rem;font-weight:600;text-decoration:none;transition:opacity .2s}
+        .btn:hover{opacity:.88}
+        .hotel-name{margin-top:24px;font-size:.8rem;color:#9ca3af}
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+            </svg>
+        </div>
+        <h1>Payment Successful</h1>
+        <p class="subtitle">Your booking is confirmed.</p>
+        <p id="order-info" class="order-info"></p>
+        <div class="notice">
+            A confirmation email has been sent to you. Our team looks forward to welcoming you at Sinan Han Hotel Mostar.
+        </div>
+        <a href="/" class="btn">Back to Hotel</a>
+        <p class="hotel-name">Sinan Han Boutique Hotel · Mostar, Bosnia &amp; Herzegovina</p>
+    </div>
+    <script>
+        var params = new URLSearchParams(window.location.search);
+        var orderNumber = params.get('order_number');
+        if (orderNumber) {
+            document.getElementById('order-info').textContent = 'Order #' + orderNumber;
+        }
+    </script>
+</body>
+</html>

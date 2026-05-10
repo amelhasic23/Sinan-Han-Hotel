@@ -437,6 +437,31 @@ app.post('/webhook/monri', async (req, res) => {
     }
 });
 
+// === Payment Result Redirect (Monri redirect_url handler) ===
+app.get('/payment/result', (req, res) => {
+    const status = (req.query.status || '').toLowerCase();
+    const orderNumber = req.query.order_number || '';
+    const approved = ['approved', 'success', 'paid'].includes(status);
+    const page = approved ? 'payment-success.html' : 'payment-failed.html';
+    res.redirect(`/${page}?order_number=${encodeURIComponent(orderNumber)}`);
+});
+
+// Explicit routes for payment result pages (linkable from Render.io console)
+app.get('/payment-success', (req, res) => res.sendFile(path.join(__dirname, 'payment-success.html')));
+app.get('/payment-failed', (req, res) => res.sendFile(path.join(__dirname, 'payment-failed.html')));
+
+// === Serve index.html with injected environment ===
+app.get('/', (req, res) => {
+    try {
+        const html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8')
+            .replace("'REPLACE_WITH_NODE_ENV'", JSON.stringify(process.env.NODE_ENV || 'development'));
+        res.setHeader('Content-Type', 'text/html');
+        res.send(html);
+    } catch (err) {
+        res.sendFile(path.join(__dirname, 'index.html'));
+    }
+});
+
 // === Health Check ===
 app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
@@ -452,8 +477,8 @@ app.use((err, req, res, next) => {
 });
 
 // === Start Server ===
-app.listen(PORT, () => {
-    console.log(`🚀 Sinan Han Hotel Server running at http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 Sinan Han Hotel Server running on 0.0.0.0:${PORT}`);
     console.log(`📝 Environment: ${process.env.NODE_ENV}`);
 });
 

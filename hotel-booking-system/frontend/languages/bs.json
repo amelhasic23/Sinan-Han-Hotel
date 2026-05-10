@@ -149,5 +149,7 @@
   "error-fill-fields": "Molimo ispunite sva obavezna polja",
   "error-no-rooms": "Nema dostupnih soba za odabrane datume",
   "error-checkout-after-checkin": "Datum odjave mora biti nakon datuma prijave",
-  "currency-symbol": "€"
+  "currency-symbol": "€",
+  "secure-payments-via": "Sigurno plaćanje putem",
+  "secure-payment-methods": "Sigurne metode plaćanja"
 }

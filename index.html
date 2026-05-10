@@ -932,6 +932,14 @@
                 </div>
             </div>
             <div class="footer-bottom">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:18px;">
+                    <span data-i18n="secure-payment-methods" style="font-size:0.75rem;color:#aaa;letter-spacing:0.06em;text-transform:uppercase;">Secure Payment Methods</span>
+                    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:10px 20px;">
+                        <img src="Cards-Icon/download.png" alt="Accepted card" height="28" style="border-radius:4px;background:#fff;padding:3px 6px;display:block;">
+                        <img src="Cards-Icon/download%20(1).png" alt="Accepted card" height="28" style="border-radius:4px;background:#fff;padding:3px 6px;display:block;">
+                        <img src="Cards-Icon/download%20(2).png" alt="Accepted card" height="28" style="border-radius:4px;background:#fff;padding:3px 6px;display:block;">
+                    </div>
+                </div>
                 <p data-i18n="footer-copyright">&copy; 2026 Sinan Han. All rights reserved. | Designed with <i class="fas fa-heart"></i> for travelers</p>
                 <p style="margin-top:6px;font-size:0.82rem;opacity:0.75;">MBS: 58-01-0026-21 &nbsp;|&nbsp; JIB: 4228056730007</p>
             </div>
@@ -1038,6 +1046,14 @@
                     </label>
                 </div>
 
+                <!-- Accepted Cards -->
+                <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+                    <span data-i18n="secure-payments-via" style="font-size:0.78rem;opacity:0.7;flex-shrink:0;">Secure payments via</span>
+                    <img src="Cards-Icon/download.png" alt="Visa" height="22" style="border-radius:3px;background:#fff;padding:2px 4px;opacity:0.9;">
+                    <img src="Cards-Icon/download%20(1).png" alt="Mastercard" height="22" style="border-radius:3px;background:#fff;padding:2px 4px;opacity:0.9;">
+                    <img src="Cards-Icon/download%20(2).png" alt="Maestro" height="22" style="border-radius:3px;background:#fff;padding:2px 4px;opacity:0.9;">
+                </div>
+
                 <!-- Action Buttons -->
                 <div style="display: flex; gap: 10px;">
                     <button type="submit" id="confirmPaymentBtn" class="btn btn-primary" style="flex: 1; padding: 12px;">Complete Payment</button>
@@ -1052,6 +1068,9 @@
 
     <!-- Deferred Booking UI Module (Desktop Optimized - Phase 6) - depends on SiminHan.min.js -->
     <script defer src="booking-ui.js"></script>
+
+    <!-- Share modal — null-safe, Web Share API with clipboard fallback -->
+    <script defer src="share-modal.js"></script>
 
     <!-- Placeholder for legacy inline script - now externalized -->
     <script>
@@ -1097,6 +1116,9 @@
 
     <script></script>
 
+    <!-- Environment injected by server.js at runtime -->
+    <script>window.SINAN_ENV = 'REPLACE_WITH_NODE_ENV';</script>
+
     <!-- Load Monri payment SDK -->
     <script>
         // Global state for Monri SDK
@@ -1119,7 +1141,9 @@
 
             window.monriSDKPromise = new Promise(function(resolve, reject) {
                 const script = document.createElement('script');
-                script.src = 'https://ipgtest.monri.com/v2/monri.js';
+                script.src = (window.SINAN_ENV === 'production')
+                    ? 'https://ipg.monri.com/v2/monri.js'
+                    : 'https://ipgtest.monri.com/v2/monri.js';
                 script.async = true;
 
                 script.onload = function() {

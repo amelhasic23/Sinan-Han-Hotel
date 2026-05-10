@@ -15,7 +15,7 @@ const CONFIG = {
   PARALLAX_ANIMATION_DURATION: 300, // ms
   MODAL_CLOSE_ANIMATION: 300, // ms
   AOS_DURATION: 800, // AOS animation duration
-  LANGUAGES: ['en', 'bs', 'de', 'fr', 'it'],
+  LANGUAGES: ['en', 'bs', 'de', 'fr', 'it', 'tr', 'ar'],
   DEFAULT_LANGUAGE: 'en'
 };
 

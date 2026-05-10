@@ -717,9 +717,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 ch_country: 'BA',
                 ch_zip: '88000',
                 ch_address: '-',
-                ch_phone: bookingData.phone || '000000000',
+                ch_phone: bookingData.phone || '',
                 notification_url: window.location.origin + '/webhook/monri',
-                redirect_url: window.location.href
+                redirect_url: window.location.origin + '/payment/result',
             });
 
             lightbox.open();
