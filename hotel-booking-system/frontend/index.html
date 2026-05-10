@@ -883,7 +883,9 @@
                 redirect_url: (window.location.hostname.includes('onrender.com')
                     ? 'https://sinan-han-hotel.onrender.com'
                     : 'http://localhost:5000') + '/payment/result',
-                notification_url: '/webhook/monri',
+                notification_url: (window.location.hostname.includes('onrender.com')
+                    ? 'https://sinan-han-hotel.onrender.com'
+                    : 'http://localhost:5000') + '/webhook/monri',
                 language: 'en',
                 // Optional customer info
                 customer_email: currentBooking.email,

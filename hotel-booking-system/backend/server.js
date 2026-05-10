@@ -1276,11 +1276,16 @@ app.get('/payment/result', (req, res) => {
   const { order_number, status } = req.query;
   const orderParam = order_number ? `?order_number=${order_number}` : '';
   if (status === 'approved' || status === 'success' || status === 'paid') {
-    res.redirect(`/payment-success.html${orderParam}`);
+    res.redirect(`/payment-success${orderParam}`);
   } else {
-    res.redirect(`/payment-failed.html${orderParam}`);
+    res.redirect(`/payment-failed${orderParam}`);
   }
 });
+
+app.get('/payment-success', (req, res) =>
+  res.sendFile(path.join(__dirname, '../frontend/payment-success.html')));
+app.get('/payment-failed', (req, res) =>
+  res.sendFile(path.join(__dirname, '../frontend/payment-failed.html')));
 
 /**
  * GET /api/bookings/list
