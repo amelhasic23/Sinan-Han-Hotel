@@ -57,10 +57,10 @@ app.use((req, res, next) => {
         // Push critical CSS and JS for optimal performance
         // These will be automatically fetched by HTTP/2 clients
         if (req.url === '/' || req.url.includes('index.html')) {
-            // Frontend booking system critical resources
+            // Landing page critical resources
             linkHeaders = [
-                '</js/api.js>; rel=preload; as=script; importance=high',
-                '</js/main.js>; rel=preload; as=script; importance=high'
+                '</SinanHan.min.css>; rel=preload; as=style; importance=high',
+                '</SiminHan.min.js>; rel=preload; as=script; importance=high'
             ];
         } else if (req.url.includes('SinanHan.html')) {
             // Legacy landing page critical resources

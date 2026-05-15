@@ -1,7 +1,7 @@
 // Service Worker for Sinan Han Hotel
 // Provides offline support and improved caching
 
-const CACHE_NAME = 'sinan-han-v19';
+const CACHE_NAME = 'sinan-han-v20';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
