@@ -39,7 +39,6 @@
     "csso-cli": "^4.0.2",
     "html-minifier-terser": "^7.2.0",
     "nodemon": "^3.0.1",
-    "sharp": "^0.33.5",
     "terser": "^5.46.1"
   },
   "engines": {

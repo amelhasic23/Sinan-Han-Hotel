@@ -20,10 +20,8 @@ yarn-error.log*
 .DS_Store
 Thumbs.db
 
-# Build files
-*.min.js
-*.min.css
-*.min.html
+# Build files (min files are committed so Render can serve them directly)
+index.min.html
 
 # Logs
 logs/
