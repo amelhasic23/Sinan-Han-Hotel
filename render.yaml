@@ -3,7 +3,7 @@ services:
     name: sinan-han-hotel
     env: node
     rootDir: .
-    buildCommand: npm install
+    buildCommand: npm install --omit=dev
     startCommand: node server.js
     envVars:
       - key: NODE_ENV
