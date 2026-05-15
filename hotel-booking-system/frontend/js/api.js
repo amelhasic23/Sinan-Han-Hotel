@@ -4,12 +4,12 @@
 
 class HotelAPIClient {
   constructor(baseURL = null) {
-    // Auto-detect environment: use production URL if on Render, otherwise localhost
+    // Auto-detect environment: use current origin in production, localhost for dev
     if (!baseURL) {
-      const isProduction = window.location.hostname.includes('onrender.com');
-      this.baseURL = isProduction
-        ? 'https://sinan-han-hotel.onrender.com'
-        : 'http://localhost:5000';
+      const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+      this.baseURL = isLocalhost
+        ? 'http://localhost:10000'
+        : window.location.origin;
     } else {
       this.baseURL = baseURL;
     }

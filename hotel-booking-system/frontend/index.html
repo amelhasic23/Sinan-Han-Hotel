@@ -880,12 +880,8 @@
                 order_number: paymentData.orderNumber,
                 digest: paymentData.digest,
                 // Callback URLs
-                redirect_url: (window.location.hostname.includes('onrender.com')
-                    ? 'https://sinan-han-hotel.onrender.com'
-                    : 'http://localhost:5000') + '/payment/result',
-                notification_url: (window.location.hostname.includes('onrender.com')
-                    ? 'https://sinan-han-hotel.onrender.com'
-                    : 'http://localhost:5000') + '/webhook/monri',
+                redirect_url: window.location.origin + '/payment/result',
+                notification_url: window.location.origin + '/webhook/monri',
                 language: 'en',
                 // Optional customer info
                 customer_email: currentBooking.email,
