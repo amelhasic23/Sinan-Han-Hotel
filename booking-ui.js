@@ -495,13 +495,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const roomSelect = document.getElementById('roomType');
         const roomName = roomSelect.options[roomSelect.selectedIndex].text;
+        const roomTypeKey = roomSelect.value;
 
         const bookingNotificationData = {
             guestName: guestName,
             email: guestEmail,
             checkIn: checkInDate,
             checkOut: checkOutDate,
-            roomType: roomName,
+            roomType: roomTypeKey,
+            roomName: roomName,
             guests: numPersons,
             message: `Guest ${guestName} has submitted a booking request for ${roomName} from ${checkInDate} to ${checkOutDate} for ${numPersons} person(s).`
         };
@@ -513,14 +515,25 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(() => {
-            showBookingSuccessModal({
-                name: guestName,
-                email: guestEmail,
-                room: roomName,
-                checkIn: checkInDate,
-                checkOut: checkOutDate,
-                guests: numPersons
-            });
+            if (typeof openBookingConfirmationModal === 'function') {
+                openBookingConfirmationModal({
+                    guestName: guestName,
+                    email: guestEmail,
+                    roomType: roomTypeKey,
+                    checkIn: checkInDate,
+                    checkOut: checkOutDate,
+                    guests: numPersons
+                });
+            } else {
+                showBookingSuccessModal({
+                    name: guestName,
+                    email: guestEmail,
+                    room: roomName,
+                    checkIn: checkInDate,
+                    checkOut: checkOutDate,
+                    guests: numPersons
+                });
+            }
             bookingForm.reset();
             document.getElementById('selectedRoom').textContent = '-';
             document.getElementById('nightsCount').textContent = '0';
