@@ -1,2 +1,1 @@
 require('./backend/server');
-</invoke>
