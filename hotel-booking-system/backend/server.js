@@ -96,9 +96,7 @@ const PAYMENT_CURRENCY = process.env.PAYMENT_CURRENCY || 'BAM';
 const BOOKINGS_FILE = path.join(__dirname, 'bookings.json');
 
 if (!RAPIDAPI_KEY) {
-  console.error('ERROR: RAPIDAPI_KEY not found in .env file');
-  console.error('Please create a .env file with RAPIDAPI_KEY set');
-  process.exit(1);
+  console.warn('WARNING: RAPIDAPI_KEY not set. Hotel API data will not be available.');
 }
 
 // ============================================
