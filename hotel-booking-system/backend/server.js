@@ -4,7 +4,6 @@
 
 const express = require('express');
 const cors = require('cors');
-const axios = require('axios');
 const path = require('path');
 const nodemailer = require('nodemailer');
 const fs = require('fs');

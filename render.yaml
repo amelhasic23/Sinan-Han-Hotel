@@ -2,7 +2,7 @@ services:
   - type: web
     name: sinan-han-hotel
     env: node
-    rootDir: hotel-booking-system
+    rootDir: .
     buildCommand: npm install
     startCommand: npm start
     envVars:

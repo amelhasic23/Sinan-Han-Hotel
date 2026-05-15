@@ -9,7 +9,7 @@ const compression = require('compression');
 const nodemailer = require('nodemailer');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
 // === Middleware ===
 // Enable gzip compression for all responses
