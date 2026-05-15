@@ -1,7 +1,7 @@
 // Service Worker for Sinan Han Hotel Booking System
 // Handles caching, offline support, and update notifications
 
-const CACHE_NAME = 'sinan-han-v1.6.5';
+const CACHE_NAME = 'sinan-han-v1.7.0';
 
 const STATIC_ASSETS = [
   '/',
