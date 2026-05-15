@@ -2465,7 +2465,9 @@ function openBookingConfirmationModal(bookingData) {
 
     // Get room price (from roomData object defined in HTML inline script)
     const roomPrice = roomData[bookingData.roomType]?.price || 0;
-    const totalPrice = roomPrice * nights;
+    const extraGuests = Math.max(0, (parseInt(bookingData.guests) || 2) - 2);
+    const pricePerNight = roomPrice + extraGuests * 40;
+    const totalPrice = pricePerNight * nights;
     const totalPriceEUR = (totalPrice * BAM_TO_EUR).toFixed(2);
 
     // Populate modal with booking details
@@ -2473,7 +2475,7 @@ function openBookingConfirmationModal(bookingData) {
     document.getElementById('confirmCheckIn').textContent = checkIn.toLocaleDateString();
     document.getElementById('confirmCheckOut').textContent = checkOut.toLocaleDateString();
     document.getElementById('confirmGuests').textContent = bookingData.guests + ' Guest' + (bookingData.guests > 1 ? 's' : '');
-    document.getElementById('confirmPricePerNight').textContent = `BAM ${roomPrice} (EUR ${(roomPrice * BAM_TO_EUR).toFixed(2)})`;
+    document.getElementById('confirmPricePerNight').textContent = `BAM ${pricePerNight} (EUR ${(pricePerNight * BAM_TO_EUR).toFixed(2)})`;
     document.getElementById('confirmNights').textContent = nights;
     document.getElementById('confirmTotalPrice').textContent = `BAM ${totalPrice} (EUR ${totalPriceEUR})`;
 

@@ -141,7 +141,11 @@ function calculatePrice() {
         return;
     }
 
-    const pricePerNight = roomData[roomTypeSelect.value]?.price || 0;
+    const basePrice = roomData[roomTypeSelect.value]?.price || 0;
+    const guests = parseInt(document.getElementById('numPersons').value) || 2;
+    const extraGuests = Math.max(0, guests - 2);
+    const surchargePerNight = extraGuests * 40;
+    const pricePerNight = basePrice + surchargePerNight;
     let subtotal = pricePerNight * nights;
     const selectedOption = roomTypeSelect.options[roomTypeSelect.selectedIndex];
     const roomName = selectedOption.text.split(' - ')[0];
@@ -152,6 +156,20 @@ function calculatePrice() {
     if (isEUR) {
         displayPrice = parseFloat((subtotal * BAM_TO_EUR).toFixed(2));
         displayPerNight = parseFloat((pricePerNight * BAM_TO_EUR).toFixed(2));
+    }
+
+    const surchargeRow = document.getElementById('guestSurchargeRow');
+    if (surchargeRow) {
+        if (extraGuests > 0) {
+            const surchargeDisplay = isEUR
+                ? (surchargePerNight * BAM_TO_EUR).toFixed(2)
+                : surchargePerNight.toFixed(2);
+            document.getElementById('guestSurcharge').textContent =
+                `+${surchargeDisplay} ${currencySymbol}/night (${extraGuests} extra guest${extraGuests > 1 ? 's' : ''})`;
+            surchargeRow.style.display = '';
+        } else {
+            surchargeRow.style.display = 'none';
+        }
     }
 
     document.getElementById('selectedRoom').textContent = roomName;
@@ -331,10 +349,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const roomType = document.getElementById('roomType');
     const currency = document.getElementById('currency');
 
+    const numPersons = document.getElementById('numPersons');
+
     if (checkInDate) checkInDate.addEventListener('change', calculatePrice);
     if (checkOutDate) checkOutDate.addEventListener('change', calculatePrice);
     if (roomType) roomType.addEventListener('change', calculatePrice);
     if (currency) currency.addEventListener('change', calculatePrice);
+    if (numPersons) numPersons.addEventListener('input', calculatePrice);
 });
 
 // Toast notification function

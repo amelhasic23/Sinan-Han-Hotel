@@ -84,7 +84,9 @@ app.use(cors({
         'http://localhost:3000',
         'http://localhost:8000',
         'https://sinan-han-hotel-mostar.onrender.com',
-        'https://sinan-han-hotel.onrender.com'
+        'https://sinan-han-hotel.onrender.com',
+        'https://hotelsinanhan.com',
+        'https://www.hotelsinanhan.com'
     ],
     credentials: true
 }));
