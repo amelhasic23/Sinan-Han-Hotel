@@ -3,7 +3,7 @@ services:
     name: sinan-han-hotel
     env: node
     rootDir: .
-    buildCommand: npm install --omit=dev && node scripts/minify-js.js && node scripts/minify-css.js
+    buildCommand: npm ci --omit=dev && node scripts/minify-js.js && node scripts/minify-css.js
     startCommand: node server.js
     envVars:
       - key: NODE_ENV
