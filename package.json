@@ -4,6 +4,7 @@
   "description": "Sinan Han Boutique Hotel - Mostar | Enterprise-Grade Booking System",
   "main": "server.js",
   "scripts": {
+    "prestart": "npm install --omit=dev",
     "start": "node server.js",
     "dev": "node --watch server.js",
     "build": "node scripts/minify-js.js && node scripts/minify-css.js",
