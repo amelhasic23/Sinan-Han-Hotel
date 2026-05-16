@@ -9,7 +9,7 @@ const nodemailer = require('nodemailer');
 const fs = require('fs');
 const crypto = require('crypto');
 const compression = require('compression');
-require('dotenv').config();
+try { require('dotenv').config(); } catch (_) {}
 
 const app = express();
 const PORT = process.env.PORT || 10000;
@@ -34,9 +34,10 @@ app.use(cors());
 app.use(express.json());
 
 // Static file serving with cache headers
-app.use(express.static(path.join(__dirname, '../frontend'), {
-    maxAge: '1d', // Default cache control
-    etag: false
+app.use(express.static(path.join(__dirname, '../..'), {
+    maxAge: '1d',
+    etag: false,
+    index: false
 }));
 
 // Cache minified assets with long expiration (immutable)
@@ -1280,9 +1281,9 @@ app.get('/payment/result', (req, res) => {
 });
 
 app.get('/payment-success', (req, res) =>
-  res.sendFile(path.join(__dirname, '../frontend/payment-success.html')));
+  res.sendFile(path.join(__dirname, '../../payment-success.html')));
 app.get('/payment-failed', (req, res) =>
-  res.sendFile(path.join(__dirname, '../frontend/payment-failed.html')));
+  res.sendFile(path.join(__dirname, '../../payment-failed.html')));
 
 /**
  * GET /api/bookings/list
@@ -1533,6 +1534,18 @@ Test in your browser:
   ✓ http://localhost:${PORT}/api/hotel/prices
   ✓ http://localhost:${PORT}/api/debug
   `);
+});
+
+app.get('/', (req, res) => {
+    const indexPath = path.join(__dirname, '../../index.html');
+    try {
+        const html = fs.readFileSync(indexPath, 'utf8')
+            .replace("'REPLACE_WITH_NODE_ENV'", JSON.stringify(process.env.NODE_ENV || 'production'));
+        res.setHeader('Content-Type', 'text/html');
+        res.send(html);
+    } catch (err) {
+        res.sendFile(indexPath);
+    }
 });
 
 module.exports = app;
