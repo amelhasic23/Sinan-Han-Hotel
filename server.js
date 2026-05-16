@@ -24,10 +24,12 @@ app.use(compression({
     threshold: 1000 // Only compress responses > 1KB
 }));
 
-// Static file serving with cache headers
+// Static file serving with cache headers — index:false ensures the explicit '/' route
+// handles index.html so NODE_ENV injection works correctly
 app.use(express.static(path.join(__dirname), {
-    maxAge: '1d', // Default cache control
-    etag: false
+    maxAge: '1d',
+    etag: false,
+    index: false
 }));
 
 // Cache minified assets with long expiration (immutable)
