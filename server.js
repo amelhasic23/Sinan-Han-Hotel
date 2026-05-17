@@ -24,6 +24,18 @@ app.use(compression({
     threshold: 1000 // Only compress responses > 1KB
 }));
 
+// Explicit sw.js route — must be before static middleware to ensure correct
+// Content-Type, no-cache headers, and Service-Worker-Allowed scope header
+app.get('/sw.js', (req, res) => {
+    res.set({
+        'Content-Type': 'application/javascript; charset=utf-8',
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        'Pragma': 'no-cache',
+        'Service-Worker-Allowed': '/'
+    });
+    res.sendFile(path.join(__dirname, 'sw.js'));
+});
+
 // Static file serving with cache headers — index:false ensures the explicit '/' route
 // handles index.html so NODE_ENV injection works correctly
 app.use(express.static(path.join(__dirname), {

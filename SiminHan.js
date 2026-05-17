@@ -2037,52 +2037,41 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // ============================================
-// PERFORMANCE: CACHED SECTION POSITIONS
-// Prevents forced reflow by caching offsetTop values
+// PERFORMANCE: INTERSECTION OBSERVER FOR NAV
+// Replaces offsetTop polling to eliminate forced reflow
 // ============================================
-let sectionPositions = [];
+let _currentNavSection = '';
 let navLinksCache = null;
 let parallaxLayersCache = null;
 
-function cacheSectionPositions() {
-    const sections = document.querySelectorAll('section[id]');
-    sectionPositions = Array.from(sections).map(section => ({
-        id: section.getAttribute('id'),
-        top: section.offsetTop
-    }));
-    navLinksCache = document.querySelectorAll('.nav-link-active');
-    parallaxLayersCache = document.querySelectorAll('.paralax-layer');
-}
-
-// Recalculate positions on resize (debounced)
-let cacheTimer;
-window.addEventListener('resize', function() {
-    clearTimeout(cacheTimer);
-    cacheTimer = setTimeout(cacheSectionPositions, 250);
-});
-
-// Initial cache on load
-document.addEventListener('DOMContentLoaded', cacheSectionPositions);
-
-function updateActiveNavLink() {
-    if (!sectionPositions.length || !navLinksCache) return;
-
-    const scrollY = window.scrollY;
-    let current = '';
-
-    // Use cached positions - no forced reflow
-    for (let i = 0; i < sectionPositions.length; i++) {
-        if (scrollY >= sectionPositions[i].top - 200) {
-            current = sectionPositions[i].id;
-        }
-    }
-
+function _applyNavHighlight(sectionId) {
+    if (!navLinksCache) navLinksCache = document.querySelectorAll('.nav-link-active');
     navLinksCache.forEach(link => {
         link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
+        if (link.getAttribute('href') === '#' + sectionId) {
             link.classList.add('active');
         }
     });
+}
+
+function initNavObserver() {
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                _currentNavSection = entry.target.id;
+                _applyNavHighlight(_currentNavSection);
+            }
+        });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+    document.querySelectorAll('section[id]').forEach(function(s) {
+        observer.observe(s);
+    });
+}
+
+parallaxLayersCache = null;
+
+function updateActiveNavLink() {
+    _applyNavHighlight(_currentNavSection);
 }
 
 function updateParallax() {
@@ -2105,7 +2094,6 @@ let scrollTicking = false;
 function onScroll() {
     if (!scrollTicking) {
         requestAnimationFrame(() => {
-            updateActiveNavLink();
             updateParallax();
             scrollTicking = false;
         });
@@ -2431,8 +2419,7 @@ if (backToTopBtn) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Initial cache is done automatically by cacheSectionPositions
-    // Trigger initial state updates
+    initNavObserver();
     setTimeout(() => {
         updateActiveNavLink();
         updateParallax();

@@ -553,6 +553,35 @@ class ScrollManager {
    */
   init() {
     window.addEventListener('scroll', () => this.onScroll());
+    this._currentNavSection = '';
+    this._initNavObserver();
+  }
+
+  _initNavObserver() {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            this._currentNavSection = entry.target.id;
+            this._applyNavHighlight(this._currentNavSection);
+          }
+        });
+      },
+      { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
+    );
+    document.querySelectorAll(SELECTORS.SECTIONS).forEach(s => {
+      if (s.id) observer.observe(s);
+    });
+  }
+
+  _applyNavHighlight(sectionId) {
+    const navLinks = document.querySelectorAll(SELECTORS.NAV_LINKS);
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === `#${sectionId}`) {
+        link.classList.add('active');
+      }
+    });
   }
 
   /**
@@ -562,7 +591,6 @@ class ScrollManager {
     if (!this.scrollTicking) {
       requestAnimationFrame(() => {
         this.updateNavbarStyle();
-        this.updateActiveNavLink();
         this.updateParallax();
         this.updateBackToTopButton();
         this.scrollTicking = false;
@@ -589,23 +617,7 @@ class ScrollManager {
    * Update active navigation link based on current section
    */
   updateActiveNavLink() {
-    const sections = document.querySelectorAll(SELECTORS.SECTIONS);
-    const navLinks = document.querySelectorAll(SELECTORS.NAV_LINKS);
-
-    let currentSection = '';
-    sections.forEach(section => {
-      const sectionTop = section.offsetTop;
-      if (window.scrollY >= sectionTop - CONFIG.SCROLL_THRESHOLD_NAV_ACTIVE) {
-        currentSection = section.getAttribute('id');
-      }
-    });
-
-    navLinks.forEach(link => {
-      link.classList.remove('active');
-      if (link.getAttribute('href') === `#${currentSection}`) {
-        link.classList.add('active');
-      }
-    });
+    this._applyNavHighlight(this._currentNavSection || '');
   }
 
   /**

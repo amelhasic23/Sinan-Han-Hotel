@@ -12,6 +12,7 @@
     "minify:css": "node scripts/minify-css.js",
     "minify:html": "node scripts/minify-html.js",
     "copy:assets": "node scripts/copy-assets.js",
+    "optimize:logo": "node scripts/optimize-logo.js",
     "convert:webp": "node scripts/convert-to-webp.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -40,6 +41,7 @@
     "csso-cli": "^4.0.2",
     "html-minifier-terser": "^7.2.0",
     "nodemon": "^3.0.1",
+    "sharp": "^0.33.5",
     "terser": "^5.46.1"
   },
   "engines": {

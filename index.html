@@ -34,8 +34,8 @@
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 
     <!-- Favicon & PWA -->
-    <link rel="icon" type="image/jpeg" href="LOGO SINAN HAN_page-0001.jpg">
-    <link rel="shortcut icon" href="LOGO SINAN HAN_page-0001.jpg">
+    <link rel="icon" type="image/jpeg" href="logo-116.jpg">
+    <link rel="shortcut icon" href="logo-116.jpg">
     <link rel="manifest" href="manifest.json">
 
     <!-- Stylesheets -->
@@ -47,7 +47,8 @@
     body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;color:var(--text);line-height:1.6;overflow-x:hidden}
     .navbar{position:fixed;top:0;width:100%;background:rgba(255,255,255,.98);backdrop-filter:blur(10px);box-shadow:0 2px 10px rgba(0,0,0,.1);z-index:1000;transition:all .3s ease;display:flex;align-items:center;justify-content:center;height:70px;padding:0 2rem;border-bottom:1px solid rgba(193,154,107,.1)}
     .container{max-width:1200px;margin:0 auto;padding:0 2rem}
-    .hero{position:relative;height:100vh;min-height:100vh;display:flex;align-items:center;justify-content:center;background-size:cover;background-position:center;overflow:hidden}
+    .hero{position:relative;height:100vh;min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;background-size:cover;background-position:center;overflow:hidden;contain:layout paint}
+    .hero-background-image{aspect-ratio:16/9}
     .hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,rgba(0,0,0,.6),rgba(193,154,107,.3));z-index:1}
     .hero-content{position:relative;z-index:2;text-align:center;color:var(--white);max-width:800px;padding:2rem}
     .hero-title{font-size:4rem;font-weight:700;margin-bottom:1rem;text-shadow:2px 2px 4px rgba(0,0,0,.5)}
@@ -58,8 +59,15 @@
     <!-- Full CSS - Loaded asynchronously -->
     <link rel="preload" href="SinanHan.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="SinanHan.min.css"></noscript>
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" as="style" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" media="print" onload="this.media='all';this.onload=null;" crossorigin="anonymous">
+    <!-- Font Awesome subsets — deferred, not preloaded so woff2 fonts stay off the critical path -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/solid.min.css" media="print" onload="this.media='all';this.onload=null;" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/brands.min.css" media="print" onload="this.media='all';this.onload=null;" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/fontawesome.min.css" media="print" onload="this.media='all';this.onload=null;" crossorigin="anonymous">
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/solid.min.css" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/brands.min.css" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/fontawesome.min.css" crossorigin="anonymous">
+    </noscript>
     <style>
     @font-face{font-family:'Font Awesome 6 Free';font-style:normal;font-weight:900;font-display:swap;src:url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-solid-900.woff2) format('woff2')}
     @font-face{font-family:'Font Awesome 6 Brands';font-style:normal;font-weight:400;font-display:swap;src:url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-brands-400.woff2) format('woff2')}
@@ -159,7 +167,10 @@
     <nav class="navbar" role="navigation" aria-label="Main navigation">
         <div class="nav-container">
             <div class="nav-logo" role="img" aria-label="Sinan Han Hotel logo" style="display:flex;align-items:center;gap:10px;">
-                <img src="LOGO SINAN HAN_page-0001.jpg" alt="Sinan Han" width="58" height="58" style="height:58px;width:58px;object-fit:contain;display:block;border-radius:6px;">
+                <picture>
+                    <source type="image/webp" srcset="logo-58.webp 1x, logo-116.webp 2x">
+                    <img src="logo-116.jpg" alt="Sinan Han" width="58" height="58" style="height:58px;width:58px;object-fit:contain;display:block;border-radius:6px;">
+                </picture>
                 <span style="font-family:'Georgia',serif;font-size:1.3rem;font-weight:600;color:#c19a6b;letter-spacing:0.04em;white-space:nowrap;">Sinan Han</span>
             </div>
 
@@ -275,12 +286,12 @@
                             srcset="Rooms/Superior%20Suite/390594090-small.webp 400w,
                                     Rooms/Superior%20Suite/390594090-medium.webp 800w,
                                     Rooms/Superior%20Suite/390594090-large.webp 1200w"
-                            sizes="(max-width: 768px) 100vw, 50vw">
+                            sizes="(max-width: 640px) 100vw, 550px">
                     <source type="image/jpeg"
                             srcset="Rooms/Superior%20Suite/390594090-small.jpg 400w,
                                     Rooms/Superior%20Suite/390594090-medium.jpg 800w,
                                     Rooms/Superior%20Suite/390594090-large.jpg 1200w"
-                            sizes="(max-width: 768px) 100vw, 50vw">
+                            sizes="(max-width: 640px) 100vw, 550px">
                     <img src="Rooms/Superior%20Suite/390594090-medium.jpg"
                          alt="Elegant Superior Suite at Sinan Han Hotel with panoramic city views"
                          loading="lazy"
@@ -312,13 +323,13 @@
                                 srcset="Rooms/Standard%20Double%20Room/390516357-small.webp 400w,
                                         Rooms/Standard%20Double%20Room/390516357-medium.webp 800w,
                                         Rooms/Standard%20Double%20Room/390516357-large.webp 1200w"
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) calc(50vw - 2rem), 600px">
                             <source
                                 type="image/jpeg"
                                 srcset="Rooms/Standard%20Double%20Room/390516357-small.jpg 400w,
                                         Rooms/Standard%20Double%20Room/390516357-medium.jpg 800w,
                                         Rooms/Standard%20Double%20Room/390516357-large.jpg 1200w"
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) calc(50vw - 2rem), 600px">
                             <img src="Rooms/Standard%20Double%20Room/390516357-medium.jpg"
                                  alt="Standard Double Room"
                                  class="room-img active"
@@ -363,13 +374,13 @@
                                 srcset="Rooms/Superior%20Suite/390594090-small.webp 400w,
                                         Rooms/Superior%20Suite/390594090-medium.webp 800w,
                                         Rooms/Superior%20Suite/390594090-large.webp 1200w"
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) calc(50vw - 2rem), 600px">
                             <source
                                 type="image/jpeg"
                                 srcset="Rooms/Superior%20Suite/390594090-small.jpg 400w,
                                         Rooms/Superior%20Suite/390594090-medium.jpg 800w,
                                         Rooms/Superior%20Suite/390594090-large.jpg 1200w"
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) calc(50vw - 2rem), 600px">
                             <img src="Rooms/Superior%20Suite/390594090-medium.jpg"
                                  alt="Superior Suite"
                                  class="room-img active"
@@ -411,13 +422,13 @@
                                 srcset="Rooms/Double%20Room/396531596-small.webp 400w,
                                         Rooms/Double%20Room/396531596-medium.webp 800w,
                                         Rooms/Double%20Room/396531596-large.webp 1200w"
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) calc(50vw - 2rem), 600px">
                             <source
                                 type="image/jpeg"
                                 srcset="Rooms/Double%20Room/396531596-small.jpg 400w,
                                         Rooms/Double%20Room/396531596-medium.jpg 800w,
                                         Rooms/Double%20Room/396531596-large.jpg 1200w"
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) calc(50vw - 2rem), 600px">
                             <img src="Rooms/Double%20Room/396531596-medium.jpg"
                                  alt="Double Room with Terrace"
                                  class="room-img active"
@@ -461,13 +472,13 @@
                                 srcset="Rooms/queen%20standard%20room/706475810-small.webp 400w,
                                         Rooms/queen%20standard%20room/706475810-medium.webp 800w,
                                         Rooms/queen%20standard%20room/706475810-large.webp 1200w"
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) calc(50vw - 2rem), 600px">
                             <source
                                 type="image/jpeg"
                                 srcset="Rooms/queen%20standard%20room/706475810-small.jpg 400w,
                                         Rooms/queen%20standard%20room/706475810-medium.jpg 800w,
                                         Rooms/queen%20standard%20room/706475810-large.jpg 1200w"
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) calc(50vw - 2rem), 600px">
                             <img src="Rooms/queen%20standard%20room/706475810-medium.jpg"
                                  alt="Standard Queen Room"
                                  class="room-img active"
@@ -511,13 +522,13 @@
                                 srcset="Rooms/Superior%20Apartment/706475998-small.webp 400w,
                                         Rooms/Superior%20Apartment/706475998-medium.webp 800w,
                                         Rooms/Superior%20Apartment/706475998-large.webp 1200w"
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) calc(50vw - 2rem), 600px">
                             <source
                                 type="image/jpeg"
                                 srcset="Rooms/Superior%20Apartment/706475998-small.jpg 400w,
                                         Rooms/Superior%20Apartment/706475998-medium.jpg 800w,
                                         Rooms/Superior%20Apartment/706475998-large.jpg 1200w"
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) calc(50vw - 2rem), 600px">
                             <img src="Rooms/Superior%20Apartment/706475998-medium.jpg"
                                  alt="Superior Apartment"
                                  class="room-img active"
@@ -561,13 +572,13 @@
                                 srcset="Rooms/Deluxe%20Suit/390516235-small.webp 400w,
                                         Rooms/Deluxe%20Suit/390516235-medium.webp 800w,
                                         Rooms/Deluxe%20Suit/390516235-large.webp 1200w"
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) calc(50vw - 2rem), 600px">
                             <source
                                 type="image/jpeg"
                                 srcset="Rooms/Deluxe%20Suit/390516235-small.jpg 400w,
                                         Rooms/Deluxe%20Suit/390516235-medium.jpg 800w,
                                         Rooms/Deluxe%20Suit/390516235-large.jpg 1200w"
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) calc(50vw - 2rem), 600px">
                             <img src="Rooms/Deluxe%20Suit/390516235-medium.jpg"
                                  alt="Deluxe Suite"
                                  class="room-img active"
@@ -611,13 +622,13 @@
                                 srcset="Rooms/Two%20Bedroom%20Deluxe%20Apartment/714582553-small.webp 400w,
                                         Rooms/Two%20Bedroom%20Deluxe%20Apartment/714582553-medium.webp 800w,
                                         Rooms/Two%20Bedroom%20Deluxe%20Apartment/714582553-large.webp 1200w"
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) calc(50vw - 2rem), 600px">
                             <source
                                 type="image/jpeg"
                                 srcset="Rooms/Two%20Bedroom%20Deluxe%20Apartment/714582553-small.jpg 400w,
                                         Rooms/Two%20Bedroom%20Deluxe%20Apartment/714582553-medium.jpg 800w,
                                         Rooms/Two%20Bedroom%20Deluxe%20Apartment/714582553-large.jpg 1200w"
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) calc(50vw - 2rem), 600px">
                             <img src="Rooms/Two%20Bedroom%20Deluxe%20Apartment/714582553-medium.jpg"
                                  alt="Two-Bedroom Deluxe Apartment"
                                  class="room-img active"
