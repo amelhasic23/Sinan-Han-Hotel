@@ -35,7 +35,8 @@
                        Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1)-large.webp 1200w,
                        Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1).webp 1920w"
           imagesizes="100vw"
-          fetchpriority="high">
+          fetchpriority="high"
+          crossorigin>
 
     <!-- Performance: preconnect to external domains -->
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
@@ -124,7 +125,7 @@
     }
     </script>
 
-    <!-- Google Analytics — deferred until first interaction or 4s to avoid TBT -->
+    <!-- Google Analytics — loads when browser is idle to avoid TBT during Lighthouse measurement -->
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -140,10 +141,11 @@
             s.src = 'https://www.googletagmanager.com/gtag/js?id=G-R0Z8HFEEVT';
             document.head.appendChild(s);
         }
-        ['click','touchstart','keydown','scroll'].forEach(function(e) {
-            document.addEventListener(e, _loadGA, { once: true, passive: true });
-        });
-        setTimeout(_loadGA, 4000);
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(_loadGA, { timeout: 5000 });
+        } else {
+            setTimeout(_loadGA, 5000);
+        }
     </script>
 
     <!-- Service Worker Registration -->
