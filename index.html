@@ -27,6 +27,16 @@
     <meta name="twitter:description" content="Heritage hospitality 100m from the Old Bridge. Book direct for the best rates.">
     <meta name="twitter:image" content="https://hotelsinanhan.com/Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1).jpg">
 
+    <!-- LCP hero image preload — tells browser to fetch before CSS/JS discovery -->
+    <link rel="preload" as="image"
+          href="Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1)-large.webp"
+          imagesrcset="Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1)-small.webp 400w,
+                       Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1)-medium.webp 800w,
+                       Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1)-large.webp 1200w,
+                       Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1).webp 1920w"
+          imagesizes="100vw"
+          fetchpriority="high">
+
     <!-- Performance: preconnect to external domains -->
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
@@ -114,16 +124,26 @@
     }
     </script>
 
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R0Z8HFEEVT"></script>
+    <!-- Google Analytics — deferred until first interaction or 4s to avoid TBT -->
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-R0Z8HFEEVT', {
-            page_title: 'Sinan Han Hotel',
-            send_page_view: true
+        gtag('config', 'G-R0Z8HFEEVT', { page_title: 'Sinan Han Hotel', send_page_view: true });
+
+        var _gaLoaded = false;
+        function _loadGA() {
+            if (_gaLoaded) return;
+            _gaLoaded = true;
+            var s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://www.googletagmanager.com/gtag/js?id=G-R0Z8HFEEVT';
+            document.head.appendChild(s);
+        }
+        ['click','touchstart','keydown','scroll'].forEach(function(e) {
+            document.addEventListener(e, _loadGA, { once: true, passive: true });
         });
+        setTimeout(_loadGA, 4000);
     </script>
 
     <!-- Service Worker Registration -->
@@ -902,7 +922,7 @@
                         <div>
                             <h4 data-i18n="contact-location-label">Location</h4>
                             <p data-i18n="contact-location-text">Just 100 metres from the world-famous Old Bridge</p>
-                            <p><a href="https://www.google.com/maps/place/Hotel+SINAN+HAN/@43.3352957,17.8118689,17z/data=!3m1!4b1!4m9!3m8!1s0x134b430125a41325:0xef023620399298aa!5m2!4m1!1i2!8m2!3d43.3352957!4d17.8144438!16s%2Fg%2F11c54bx2_s" target="_blank" class="btn btn-primary btn-sm" data-i18n="maps-btn">View on Google Maps</a></p>
+                            <p><a href="https://www.google.com/maps/place/Hotel+SINAN+HAN/@43.3352957,17.8118689,17z/data=!3m1!4b1!4m9!3m8!1s0x134b430125a41325:0xef023620399298aa!5m2!4m1!1i2!8m2!3d43.3352957!4d17.8144438!16s%2Fg%2F11c54bx2_s" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" data-i18n="maps-btn">View on Google Maps</a></p>
                         </div>
                     </div>
 
