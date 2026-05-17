@@ -68,8 +68,8 @@
     .skip-to-content:focus{left:50%;transform:translateX(-50%);top:1rem}
     </style>
     <!-- Full CSS - Loaded asynchronously -->
-    <link rel="preload" href="SinanHan.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="SinanHan.min.css"></noscript>
+    <link rel="preload" href="SinanHan.min.css?v=2" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="SinanHan.min.css?v=2"></noscript>
     <!-- Font Awesome subsets — deferred, not preloaded so woff2 fonts stay off the critical path -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/solid.min.css" media="print" onload="this.media='all';this.onload=null;" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/brands.min.css" media="print" onload="this.media='all';this.onload=null;" crossorigin="anonymous">
@@ -1109,10 +1109,10 @@
     </div>
 
     <!-- Deferred script loading for non-blocking render - LOAD FIRST for CSRF functions -->
-    <script defer src="SiminHan.min.js"></script>
+    <script defer src="SiminHan.min.js?v=2"></script>
 
     <!-- Deferred Booking UI Module (Desktop Optimized - Phase 6) - depends on SiminHan.min.js -->
-    <script defer src="booking-ui.min.js"></script>
+    <script defer src="booking-ui.min.js?v=2"></script>
 
     <!-- Share modal — null-safe, Web Share API with clipboard fallback -->
     <script defer src="share-modal.js"></script>
