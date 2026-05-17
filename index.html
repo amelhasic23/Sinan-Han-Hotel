@@ -47,7 +47,7 @@
     body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;color:var(--text);line-height:1.6;overflow-x:hidden}
     .navbar{position:fixed;top:0;width:100%;background:rgba(255,255,255,.98);backdrop-filter:blur(10px);box-shadow:0 2px 10px rgba(0,0,0,.1);z-index:1000;transition:all .3s ease;display:flex;align-items:center;justify-content:center;height:70px;padding:0 2rem;border-bottom:1px solid rgba(193,154,107,.1)}
     .container{max-width:1200px;margin:0 auto;padding:0 2rem}
-    .hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;background-size:cover;background-position:center;background-attachment:fixed;overflow:hidden}
+    .hero{position:relative;height:100vh;min-height:100vh;display:flex;align-items:center;justify-content:center;background-size:cover;background-position:center;overflow:hidden}
     .hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,rgba(0,0,0,.6),rgba(193,154,107,.3));z-index:1}
     .hero-content{position:relative;z-index:2;text-align:center;color:var(--white);max-width:800px;padding:2rem}
     .hero-title{font-size:4rem;font-weight:700;margin-bottom:1rem;text-shadow:2px 2px 4px rgba(0,0,0,.5)}
@@ -60,6 +60,10 @@
     <noscript><link rel="stylesheet" href="SinanHan.min.css"></noscript>
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" as="style" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" media="print" onload="this.media='all';this.onload=null;" crossorigin="anonymous">
+    <style>
+    @font-face{font-family:'Font Awesome 6 Free';font-style:normal;font-weight:900;font-display:swap;src:url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-solid-900.woff2) format('woff2')}
+    @font-face{font-family:'Font Awesome 6 Brands';font-style:normal;font-weight:400;font-display:swap;src:url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-brands-400.woff2) format('woff2')}
+    </style>
 
     <!-- Structured Data (JSON-LD) for Google rich results -->
     <script type="application/ld+json">
@@ -132,7 +136,13 @@
     <link rel="prefetch" as="image" href="Rooms/Superior%20Suite/390594090.jpg" type="image/jpeg">
 </head>
 <body>
-    <script>if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; window.scrollTo(0, 0);</script>
+    <script>
+        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+        if (location.hash) history.replaceState(null, '', location.pathname);
+        window.scrollTo(0, 0);
+        document.addEventListener('DOMContentLoaded', function() { window.scrollTo(0, 0); });
+        window.addEventListener('load', function() { window.scrollTo(0, 0); });
+    </script>
     <!-- Skip Navigation (Accessibility) -->
     <a href="#main-content" class="skip-nav">Skip to main content</a>
 
@@ -149,7 +159,7 @@
     <nav class="navbar" role="navigation" aria-label="Main navigation">
         <div class="nav-container">
             <div class="nav-logo" role="img" aria-label="Sinan Han Hotel logo" style="display:flex;align-items:center;gap:10px;">
-                <img src="LOGO SINAN HAN_page-0001.jpg" alt="Sinan Han" style="height:58px;width:auto;object-fit:contain;display:block;border-radius:6px;">
+                <img src="LOGO SINAN HAN_page-0001.jpg" alt="Sinan Han" width="58" height="58" style="height:58px;width:58px;object-fit:contain;display:block;border-radius:6px;">
                 <span style="font-family:'Georgia',serif;font-size:1.3rem;font-weight:600;color:#c19a6b;letter-spacing:0.04em;white-space:nowrap;">Sinan Han</span>
             </div>
 
@@ -202,7 +212,7 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero" role="banner" aria-label="Hotel hero section">
-        <picture class="hero-background-image">
+        <picture class="hero-background-image" style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;display:block;">
             <source type="image/webp"
                     srcset="Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1)-small.webp 400w,
                             Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1)-medium.webp 800w,
@@ -937,13 +947,13 @@
                 <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:18px;">
                     <span data-i18n="secure-payment-methods" style="font-size:0.75rem;color:#aaa;letter-spacing:0.06em;text-transform:uppercase;">Secure Payment Methods</span>
                     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:10px 20px;">
-                        <img src="Cards-Icon/download.png" alt="Accepted card" height="28" style="border-radius:4px;background:#fff;padding:3px 6px;display:block;">
-                        <img src="Cards-Icon/download%20(1).png" alt="Accepted card" height="28" style="border-radius:4px;background:#fff;padding:3px 6px;display:block;">
-                        <img src="Cards-Icon/download%20(2).png" alt="Accepted card" height="28" style="border-radius:4px;background:#fff;padding:3px 6px;display:block;">
+                        <img src="Cards-Icon/download.png" alt="Accepted card" width="46" height="28" style="border-radius:4px;background:#fff;padding:3px 6px;width:46px;height:28px;object-fit:contain;display:block;">
+                        <img src="Cards-Icon/download%20(1).png" alt="Accepted card" width="46" height="28" style="border-radius:4px;background:#fff;padding:3px 6px;width:46px;height:28px;object-fit:contain;display:block;">
+                        <img src="Cards-Icon/download%20(2).png" alt="Accepted card" width="46" height="28" style="border-radius:4px;background:#fff;padding:3px 6px;width:46px;height:28px;object-fit:contain;display:block;">
                     </div>
                 </div>
                 <p data-i18n="footer-copyright">&copy; 2026 Sinan Han. All rights reserved. | Designed with <i class="fas fa-heart"></i> for travelers</p>
-                <p style="margin-top:6px;font-size:0.82rem;opacity:0.75;">MBS: 58-01-0026-21 &nbsp;|&nbsp; JIB: 4228056730007</p>
+                <p style="margin-top:6px;font-size:0.82rem;color:#b8bfc6;">MBS: 58-01-0026-21 &nbsp;|&nbsp; JIB: 4323213370002</p>
             </div>
         </div>
     </footer>
@@ -1051,9 +1061,9 @@
                 <!-- Accepted Cards -->
                 <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
                     <span data-i18n="secure-payments-via" style="font-size:0.78rem;opacity:0.7;flex-shrink:0;">Secure payments via</span>
-                    <img src="Cards-Icon/download.png" alt="Visa" height="22" style="border-radius:3px;background:#fff;padding:2px 4px;opacity:0.9;">
-                    <img src="Cards-Icon/download%20(1).png" alt="Mastercard" height="22" style="border-radius:3px;background:#fff;padding:2px 4px;opacity:0.9;">
-                    <img src="Cards-Icon/download%20(2).png" alt="Maestro" height="22" style="border-radius:3px;background:#fff;padding:2px 4px;opacity:0.9;">
+                    <img src="Cards-Icon/download.png" alt="Visa" width="36" height="22" style="border-radius:3px;background:#fff;padding:2px 4px;width:36px;height:22px;object-fit:contain;">
+                    <img src="Cards-Icon/download%20(1).png" alt="Mastercard" width="36" height="22" style="border-radius:3px;background:#fff;padding:2px 4px;width:36px;height:22px;object-fit:contain;">
+                    <img src="Cards-Icon/download%20(2).png" alt="Maestro" width="36" height="22" style="border-radius:3px;background:#fff;padding:2px 4px;width:36px;height:22px;object-fit:contain;">
                 </div>
 
                 <!-- Action Buttons -->
@@ -1069,7 +1079,7 @@
     <script defer src="SiminHan.min.js"></script>
 
     <!-- Deferred Booking UI Module (Desktop Optimized - Phase 6) - depends on SiminHan.min.js -->
-    <script defer src="booking-ui.js"></script>
+    <script defer src="booking-ui.min.js"></script>
 
     <!-- Share modal — null-safe, Web Share API with clipboard fallback -->
     <script defer src="share-modal.js"></script>

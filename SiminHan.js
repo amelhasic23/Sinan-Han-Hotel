@@ -1868,11 +1868,12 @@ class Modal {
         `;
 
         overlay.innerHTML = '';
+        const closeBtn = modal.querySelector('.modal-close');
         overlay.appendChild(modal);
         overlay.classList.add('active');
 
         // Close button handler
-        modal.querySelector('.modal-close').addEventListener('click', () => {
+        closeBtn.addEventListener('click', () => {
             this.close();
         });
 
@@ -1954,18 +1955,18 @@ function openRoomDetailsModal(roomId) {
 
     modal.open(roomTitle, content);
 
-    // Add event listener to book button
-    const bookBtn = document.querySelector('.modal-book-btn');
-    if (bookBtn) {
-        bookBtn.addEventListener('click', () => {
+    // Use event delegation to avoid querySelector after DOM insertion
+    const overlay = document.getElementById('modal-overlay');
+    overlay.addEventListener('click', function handler(e) {
+        if (e.target.classList.contains('modal-book-btn')) {
+            overlay.removeEventListener('click', handler);
             modal.close();
-            // Scroll to booking form
             const bookingSection = document.querySelector('#booking');
             if (bookingSection) {
                 bookingSection.scrollIntoView({ behavior: 'smooth' });
             }
-        });
-    }
+        }
+    });
 }
 
 // Keep old openRoomDetails function for backwards compatibility but use new modal

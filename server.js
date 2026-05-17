@@ -27,28 +27,23 @@ app.use(compression({
 // Static file serving with cache headers — index:false ensures the explicit '/' route
 // handles index.html so NODE_ENV injection works correctly
 app.use(express.static(path.join(__dirname), {
-    maxAge: '1d',
     etag: false,
-    index: false
+    index: false,
+    setHeaders(res, filePath) {
+        if (/\.(min\.css|min\.js)$/.test(filePath)) {
+            res.set('Cache-Control', 'public, max-age=31536000, immutable');
+        } else if (/\.(jpg|jpeg|png|gif|webp|svg)$/i.test(filePath)) {
+            res.set('Cache-Control', 'public, max-age=31536000, immutable');
+            res.set('Vary', 'Accept');
+        } else if (/sw\.js$/.test(filePath)) {
+            res.set('Cache-Control', 'no-store, no-cache');
+        } else if (/\.js$/.test(filePath)) {
+            res.set('Cache-Control', 'public, max-age=86400');
+        } else {
+            res.set('Cache-Control', 'public, max-age=86400');
+        }
+    }
 }));
-
-// Cache minified assets with long expiration (immutable)
-app.get('*.min.css', (req, res, next) => {
-    res.set('Cache-Control', 'public, max-age=31536000, immutable');
-    next();
-});
-
-app.get('*.min.js', (req, res, next) => {
-    res.set('Cache-Control', 'public, max-age=31536000, immutable');
-    next();
-});
-
-// Cache images longer
-app.get(/\.(jpg|jpeg|png|gif|webp|svg)$/i, (req, res, next) => {
-    res.set('Cache-Control', 'public, max-age=604800'); // 7 days
-    res.set('Vary', 'Accept'); // Support content negotiation for WebP
-    next();
-});
 
 // HTTP/2 Server Push - Preload critical resources
 app.use((req, res, next) => {
