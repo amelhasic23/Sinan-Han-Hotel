@@ -2062,7 +2062,7 @@ function initNavObserver() {
                 _applyNavHighlight(_currentNavSection);
             }
         });
-    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+    }, { rootMargin: '-70px 0px 0px 0px', threshold: 0 });
     document.querySelectorAll('section[id]').forEach(function(s) {
         observer.observe(s);
     });

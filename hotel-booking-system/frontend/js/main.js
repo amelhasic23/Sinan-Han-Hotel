@@ -567,7 +567,7 @@ class ScrollManager {
           }
         });
       },
-      { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
+      { rootMargin: '-70px 0px 0px 0px', threshold: 0 }
     );
     document.querySelectorAll(SELECTORS.SECTIONS).forEach(s => {
       if (s.id) observer.observe(s);

@@ -68,14 +68,12 @@ app.use((req, res, next) => {
         if (req.url === '/' || req.url.includes('index.html')) {
             // Landing page critical resources
             linkHeaders = [
-                '</SinanHan.min.css>; rel=preload; as=style; importance=high',
-                '</SiminHan.min.js>; rel=preload; as=script; importance=high'
+                '</SinanHan.min.css>; rel=preload; as=style; importance=high'
             ];
         } else if (req.url.includes('SinanHan.html')) {
             // Legacy landing page critical resources
             linkHeaders = [
-                '</SinanHan.min.css>; rel=preload; as=style; importance=high',
-                '</SiminHan.min.js>; rel=preload; as=script; importance=high'
+                '</SinanHan.min.css>; rel=preload; as=style; importance=high'
             ];
         }
 
