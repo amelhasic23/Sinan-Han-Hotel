@@ -8,7 +8,8 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOMS_DIR = path.join(__dirname, 'Rooms');
-const QUALITY = 75;
+const QUALITY_SMALL = 60;
+const QUALITY_DEFAULT = 75;
 
 function walkDir(dir) {
     const entries = fs.readdirSync(dir, { withFileTypes: true });
@@ -21,16 +22,19 @@ function walkDir(dir) {
 
 async function compressWebp(filePath) {
     const before = fs.statSync(filePath).size;
-    const tmp = filePath + '.tmp';
-    await sharp(filePath)
-        .webp({ quality: QUALITY, lossless: false, effort: 6 })
-        .toFile(tmp);
-    const after = fs.statSync(tmp).size;
-    if (after < before) {
-        fs.renameSync(tmp, filePath);
-        console.log(`${path.relative(__dirname, filePath)}: ${kb(before)} → ${kb(after)} (-${kb(before - after)})`);
+    const quality = filePath.endsWith('-small.webp') ? QUALITY_SMALL : QUALITY_DEFAULT;
+    const inputBuf = fs.readFileSync(filePath);
+    const buf = await sharp(inputBuf)
+        .webp({ quality, lossless: false, effort: 6 })
+        .toBuffer();
+    if (buf.length < before) {
+        try {
+            fs.writeFileSync(filePath, buf);
+            console.log(`${path.relative(__dirname, filePath)}: ${kb(before)} → ${kb(buf.length)} (-${kb(before - buf.length)})`);
+        } catch (e) {
+            console.log(`${path.relative(__dirname, filePath)}: SKIPPED (locked) — ${e.code}`);
+        }
     } else {
-        fs.unlinkSync(tmp);
         console.log(`${path.relative(__dirname, filePath)}: skipped (already optimal)`);
     }
 }
@@ -39,7 +43,7 @@ function kb(bytes) { return (bytes / 1024).toFixed(1) + ' KB'; }
 
 (async () => {
     const files = walkDir(ROOMS_DIR).filter(f => f.endsWith('.webp'));
-    console.log(`Compressing ${files.length} WebP files at quality ${QUALITY}…\n`);
+    console.log(`Compressing ${files.length} WebP files (small@${QUALITY_SMALL}, others@${QUALITY_DEFAULT})…\n`);
     for (const f of files) await compressWebp(f);
     console.log('\nDone. Re-run Lighthouse to verify improvements.');
 })();
