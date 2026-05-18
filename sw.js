@@ -1,7 +1,7 @@
 // Service Worker for Sinan Han Hotel
 // Provides offline support and improved caching
 
-const CACHE_NAME = 'sinan-han-v23';
+const CACHE_NAME = 'sinan-han-v24';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
@@ -9,9 +9,7 @@ const ASSETS_TO_CACHE = [
     '/SiminHan.min.js?v=2',
     '/booking-ui.min.js?v=2',
     '/manifest.json',
-    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/solid.min.css',
-    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/brands.min.css',
-    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/fontawesome.min.css',
+    '/fa-icons.css',
 ];
 
 const IMAGE_CACHE = 'sinan-han-images-v1';
