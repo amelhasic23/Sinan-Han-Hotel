@@ -658,8 +658,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
                 if (mutation.attributeName === 'style' || mutation.attributeName === 'class') {
-                    var isVisible = modal.style.display !== 'none' &&
-                                   modal.offsetParent !== null;
+                    var isVisible = modal.style.display !== 'none';
                     if (isVisible) {
                         initializePaymentButton();
                     }

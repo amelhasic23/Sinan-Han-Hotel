@@ -40,6 +40,7 @@
     <!-- Performance: preconnect to external domains -->
     <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
     <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 
     <!-- Favicon & PWA -->
     <link rel="icon" type="image/jpeg" href="logo-116.jpg">
@@ -63,11 +64,17 @@
     .hero-subtitle{font-size:1.5rem;margin-bottom:2rem;text-shadow:1px 1px 2px rgba(0,0,0,.5)}
     .skip-to-content{position:absolute;left:-9999px;z-index:999;padding:1rem;background:var(--primary);color:var(--white);text-decoration:none}
     .skip-to-content:focus{left:50%;transform:translateX(-50%);top:1rem}
+    /* Font Awesome 6 — minimal subset, inlined to avoid render-blocking request */
+    @font-face{font-family:"Font Awesome 6 Free";font-style:normal;font-weight:900;font-display:swap;src:url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-solid-900.woff2") format("woff2"),url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-solid-900.ttf") format("truetype")}
+    @font-face{font-family:"Font Awesome 6 Brands";font-style:normal;font-weight:400;font-display:swap;src:url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-brands-400.woff2") format("woff2"),url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-brands-400.ttf") format("truetype")}
+    .fas{font-family:"Font Awesome 6 Free";font-weight:900}
+    .fab{font-family:"Font Awesome 6 Brands";font-weight:400}
+    .fas,.fab{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:inline-block;font-style:normal;font-variant:normal;line-height:1;text-rendering:auto}
+    .fa-wifi:before{content:"\f1eb"}.fa-utensils:before{content:"\f2e7"}.fa-concierge-bell:before{content:"\f562"}.fa-spa:before{content:"\f5bb"}.fa-briefcase:before{content:"\f0b1"}.fa-lock:before{content:"\f023"}.fa-bed:before{content:"\f236"}.fa-tv:before{content:"\f26c"}.fa-door-open:before{content:"\f52b"}.fa-mountain:before{content:"\f6fc"}.fa-couch:before{content:"\f4b8"}.fa-star:before{content:"\f005"}.fa-map-marker-alt:before{content:"\f3c5"}.fa-phone:before{content:"\f095"}.fa-envelope:before{content:"\f0e0"}.fa-map:before{content:"\f279"}.fa-heart:before{content:"\f004"}.fa-chevron-up:before{content:"\f077"}.fa-credit-card:before{content:"\f09d"}.fa-calendar:before{content:"\f133"}
+    .fa-facebook:before{content:"\f09a"}.fa-instagram:before{content:"\f16d"}
     </style>
     <!-- Full CSS -->
     <link rel="stylesheet" href="SinanHan.min.css?v=2">
-    <!-- Font Awesome — local subset with font-display:swap, only icons used on this page -->
-    <link rel="stylesheet" href="fa-icons.css">
     <!-- Structured Data (JSON-LD) for Google rich results -->
     <script type="application/ld+json">
     {
@@ -172,7 +179,7 @@
             <div class="nav-logo" role="img" aria-label="Sinan Han Hotel logo" style="display:flex;align-items:center;gap:10px;">
                 <picture>
                     <source type="image/webp" srcset="logo-58.webp 1x, logo-116.webp 2x">
-                    <img src="logo-116.jpg" alt="Sinan Han" width="58" height="58" style="height:58px;width:58px;object-fit:contain;display:block;border-radius:6px;">
+                    <img src="logo-116.jpg" alt="Sinan Han" width="58" height="58" fetchpriority="high" style="height:58px;width:58px;object-fit:contain;display:block;border-radius:6px;">
                 </picture>
                 <span style="font-family:'Georgia',serif;font-size:1.3rem;font-weight:600;color:#c19a6b;letter-spacing:0.04em;white-space:nowrap;">Sinan Han</span>
             </div>
