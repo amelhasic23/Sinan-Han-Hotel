@@ -53,6 +53,8 @@ app.use(express.static(path.join(__dirname), {
     setHeaders(res, filePath) {
         if (/\.(min\.css|min\.js)$/.test(filePath)) {
             res.set('Cache-Control', 'public, max-age=31536000, immutable');
+        } else if (/share-modal\.js$/.test(filePath)) {
+            res.set('Cache-Control', 'public, max-age=31536000, immutable');
         } else if (/\.(jpg|jpeg|png|gif|webp|svg)$/i.test(filePath)) {
             res.set('Cache-Control', 'public, max-age=31536000, immutable');
             res.set('Vary', 'Accept');
