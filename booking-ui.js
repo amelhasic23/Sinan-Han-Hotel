@@ -611,65 +611,19 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ============================================================
-// MONRI PAYMENT — intercepts bookingPaymentForm before SiminHan.js
-// This runs first (booking-ui.js is deferred before SiminHan.min.js)
-// stopImmediatePropagation blocks the broken SiminHan.js handler
+// MONRI PAY BY LINK — intercepts bookingPaymentForm
+// Calls /api/payment/pay-by-link, then redirects to payment_url
 // ============================================================
 (function () {
     var paymentForm = document.getElementById('bookingPaymentForm');
     if (!paymentForm) return;
 
-    // Initialize payment button state based on SDK readiness
-    function initializePaymentButton() {
-        var confirmBtn = document.getElementById('confirmPaymentBtn');
-        if (!confirmBtn) return;
-
-        if (window.monriSDKReady && typeof Monri !== 'undefined') {
-            // SDK already loaded
-            confirmBtn.disabled = false;
-            confirmBtn.textContent = 'Complete Payment';
-            confirmBtn.title = '';
-        } else if (window.monriSDKLoading) {
-            // SDK currently loading
-            confirmBtn.disabled = true;
-            confirmBtn.textContent = 'Loading Payment System...';
-            confirmBtn.title = 'Please wait while payment system loads';
-        } else {
-            // SDK failed to load or not started
-            confirmBtn.disabled = true;
-            confirmBtn.textContent = 'Payment System Loading...';
-            confirmBtn.title = 'Initializing payment system';
-        }
+    // Button is always enabled — no SDK required for Pay By Link
+    var confirmBtn = document.getElementById('confirmPaymentBtn');
+    if (confirmBtn) {
+        confirmBtn.disabled = false;
+        confirmBtn.textContent = 'Complete Payment';
     }
-
-    // Listen for SDK ready event
-    window.addEventListener('monriSDKReady', function() {
-        var confirmBtn = document.getElementById('confirmPaymentBtn');
-        if (confirmBtn) {
-            confirmBtn.disabled = false;
-            confirmBtn.textContent = 'Complete Payment';
-            confirmBtn.title = '';
-        }
-    });
-
-    // Initialize button state when modal becomes visible
-    var modal = document.getElementById('bookingConfirmationModal');
-    if (modal) {
-        var observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (mutation.attributeName === 'style' || mutation.attributeName === 'class') {
-                    var isVisible = modal.style.display !== 'none';
-                    if (isVisible) {
-                        initializePaymentButton();
-                    }
-                }
-            });
-        });
-        observer.observe(modal, { attributes: true });
-    }
-
-    // Also initialize on page load
-    initializePaymentButton();
 
     paymentForm.addEventListener('submit', async function (e) {
         e.preventDefault();
@@ -685,109 +639,46 @@ document.addEventListener('DOMContentLoaded', function() {
         var bookingData = {};
         try { bookingData = JSON.parse(modal.dataset.bookingData || '{}'); } catch (err) { /* ignore */ }
 
+        // Read currency selected in the booking form
+        var currencyEl = document.getElementById('currency');
+        var currency = currencyEl ? currencyEl.value : 'BAM';
+        var price = currency === 'EUR'
+            ? parseFloat(bookingData.totalPriceEUR || 0)
+            : parseFloat(bookingData.totalPrice || 0);
+
         var confirmBtn = document.getElementById('confirmPaymentBtn');
         var originalText = confirmBtn ? confirmBtn.textContent : 'Complete Payment';
-        if (confirmBtn) { confirmBtn.disabled = true; confirmBtn.textContent = 'Initializing...'; }
+        if (confirmBtn) { confirmBtn.disabled = true; confirmBtn.textContent = 'Processing...'; }
 
         try {
-            var csrfToken = typeof getValidCSRFToken === 'function'
-                ? await getValidCSRFToken()
-                : null;
-
-            var initRes = await fetch('/api/payment/init', {
+            var res = await fetch('/api/payment/pay-by-link', {
                 method: 'POST',
-                headers: Object.assign(
-                    { 'Content-Type': 'application/json' },
-                    csrfToken ? { 'X-CSRF-Token': csrfToken } : {}
-                ),
-                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    guestName: bookingData.guestName || bookingData.name || '',
+                    name: bookingData.guestName || bookingData.name || '',
                     email: bookingData.email || '',
-                    checkIn: bookingData.checkIn || bookingData.checkInDate || '',
-                    checkOut: bookingData.checkOut || bookingData.checkOutDate || '',
-                    roomType: bookingData.roomType || '',
-                    guests: bookingData.guests || bookingData.numPersons || 1,
-                    totalPrice: bookingData.totalPrice || 0,
-                    currency: 'BAM'
+                    phone: bookingData.phone || '',
+                    checkin_date: bookingData.checkIn || bookingData.checkInDate || '',
+                    checkout_date: bookingData.checkOut || bookingData.checkOutDate || '',
+                    room_id: bookingData.roomType || bookingData.room_id || '',
+                    hotel_id: 'sinan-han',
+                    adults_number: parseInt(bookingData.guests || bookingData.numPersons || 1),
+                    price: price,
+                    currency: currency
                 })
             });
 
-            var payData = await initRes.json();
-            if (!initRes.ok || !payData.success) {
-                throw new Error(payData.error || 'Payment initialization failed');
+            var data = await res.json();
+
+            if (!res.ok || !data.success) {
+                throw new Error(data.details || data.error || 'Payment initialization failed');
             }
 
-            // Ensure SDK is loaded (with retry option)
-            if (typeof Monri === 'undefined') {
-                if (confirmBtn) confirmBtn.textContent = 'Loading Payment System...';
-
-                try {
-                    // Wait for SDK to load (or retry loading)
-                    await window.loadPaymentSDK();
-                } catch (sdkError) {
-                    // SDK failed to load - provide actionable error
-                    throw new Error('Payment system failed to load. Please check your internet connection and try again.');
-                }
-            }
-
-            // Final safety check (should never fail now)
-            if (typeof Monri === 'undefined') {
-                throw new Error('Payment system not available. Please refresh the page.');
-            }
-
-            var lightbox = Monri.Lightbox({
-                authenticityToken: payData.merchantId,
-                amount: payData.amount,
-                currency: payData.currency,
-                digest: payData.digest,
-                order_number: payData.orderNumber,
-                timestamp: payData.timestamp,
-                order_info: 'Sinan Han Hotel Room Booking',
-                ch_full_name: payData.guestName || bookingData.guestName || '',
-                ch_email: payData.email || bookingData.email || '',
-                ch_city: 'Mostar',
-                ch_country: 'BA',
-                ch_zip: '88000',
-                ch_address: '-',
-                ch_phone: bookingData.phone || '',
-                notification_url: window.location.origin + '/webhook/monri',
-                redirect_url: window.location.origin + '/payment/result',
-            });
-
-            lightbox.open();
-
-            if (confirmBtn) { confirmBtn.disabled = false; confirmBtn.textContent = originalText; }
-
-            // Poll for payment status
-            var orderNumber = payData.orderNumber;
-            var polls = 0;
-            var pollInterval = setInterval(async function () {
-                polls++;
-                if (polls > 30) {
-                    clearInterval(pollInterval);
-                    return;
-                }
-                try {
-                    var statusRes = await fetch('/api/booking/' + orderNumber, { credentials: 'include' });
-                    var statusData = await statusRes.json();
-                    if (statusData.status === 'paid') {
-                        clearInterval(pollInterval);
-                        if (typeof toast !== 'undefined') toast.success('Payment confirmed! Your booking is complete.');
-                        else alert('Payment confirmed! Your booking is complete.');
-                        var closeBtn = document.getElementById('closeConfirmModal');
-                        if (closeBtn) closeBtn.click();
-                        document.querySelector('form') && document.querySelector('form').reset();
-                    } else if (statusData.status === 'declined') {
-                        clearInterval(pollInterval);
-                        if (typeof toast !== 'undefined') toast.error('Payment was declined. Please try again.');
-                        else alert('Payment was declined. Please try again.');
-                    }
-                } catch (err) { /* silent poll error */ }
-            }, 2000);
+            // Redirect to Monri hosted payment page
+            window.location.href = data.payment_url;
 
         } catch (err) {
-            console.error('Monri payment error:', err.message);
+            console.error('Pay By Link error:', err.message);
             if (typeof toast !== 'undefined') toast.error(err.message || 'Payment failed. Please try again.');
             else alert(err.message || 'Payment failed. Please try again.');
             if (confirmBtn) { confirmBtn.disabled = false; confirmBtn.textContent = originalText; }

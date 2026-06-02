@@ -152,6 +152,22 @@ class HotelAPIClient {
   }
 
   /**
+   * Create a Monri Pay By Link entry — returns { payment_url, order_number }
+   */
+  async createPayByLink(bookingData) {
+    try {
+      const data = await this.request('/payment/pay-by-link', {
+        method: 'POST',
+        body: bookingData
+      });
+      return data;
+    } catch (error) {
+      console.error('Failed to create Pay By Link:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Check if cache is still valid
    */
   isValidCache(key) {

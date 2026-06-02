@@ -8,6 +8,7 @@ const path = require('path');
 const nodemailer = require('nodemailer');
 const fs = require('fs');
 const crypto = require('crypto');
+const https = require('https');
 const compression = require('compression');
 try { require('dotenv').config(); } catch (_) {}
 
@@ -76,6 +77,40 @@ app.use((req, res, next) => {
         res.set('Link', linkHeaders.join(', '));
     }
     next();
+});
+
+// ============================================
+// CSRF TOKEN MANAGEMENT
+// ============================================
+
+const csrf_tokens = new Map();
+
+const csrf = {
+    generateToken: () => crypto.randomBytes(32).toString('hex'),
+    validateToken: (token, storedToken) => {
+        if (!token || !storedToken) return false;
+        return crypto.timingSafeEqual(Buffer.from(token), Buffer.from(storedToken));
+    }
+};
+
+app.get('/api/csrf-token', (req, res) => {
+    const token = csrf.generateToken();
+    const sessionId = crypto.randomBytes(16).toString('hex');
+
+    csrf_tokens.set(sessionId, {
+        token,
+        createdAt: Date.now(),
+        expiresAt: Date.now() + 30 * 60 * 1000
+    });
+
+    res.cookie('sessionId', sessionId, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 30 * 60 * 1000
+    });
+
+    res.json({ token, sessionId });
 });
 
 // ============================================
@@ -486,6 +521,52 @@ function generateMonriDigest(amount, currency, orderNumber, timestamp) {
     .update(digestInput)
     .digest('base64');
   return digest;
+}
+
+/**
+ * Generate WP3-v2.1 Authorization header for Monri Pay By Link API
+ * Digest = SHA512(merchant_key + timestamp + authenticity_token + fullpath + body)
+ * merchant_key  = MONRI_SECRET_KEY
+ * authenticity_token = MONRI_MERCHANT_ID
+ */
+function generatePayByLinkAuth(fullpath, bodyStr) {
+  const timestamp = Math.floor(Date.now() / 1000);
+  const digest = crypto.createHash('sha512')
+    .update(MONRI_SECRET_KEY + timestamp + MONRI_MERCHANT_ID + fullpath + bodyStr)
+    .digest('hex');
+  return {
+    timestamp,
+    header: `WP3-v2.1 authenticity_token=${MONRI_MERCHANT_ID} timestamp=${timestamp} digest=${digest}`
+  };
+}
+
+/**
+ * Make an HTTPS POST request (used to call Monri Pay By Link API)
+ */
+function httpsPost(url, headers, bodyStr) {
+  return new Promise((resolve, reject) => {
+    const urlObj = new URL(url);
+    const options = {
+      hostname: urlObj.hostname,
+      path: urlObj.pathname + urlObj.search,
+      method: 'POST',
+      headers: { ...headers, 'Content-Length': Buffer.byteLength(bodyStr) }
+    };
+    const req = https.request(options, (res) => {
+      let data = '';
+      res.on('data', chunk => { data += chunk; });
+      res.on('end', () => {
+        try {
+          resolve({ status: res.statusCode, body: JSON.parse(data) });
+        } catch (e) {
+          reject(new Error(`Invalid JSON from Monri: ${data}`));
+        }
+      });
+    });
+    req.on('error', reject);
+    req.write(bodyStr);
+    req.end();
+  });
 }
 
 /**
@@ -1154,6 +1235,102 @@ app.post('/api/payment/init', express.json(), async (req, res) => {
       error: 'Failed to initialize payment',
       message: error.message
     });
+  }
+});
+
+/**
+ * POST /api/payment/pay-by-link
+ * Create a Monri Pay By Link entry and return the payment_url
+ */
+app.post('/api/payment/pay-by-link', express.json(), async (req, res) => {
+  try {
+    const body = req.body;
+
+    // Normalise field names — frontend sends either camelCase or snake_case
+    const bookingData = {
+      name: (body.name || body.guestName || '').trim(),
+      email: (body.email || '').trim(),
+      phone: (body.phone || '').trim(),
+      checkin_date: body.checkin_date || body.checkIn || body.checkInDate || '',
+      checkout_date: body.checkout_date || body.checkOut || body.checkOutDate || '',
+      room_id: body.room_id || body.roomType || '',
+      hotel_id: body.hotel_id || 'sinan-han',
+      adults_number: parseInt(body.adults_number || body.guests || 1),
+      price: parseFloat(body.price || body.totalPrice || 0),
+      currency: (body.currency || PAYMENT_CURRENCY).toUpperCase()
+    };
+
+    const validationErrors = validatePaymentInput(bookingData);
+    if (validationErrors.length > 0) {
+      return res.status(400).json({ success: false, error: 'Validation failed', details: validationErrors });
+    }
+
+    const orderNumber = `BK${Date.now()}`;
+    const amountCents = Math.round(bookingData.price * 100);
+    const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
+    const monriBase = MONRI_ENVIRONMENT === 'test' ? 'https://ipgtest.monri.com' : 'https://ipg.monri.com';
+    const fullpath = '/v2/terminal-entry/create-or-update';
+
+    const monriBody = {
+      transaction_type: 'purchase',
+      amount: amountCents,
+      currency: bookingData.currency,
+      order_number: orderNumber,
+      order_info: `Hotel Sinan Han - Room Booking`,
+      language: 'en',
+      ch_full_name: bookingData.name,
+      ch_email: bookingData.email,
+      ch_phone: bookingData.phone || '',
+      ch_country: 'BA',
+      supported_payment_methods: ['card'],
+      success_url_override: `${baseUrl}/payment-success?order_number=${orderNumber}`,
+      cancel_url_override: `${baseUrl}/payment-failed?order_number=${orderNumber}`,
+      callback_url_override: `${baseUrl}/webhook/monri`
+    };
+
+    const bodyStr = JSON.stringify(monriBody);
+    const auth = generatePayByLinkAuth(fullpath, bodyStr);
+
+    console.log(`🔐 Pay By Link request for ${bookingData.email} - Order: ${orderNumber}`);
+
+    const monriRes = await httpsPost(`${monriBase}${fullpath}`, {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': auth.header
+    }, bodyStr);
+
+    if (monriRes.status !== 200 || !monriRes.body.payment_url) {
+      console.error('Monri Pay By Link error:', monriRes.status, JSON.stringify(monriRes.body));
+      return res.status(502).json({
+        success: false,
+        error: 'Monri API error',
+        details: monriRes.body.message || monriRes.body.status || monriRes.body.error || 'No details returned',
+        monri_status: monriRes.status,
+        monri_body: monriRes.body
+      });
+    }
+
+    const paymentUrl = monriRes.body.payment_url;
+    console.log(`💳 Monri payment_url: ${paymentUrl}`);
+
+    saveBooking(orderNumber, {
+      name: bookingData.name,
+      email: bookingData.email,
+      hotel_id: bookingData.hotel_id,
+      room_id: bookingData.room_id,
+      checkin_date: bookingData.checkin_date,
+      checkout_date: bookingData.checkout_date,
+      adults_number: bookingData.adults_number,
+      price: bookingData.price,
+      currency: bookingData.currency,
+      payment_type: 'pay-by-link'
+    });
+
+    res.json({ success: true, payment_url: paymentUrl, order_number: orderNumber });
+
+  } catch (error) {
+    console.error('Pay By Link error:', error);
+    res.status(500).json({ success: false, error: 'Failed to create payment link', message: error.message });
   }
 });
 

@@ -1,6 +1,48 @@
 {
   "bookings": [
     {
+      "id": "BK1780402724465",
+      "guestName": "AMEL HASIĆ",
+      "email": "amelhasic332@gmail.com",
+      "phone": "N/A",
+      "checkIn": "2026-06-01",
+      "checkOut": "2026-06-12",
+      "roomType": "standard-double",
+      "guests": "4",
+      "message": "Guest AMEL HASIĆ has submitted a booking request for Standard Double Room - BAM 177/night (up to 2 guests) from 2026-06-01 to 2026-06-12 for 4 person(s).",
+      "status": "pending",
+      "createdAt": "2026-06-02T12:18:44.596Z",
+      "notificationEmail": "about@hotelsinanhan.com"
+    },
+    {
+      "id": "BK1780401130828",
+      "guestName": "AMEL HASIĆ",
+      "email": "amelhasic332@gmail.com",
+      "phone": "N/A",
+      "checkIn": "2026-06-06",
+      "checkOut": "2026-06-07",
+      "roomType": "standard-double",
+      "guests": "5",
+      "message": "Guest AMEL HASIĆ has submitted a booking request for Standard Double Room - BAM 177/night (up to 2 guests) from 2026-06-06 to 2026-06-07 for 5 person(s).",
+      "status": "pending",
+      "createdAt": "2026-06-02T11:52:10.834Z",
+      "notificationEmail": "about@hotelsinanhan.com"
+    },
+    {
+      "id": "BK1780400928068",
+      "guestName": "Amel Hasic",
+      "email": "amelhasic332@gmail.com",
+      "phone": "N/A",
+      "checkIn": "2026-06-13",
+      "checkOut": "2026-06-27",
+      "roomType": "superior-suite",
+      "guests": "1",
+      "message": "Guest Amel Hasic has submitted a booking request for Superior Suite - BAM 204/night (up to 4 guests) from 2026-06-13 to 2026-06-27 for 1 person(s).",
+      "status": "pending",
+      "createdAt": "2026-06-02T11:48:48.086Z",
+      "notificationEmail": "about@hotelsinanhan.com"
+    },
+    {
       "order_number": "BK1773825106893",
       "status": "paid",
       "name": "Test User",
