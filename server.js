@@ -502,7 +502,9 @@ app.post('/api/payment/pay-by-link', async (req, res) => {
         const bodyStr = JSON.stringify(monriBody);
         const auth = generatePayByLinkAuth(fullpath, bodyStr);
 
-        console.log(`Pay By Link request: ${bookingData.email} — Order: ${orderNumber}`);
+        console.log(`[Monri] POST ${monriBase}${fullpath}`);
+        console.log(`[Monri] merchantId=${MONRI_MERCHANT_ID} env=${MONRI_ENVIRONMENT} timestamp=${auth.timestamp}`);
+        console.log(`[Monri] body=${bodyStr}`);
 
         const monriRes = await httpsPost(`${monriBase}${fullpath}`, {
             'Content-Type': 'application/json',
@@ -510,12 +512,15 @@ app.post('/api/payment/pay-by-link', async (req, res) => {
             'Authorization': auth.header
         }, bodyStr);
 
+        console.log(`[Monri] response status=${monriRes.status} body=${JSON.stringify(monriRes.body)}`);
+
         if (monriRes.status !== 200 || !monriRes.body.payment_url) {
-            console.error('Monri Pay By Link error:', monriRes.status, JSON.stringify(monriRes.body));
             return res.status(502).json({
                 success: false,
                 error: 'Monri API error',
-                details: monriRes.body.message || monriRes.body.status || monriRes.body.error || 'No details returned'
+                monriStatus: monriRes.status,
+                details: monriRes.body.message || monriRes.body.status || monriRes.body.error || 'No details returned',
+                monriBody: monriRes.body
             });
         }
 
@@ -542,6 +547,41 @@ app.post('/api/payment/pay-by-link', async (req, res) => {
     } catch (error) {
         console.error('Pay By Link error:', error.message);
         res.status(500).json({ success: false, error: 'Failed to create payment link', message: error.message });
+    }
+});
+
+// Temporary debug endpoint — remove after Monri auth is confirmed working
+app.get('/api/debug-monri', async (req, res) => {
+    if (!MONRI_MERCHANT_ID || !MONRI_SECRET_KEY) {
+        return res.json({ error: 'Monri env vars not set', MONRI_MERCHANT_ID: !!MONRI_MERCHANT_ID, MONRI_SECRET_KEY: !!MONRI_SECRET_KEY });
+    }
+    const fullpath = '/v2/terminal-entry/create-or-update';
+    const testBody = JSON.stringify({
+        transaction_type: 'purchase', amount: 100, currency: 'BAM',
+        order_number: 'TEST-' + Date.now(), order_info: 'debug test',
+        language: 'en', ch_full_name: 'Test User', ch_email: 'test@test.com',
+        ch_phone: '', ch_country: 'BA', supported_payment_methods: ['card'],
+        success_url_override: 'https://hotelsinanhan.com/payment-success',
+        cancel_url_override: 'https://hotelsinanhan.com/payment-failed',
+        callback_url_override: 'https://hotelsinanhan.com/webhook/monri'
+    });
+    const auth = generatePayByLinkAuth(fullpath, testBody);
+    const monriBase = MONRI_ENVIRONMENT === 'test' ? 'https://ipgtest.monri.com' : 'https://ipg.monri.com';
+    try {
+        const monriRes = await httpsPost(`${monriBase}${fullpath}`, {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': auth.header
+        }, testBody);
+        res.json({
+            environment: MONRI_ENVIRONMENT,
+            monriUrl: `${monriBase}${fullpath}`,
+            merchantId: MONRI_MERCHANT_ID,
+            monriHttpStatus: monriRes.status,
+            monriBody: monriRes.body
+        });
+    } catch (err) {
+        res.json({ error: err.message });
     }
 });
 
