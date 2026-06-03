@@ -138,7 +138,9 @@ function csrfValidateToken(token, sessionId) {
 
 // === CSRF Routes ===
 app.get('/api/csrf-token', (req, res) => {
-    const sessionId = crypto.randomBytes(16).toString('hex');
+    // Reuse existing sessionId so multiple scripts on the same page don't
+    // overwrite each other's cookie and invalidate already-fetched tokens.
+    const sessionId = (req.cookies && req.cookies.sessionId) || crypto.randomBytes(16).toString('hex');
     const token = csrfGenerateToken(sessionId);
 
     res.cookie('sessionId', sessionId, {
