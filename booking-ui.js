@@ -666,9 +666,24 @@ document.addEventListener('DOMContentLoaded', function() {
         if (confirmBtn) { confirmBtn.disabled = true; confirmBtn.textContent = 'Processing...'; }
 
         try {
+            let _payCSRFToken = null;
+            try {
+                const csrfRes = await fetch('/api/csrf-token', { credentials: 'include' });
+                if (csrfRes.ok) {
+                    const csrfData = await csrfRes.json();
+                    _payCSRFToken = csrfData.token;
+                }
+            } catch (e) {
+                console.warn('CSRF fetch failed:', e.message);
+            }
+
             var res = await fetch('/api/payment/pay-by-link', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(_payCSRFToken ? { 'X-CSRF-Token': _payCSRFToken } : {})
+                },
+                credentials: 'include',
                 body: JSON.stringify({
                     name: bookingData.guestName || bookingData.name || '',
                     email: bookingData.email || '',

@@ -119,10 +119,10 @@ const csrf = {
 
     validateToken: (token, storedToken) => {
         if (!token || !storedToken) return false;
-        return crypto.timingSafeEqual(
-            Buffer.from(token),
-            Buffer.from(storedToken)
-        );
+        const a = Buffer.from(token);
+        const b = Buffer.from(storedToken);
+        if (a.length !== b.length) return false;
+        return crypto.timingSafeEqual(a, b);
     }
 };
 
