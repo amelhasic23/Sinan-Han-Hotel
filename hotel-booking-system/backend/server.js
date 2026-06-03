@@ -85,10 +85,18 @@ app.use((req, res, next) => {
 // CSRF TOKEN MANAGEMENT
 // ============================================
 
+const CSRF_SECRET = process.env.CSRF_SECRET;
 const csrf_tokens = new Map();
 
 const csrf = {
-    generateToken: () => crypto.randomBytes(32).toString('hex'),
+    generateToken: (sessionId) => {
+        const nonce = crypto.randomBytes(16).toString('hex');
+        const timestamp = Date.now().toString();
+        const hmac = crypto.createHmac('sha256', CSRF_SECRET)
+            .update(`${sessionId}:${nonce}:${timestamp}`)
+            .digest('hex');
+        return `${nonce}.${timestamp}.${hmac}`;
+    },
     validateToken: (token, storedToken) => {
         if (!token || !storedToken) return false;
         const a = Buffer.from(token);
@@ -99,8 +107,8 @@ const csrf = {
 };
 
 app.get('/api/csrf-token', (req, res) => {
-    const token = csrf.generateToken();
     const sessionId = crypto.randomBytes(16).toString('hex');
+    const token = csrf.generateToken(sessionId);
 
     csrf_tokens.set(sessionId, {
         token,
