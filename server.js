@@ -110,46 +110,44 @@ app.use(cors({
     credentials: true
 }));
 
-// === CSRF Token Management ===
-const csrf = {
-    secret: process.env.CSRF_SECRET || 'change_me_to_random_32_char_string',
+// === CSRF Token Management (stateless HMAC — survives server restarts) ===
+const CSRF_SECRET = process.env.CSRF_SECRET || 'd05a27e534103197ff40d5328477fa8354eed4666d755688dedf357e3a825529';
 
-    generateToken: () => {
-        return crypto.randomBytes(32).toString('hex');
-    },
+function csrfGenerateToken(sessionId) {
+    const nonce = crypto.randomBytes(16).toString('hex');
+    const hmac = crypto.createHmac('sha256', CSRF_SECRET)
+        .update(nonce + ':' + sessionId)
+        .digest('hex');
+    return `${nonce}.${hmac}`;
+}
 
-    validateToken: (token, storedToken) => {
-        if (!token || !storedToken) return false;
-        const a = Buffer.from(token);
-        const b = Buffer.from(storedToken);
-        if (a.length !== b.length) return false;
-        return crypto.timingSafeEqual(a, b);
-    }
-};
-
-// Store CSRF tokens in memory (for production, use Redis or database)
-const csrf_tokens = new Map();
+function csrfValidateToken(token, sessionId) {
+    if (!token || !sessionId) return false;
+    const parts = token.split('.');
+    if (parts.length !== 2) return false;
+    const [nonce, hmac] = parts;
+    const expected = crypto.createHmac('sha256', CSRF_SECRET)
+        .update(nonce + ':' + sessionId)
+        .digest('hex');
+    const a = Buffer.from(hmac);
+    const b = Buffer.from(expected);
+    if (a.length !== b.length) return false;
+    return crypto.timingSafeEqual(a, b);
+}
 
 // === CSRF Routes ===
 app.get('/api/csrf-token', (req, res) => {
-    const token = csrf.generateToken();
     const sessionId = crypto.randomBytes(16).toString('hex');
-
-    // Store token temporarily (30 minutes)
-    csrf_tokens.set(sessionId, {
-        token,
-        createdAt: Date.now(),
-        expiresAt: Date.now() + 30 * 60 * 1000
-    });
+    const token = csrfGenerateToken(sessionId);
 
     res.cookie('sessionId', sessionId, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        sameSite: 'lax',
         maxAge: 30 * 60 * 1000
     });
 
-    res.json({ token, sessionId });
+    res.json({ token });
 });
 
 // === CSRF Validation Middleware ===
@@ -158,31 +156,15 @@ const validateCSRF = (req, res, next) => {
         return next();
     }
 
-    const token = req.headers['x-csrf-token'] || req.body.csrfToken;
-    const sessionId = req.cookies.sessionId;
+    const token = req.headers['x-csrf-token'] || (req.body && req.body.csrfToken);
+    const sessionId = req.cookies && req.cookies.sessionId;
 
     if (!token || !sessionId) {
         return res.status(403).json({ error: 'CSRF token missing' });
     }
 
-    const storedData = csrf_tokens.get(sessionId);
-    if (!storedData) {
-        return res.status(403).json({ error: 'Invalid CSRF session' });
-    }
-
-    // Check expiration
-    if (Date.now() > storedData.expiresAt) {
-        csrf_tokens.delete(sessionId);
-        return res.status(403).json({ error: 'CSRF token expired' });
-    }
-
-    // Validate token
-    try {
-        if (!csrf.validateToken(token, storedData.token)) {
-            return res.status(403).json({ error: 'Invalid CSRF token' });
-        }
-    } catch (err) {
-        return res.status(403).json({ error: 'CSRF validation failed' });
+    if (!csrfValidateToken(token, sessionId)) {
+        return res.status(403).json({ error: 'Invalid CSRF token' });
     }
 
     next();
