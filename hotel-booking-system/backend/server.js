@@ -4,6 +4,7 @@
 
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 const nodemailer = require('nodemailer');
 const fs = require('fs');
@@ -32,6 +33,7 @@ app.use(compression({
 }));
 
 app.use(cors());
+app.use(cookieParser());
 app.use(express.json());
 
 // Static file serving with cache headers
@@ -89,7 +91,10 @@ const csrf = {
     generateToken: () => crypto.randomBytes(32).toString('hex'),
     validateToken: (token, storedToken) => {
         if (!token || !storedToken) return false;
-        return crypto.timingSafeEqual(Buffer.from(token), Buffer.from(storedToken));
+        const a = Buffer.from(token);
+        const b = Buffer.from(storedToken);
+        if (a.length !== b.length) return false;
+        return crypto.timingSafeEqual(a, b);
     }
 };
 
@@ -112,6 +117,23 @@ app.get('/api/csrf-token', (req, res) => {
 
     res.json({ token, sessionId });
 });
+
+function csrfMiddleware(req, res, next) {
+    const clientToken = req.headers['x-csrf-token'];
+    const sessionId = req.cookies && req.cookies.sessionId;
+    if (!sessionId || !csrf_tokens.has(sessionId)) {
+        return res.status(403).json({ error: 'Invalid session. Please refresh the page and try again.' });
+    }
+    const stored = csrf_tokens.get(sessionId);
+    if (Date.now() > stored.expiresAt) {
+        csrf_tokens.delete(sessionId);
+        return res.status(403).json({ error: 'Session expired. Please refresh the page and try again.' });
+    }
+    if (!csrf.validateToken(clientToken, stored.token)) {
+        return res.status(403).json({ error: 'Invalid CSRF token.' });
+    }
+    next();
+}
 
 // ============================================
 // API CONFIGURATION
@@ -726,7 +748,7 @@ app.get('/api/hotel/privacy', async (req, res) => {
  * POST /api/bookings
  * Save booking information
  */
-app.post('/api/bookings', express.json(), async (req, res) => {
+app.post('/api/bookings', express.json(), csrfMiddleware, async (req, res) => {
   try {
     const booking = req.body;
 

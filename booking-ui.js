@@ -437,7 +437,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const bookingForm = document.getElementById('bookingForm');
     if (!bookingForm) return;
 
-    bookingForm.addEventListener('submit', function(e) {
+    bookingForm.addEventListener('submit', async function(e) {
         e.preventDefault();
 
         const guestName = document.getElementById('guestName').value.trim();
@@ -508,9 +508,24 @@ document.addEventListener('DOMContentLoaded', function() {
             message: `Guest ${guestName} has submitted a booking request for ${roomName} from ${checkInDate} to ${checkOutDate} for ${numPersons} person(s).`
         };
 
+        let _csrfToken = null;
+        try {
+            const csrfRes = await fetch('/api/csrf-token', { credentials: 'include' });
+            if (csrfRes.ok) {
+                const csrfData = await csrfRes.json();
+                _csrfToken = csrfData.token;
+            }
+        } catch (e) {
+            console.warn('CSRF fetch failed:', e.message);
+        }
+
         fetch('/api/bookings', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                ...(_csrfToken ? { 'X-CSRF-Token': _csrfToken } : {})
+            },
+            credentials: 'include',
             body: JSON.stringify(bookingNotificationData)
         })
         .then(response => response.json())
