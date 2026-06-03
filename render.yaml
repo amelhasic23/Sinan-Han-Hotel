@@ -10,4 +10,41 @@ services:
         value: production
       - key: PORT
         value: 10000
+
+      # Monri Payment Gateway
+      - key: MONRI_MERCHANT_ID
+        value: key-e44802b0354106a6c00a380a3c614bf7
+      - key: MONRI_SECRET_KEY
+        sync: false
+      - key: MONRI_ENVIRONMENT
+        value: test
+      - key: MONRI_TEST_MODE
+        value: true
+      - key: PAYMENT_CURRENCY
+        value: BAM
+
+      # Site URL (used for Monri callback/success/cancel URLs)
+      - key: BASE_URL
+        value: https://hotelsinanhan.com
+
+      # Security
+      - key: CSRF_SECRET
+        sync: false
+
+      # Email Configuration
+      - key: EMAIL_HOST
+        value: smtp.gmail.com
+      - key: EMAIL_PORT
+        value: 587
+      - key: EMAIL_USER
+        value: about@hotelsinanhan.com
+      - key: EMAIL_PASSWORD
+        sync: false
+      - key: BOOKING_REQUEST_EMAIL
+        value: about@hotelsinanhan.com
+
+      # Google Analytics
+      - key: GOOGLE_ANALYTICS_ID
+        value: G-R0Z8HFEEVT
+
     healthCheckPath: /api/health
