@@ -11,7 +11,7 @@ const fs = require('fs');
 const crypto = require('crypto');
 const https = require('https');
 const compression = require('compression');
-try { require('dotenv').config(); } catch (_) {}
+try { require('dotenv').config({ path: require('path').resolve(__dirname, '../../.env') }); } catch (_) {}
 
 const app = express();
 const PORT = process.env.PORT || 10000;

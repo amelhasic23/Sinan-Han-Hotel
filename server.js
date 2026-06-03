@@ -1,4 +1,4 @@
-try { require('dotenv').config(); } catch (_) {}
+try { require('dotenv').config({ path: require('path').resolve(__dirname, '.env') }); } catch (_) {}
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
