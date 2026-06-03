@@ -10,6 +10,7 @@ const nodemailer = require('nodemailer');
 const https = require('https');
 
 const app = express();
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 10000;
 
 // === Middleware ===

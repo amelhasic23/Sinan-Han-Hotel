@@ -17,9 +17,9 @@ services:
       - key: MONRI_SECRET_KEY
         value: 34c501f4170bf70c2b0828fc90707a87f23319e9
       - key: MONRI_ENVIRONMENT
-        value: test
+        value: production
       - key: MONRI_TEST_MODE
-        value: true
+        value: false
       - key: PAYMENT_CURRENCY
         value: BAM
 
