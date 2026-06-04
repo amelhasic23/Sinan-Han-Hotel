@@ -98,6 +98,7 @@ const translation = {
     'about-p4': 'All guest rooms are fully air-conditioned and include private bathrooms. Select rooms offer breathtaking views of the surrounding mountains or city. Each unit is equipped with a Smart TV with satellite channels, providing access to streaming services. Newly added units also feature a fully equipped kitchen, ideal for guests seeking added independence and convenience during their stay.',
     'about-p5': 'Our reception team is available to assist with personalized excursions and guided tours across Herzegovina, helping you discover its rich culture, natural beauty, and hidden gems.',
     'about-p6': 'Popular points of interest within walking distance include the Muslibegović House (900 metres) and the Kujundžiluk Old Bazaar (100 metres). The nearest airport is Mostar International Airport and Sarajevo International Airport (110 km), and airport transfers can be arranged upon request (additional charges apply).',
+    'about-p7': 'Families particularly like the location — they rated it 9.7 for a stay with kids.',
     'rooms-title': 'Our Rooms',
     'rooms-subtitle': 'Discover our collection of comfortable and elegant accommodations',
     'view-details': 'View Details',
@@ -201,6 +202,11 @@ const translation = {
     'footer-guest-reviews': 'Guest Reviews',
     'footer-follow-title': 'Follow Us',
     'footer-copyright': '© 2026 Sinan Han. All rights reserved. | Designed with ♥ for travelers',
+    'hero-title': 'Guesthouse \u201eSinan Han\u201c',
+    'nav-logo-title': 'Guesthouse \u201eSinan Han\u201c',
+    'footer-company-name': 'Guesthouse \u201eSINAN-HAN\u201c owner Arif Jašari',
+    'footer-registry': 'Registry: Municipal Court in Mostar | MBS: 58-01-0026-21',
+    'footer-tax-number': 'Tax Number (JIB): 4323213370002',
     'social-facebook-title': 'Follow us on Facebook',
     'social-instagram-title': 'Follow us on Instagram',
     'social-booking-title': 'Book on Booking.com',
@@ -209,6 +215,37 @@ const translation = {
     'footer-guest-reviews-title': 'Read guest reviews on Booking.com',
     'footer-registration-title': 'View official business registration document',
     'modal-book-btn': 'Book This Room',
+    'footer-terms-privacy': 'Terms & Privacy',
+    'tpc-modal-title': 'Terms of Use, Privacy & Purchase Policy',
+    'tpc-last-updated': 'Last updated: June 2026',
+    'tpc-company-title': 'Service Provider',
+    'tpc-general-title': 'General Terms & Conditions',
+    'tpc-general-p1': 'These Terms govern the booking, payment, and use of accommodation services provided by Guesthouse Sinan Han. By completing a booking you confirm that you have read and agree to all terms and conditions set out herein.',
+    'tpc-general-p2': 'The service provider commits to deliver the accommodation as described on the website and to act in the best interest of the guest in accordance with hospitality industry standards. The provider is responsible for damages caused to the guest by non-fulfilment or improper fulfilment of the contracted service.',
+    'tpc-general-p3': 'In the event of extraordinary and unforeseeable circumstances beyond the control of the provider (force majeure — war, natural disaster, pandemic, strikes, etc.), the provider may modify or cancel the reservation. In such cases the guest is entitled to a full refund of any amount paid.',
+    'tpc-obligations-title': 'Guest Obligations',
+    'tpc-obligations-p1': 'The guest agrees to pay the agreed price in accordance with these terms. The guest must provide all data required for the booking to be correctly processed and ensure that they and their travel documents comply with all applicable entry, health, and customs regulations.',
+    'tpc-obligations-p2': 'The guest is responsible for any damage caused by failure to fulfil their obligations. Any complaint regarding the service must be submitted in writing within 8 days of check-out.',
+    'tpc-cancellation-title': 'Booking & Cancellation Policy',
+    'tpc-cancellation-p1': 'Bookings are made via the online reservation form. A booking is confirmed upon receipt of payment. In the event of guest cancellation, the following charges apply (unless stated otherwise in the specific offer):',
+    'tpc-cancel-tier1': 'More than 30 days before arrival: 30% of the total amount',
+    'tpc-cancel-tier2': '15–30 days before arrival: 60% of the total amount',
+    'tpc-cancel-tier3': 'Less than 15 days before arrival or no-show: 100% of the total amount',
+    'tpc-cancellation-p2': 'All cancellations must be submitted in writing by email. If the provider significantly changes the accommodation or price before arrival, the guest will be notified in writing and may accept the change or cancel with a full refund within 2 working days.',
+    'tpc-payment-title': 'Payment Methods',
+    'tpc-payment-p1': 'Payments are processed securely online via the following credit and debit cards:',
+    'tpc-security-title': 'Secure Payment',
+    'tpc-security-p1': 'Your personal and payment data is protected using SSL 128-bit encryption. Pages for web payment are secured using the Secure Socket Layer (SSL) protocol, preventing any unauthorized access during data transfer.',
+    'tpc-security-p2': 'Monri Payments is a PCI DSS Level 1 certified payment service provider. The Monri WebPay Payment Gateway and financial institutions exchange data via a virtual private network (VPN) protected from unauthorized access.',
+    'tpc-security-p3': 'Credit card numbers are not stored by the merchant and are not accessible to unauthorized personnel.',
+    'tpc-security-p4': 'All payments are processed in BAM (Bosnian Convertible Mark). Any currency conversion to your local currency is performed by your card issuer at their applicable exchange rate.',
+    'tpc-complaints-title': 'Complaints',
+    'tpc-complaints-p1': 'Guests have the right to file a written complaint for any contracted service not delivered. Complaints must be submitted within 8 days of check-out. Complaints submitted after this deadline will not be considered.',
+    'tpc-complaints-p2': 'It is in the guest\'s interest to first raise any issue directly with the service provider on-site and obtain written acknowledgement. The provider will respond in writing within 15 days of receiving the complaint.',
+    'tpc-complaints-p3': 'For online dispute resolution, consumers may submit a complaint via the EU ODR platform: ec.europa.eu/consumers/odr',
+    'tpc-privacy-title': 'Personal Data Protection',
+    'tpc-privacy-p1': 'We collect only the minimum personal data necessary to fulfil our booking obligations (name, email, phone number). We inform guests about how collected data is used and provide the option to opt out of marketing communications.',
+    'tpc-privacy-p2': 'All personal data is strictly guarded and accessible only to employees who require it to perform their duties. All employees and business partners are bound by confidentiality obligations. The provider reserves the right to amend these terms; any changes will be published on this website.',
     'select-room': 'Select a room',
     'currency-bam': 'BAM (Bosnian Mark)',
     'currency-eur': 'EUR (Euro)',
@@ -323,6 +360,7 @@ const translation = {
     'about-p4': 'Sve sobe za goste su u potpunosti klimatizovane i sadrže privatne kupatila. Odabrane sobe pružaju prekrasan pogled na okolne planine ili grad. Svaka jedinica opremljena je pametnim TV-om sa satelitskim kanalima sa pristupom streaming servisima. Novododane jedinice su također opremljene sa potpuno opremljenom kuhinjom, idealno za goste koji žele dodatnu nezavisnost i pogodnost tijekom svog boravka.',
     'about-p5': 'Naš receptivni tim dostupan je da vas pomogne sa personalizovanim izletima i vođenim turima kroz Hercegovinu, čime vam pomaže da otkrije njenu bogatih kulturu, prirodnu ljepotu i skrivene dragulj.',
     'about-p6': 'Popularne znamenitosti u pješačkoj udaljenosti uključuju Muslibegović kuću (900 metara) i Stari bazar Kujundžiluk (100 metara). Najbliži aerodrom je Međunarodni aerodrom Mostar i Međunarodni aerodrom Sarajevo (110 km), a prevoze od aerodroma je moguće dogovoriti na zahtjev (dodatne naknade se primjenjuju).',
+    'about-p7': 'Porodice posebno vole lokaciju — ocijenile su je 9,7 za boravak s djecom.',
     'rooms-title': 'Naše Sobe',
     'rooms-subtitle': 'Otkrijte našu kolekciju udobnih i elegantnih smještaja',
     'view-details': 'Pogledaj Detaljno',
@@ -426,6 +464,11 @@ const translation = {
     'footer-guest-reviews': 'Recenzije Gostiju',
     'footer-follow-title': 'Pratite Nas',
     'footer-copyright': '© 2026 Sinan Han. Sva prava zadržana. | Dizajnirano sa ♥ za putnika',
+    'hero-title': 'Sobe u doma\u0107instvu \u201eSinan Han\u201c',
+    'nav-logo-title': 'Sobe u doma\u0107instvu \u201eSinan Han\u201c',
+    'footer-company-name': 'Sobe u doma\u0107instvu \u201eSINAN-HAN\u201c vl. Arif Ja\u0161ari',
+    'footer-registry': 'Registar: Op\u0107inski sud u Mostaru | MBS: 58-01-0026-21',
+    'footer-tax-number': 'Porezni broj (JIB): 4323213370002',
     'social-facebook-title': 'Pratite nas na Facebooku',
     'social-instagram-title': 'Pratite nas na Instagramu',
     'social-booking-title': 'Rezervišite na Booking.com',
@@ -434,6 +477,37 @@ const translation = {
     'footer-guest-reviews-title': 'Pročitajte recenzije gostiju na Booking.com',
     'footer-registration-title': 'Pogledajte službeni dokument o registraciji djelatnosti',
     'modal-book-btn': 'Rezervacija Ove Sobe',
+    'footer-terms-privacy': 'Pravila i uvjeti',
+    'tpc-modal-title': 'Pravila i uvjeti kori\u0161tenja, privatnosti i kupnje',
+    'tpc-last-updated': 'Zadnje a\u017eurirano: lipanj 2026.',
+    'tpc-company-title': 'Podaci o pru\u017eatelju usluge',
+    'tpc-general-title': 'Op\u0107i uvjeti i odredbe',
+    'tpc-general-p1': 'Ovim uvjetima utvr\u0111uje se postupak rezervacije, pla\u0107anja i kori\u0161tenja usluga smje\u0161taja koje pru\u017ea Sobe u doma\u0107instvu Sinan Han. Dovr\u0161etkom rezervacije potvr\u0111ujete da ste pro\u010ditali i prihvatili sve uvjete navedene u ovom dokumentu.',
+    'tpc-general-p2': 'Pru\u017eatelj usluge obvezuje se izvr\u0161iti uslugu smje\u0161taja kako je opisana na web-stranici i skrbiti o pravima i interesima gosta u skladu s poslovnim obi\u010dajima u ugostiteljskoj djelatnosti. Pru\u017eatelj odgovara za \u0161tetu prouzro\u010denu gostu neispunjenjem, djelomi\u010dnim ispunjenjem ili neurednim ispunjenjem ugovorenih obveza.',
+    'tpc-general-p3': 'U slu\u010daju nastupa vanjskih izvanrednih i nepredvidivih okolnosti izvan kontrole pru\u017eatelja (vi\u0161a sila \u2014 rat, elementarne nepogode, pandemija, \u0161trajkovi i sl.), pru\u017eatelj mo\u017ee izmijeniti ili otkazati rezervaciju. U tom slu\u010daju gost ima pravo na povrat cjelokupnog upla\u0107enog iznosa.',
+    'tpc-obligations-title': 'Obveze gosta',
+    'tpc-obligations-p1': 'Gost je du\u017ean platiti ugovorenu cijenu u skladu s ovim uvjetima. Gost mora pravodobno dostaviti sve podatke potrebne za ispravnu obradu rezervacije te se brinuti da on osobno i njegovi putni dokumenti ispunjavaju sve primjenjive grani\u010dne, zdravstvene i carinske propise.',
+    'tpc-obligations-p2': 'Gost odgovara za \u0161tetu nastalu neispunjenjem navedenih obveza. Svaki prigovor vezan uz pru\u017eenu uslugu mora se dostaviti u pisanom obliku u roku od 8 dana od odjave.',
+    'tpc-cancellation-title': 'Rezervacija i politika otkazivanja',
+    'tpc-cancellation-p1': 'Rezervacije se vr\u0161e putem online obrasca za rezervaciju. Rezervacija se smatra potvr\u0111enom po primitku pla\u0107anja. U slu\u010daju otkazivanja od strane gosta primjenjuju se sljede\u0107e naknade (ako u ponudi nije navedeno druga\u010dije):',
+    'tpc-cancel-tier1': 'Vi\u0161e od 30 dana prije dolaska: 30% ukupnog iznosa',
+    'tpc-cancel-tier2': '15\u201330 dana prije dolaska: 60% ukupnog iznosa',
+    'tpc-cancel-tier3': 'Manje od 15 dana prije dolaska ili nedolazak: 100% ukupnog iznosa',
+    'tpc-cancellation-p2': 'Sva otkazivanja moraju se prijaviti pismenim putem e-mailom. Ako pru\u017eatelj zna\u010dajnije izmijeni smje\u0161taj ili cijenu prije dolaska, gost \u0107e biti pismeno obavije\u0161ten i mo\u017ee prihvatiti izmjenu ili otkazati uz puni povrat u roku od 2 radna dana.',
+    'tpc-payment-title': 'Na\u010dini pla\u0107anja',
+    'tpc-payment-p1': 'Pla\u0107anja se sigurno obra\u0111uju online putem sljede\u0107ih kreditnih i debitnih kartica:',
+    'tpc-security-title': 'Sigurnost pla\u0107anja',
+    'tpc-security-p1': 'Va\u0161i osobni i platni podaci za\u0161ti\u0107eni su SSL enkripcijom sa 128-bitnim klju\u010dem. Stranice za naplatu putem interneta osigurane su kori\u0161tenjem SSL protokola koji sprje\u010dava neovla\u0161ten pristup podacima pri njihovom prijenosu.',
+    'tpc-security-p2': 'Monri Payments certificiran je prema PCI DSS razine 1. Monri WebPay Payment Gateway i financijske institucije razmjenjuju podatke putem virtualne privatne mre\u017ee (VPN) za\u0161ti\u0107ene od neovla\u0161tenog pristupa.',
+    'tpc-security-p3': 'Trgovac ne pohranjuje brojeve kreditnih kartica i oni nisu dostupni neovla\u0161tenim osobama.',
+    'tpc-security-p4': 'Sva pla\u0107anja se obra\u0111uju u BAM (Konvertibilna marka BiH). Konverziju u Va\u0161u lokalnu valutu obavlja Va\u0161 izdavatelj kartice prema va\u017ee\u0107em te\u010daju.',
+    'tpc-complaints-title': 'Reklamacije i prigovori',
+    'tpc-complaints-p1': 'Gost ima pravo prigovora zbog neispunjene ugovorene usluge. Prigovor se mora dostaviti u pisanom obliku u roku od 8 dana od odjave. Prigovori dostavljeni nakon isteka tog roka ne\u0107e se uzeti u razmatranje.',
+    'tpc-complaints-p2': 'U interesu je gosta da problem najprije prijavi izravno pru\u017eatelju usluge na licu mjesta i zatra\u017ei pismenu potvrdu o primitku prigovora. Pru\u017eatelj \u0107e pismeno odgovoriti u roku od 15 dana od primitka prigovora.',
+    'tpc-complaints-p3': 'Za online rje\u0161avanje sporova potro\u0161a\u010d mo\u017ee podnijeti pritužbu putem EU ODR platforme: ec.europa.eu/consumers/odr',
+    'tpc-privacy-title': 'Za\u0161tita osobnih podataka',
+    'tpc-privacy-p1': 'Prikupljamo samo minimalne osobne podatke potrebne za ispunjenje obveza rezervacije (ime i prezime, e-mail, broj telefona). Informiramo goste o na\u010dinu kori\u0161tenja prikupljenih podataka i pru\u017eamo mogu\u0107nost odjave od marketin\u0161kih komunikacija.',
+    'tpc-privacy-p2': 'Svi osobni podaci strogo se \u010duvaju i dostupni su samo zaposlenicima koji ih trebaju za obavljanje posla. Svi zaposlenici i poslovni partneri obvezni su po\u0161tivati na\u010dela za\u0161tite privatnosti. Pru\u017eatelj zadr\u017eava pravo izmjene ovih uvjeta; sve promjene bit \u0107e objavljene na ovoj web-stranici.',
     'select-room': 'Odaberite sobu',
     'currency-bam': 'BAM (Bosanska Marka)',
     'currency-eur': 'EUR (Euro)',
@@ -548,6 +622,7 @@ const translation = {
     'about-p4': 'Alle Zimmer sind vollständig klimatisiert und mit privaten Badezimmern ausgestattet. Ausgewählte Zimmer bieten atemberaubende Ausblicke auf die umliegenden Berge oder die Stadt. Jede Einheit ist mit einem Smart-TV mit Satellitenkanälen ausgestattet, die Zugriff auf Streaming-Dienste bieten. Neu hinzugefügte Einheiten verfügen auch über eine voll ausgestattete Küche, ideal für Gäste, die während ihres Aufenthalts mehr Unabhängigkeit und Bequemlichkeit wünschen.',
     'about-p5': 'Unser Rezeptionsteam steht Ihnen zur Verfügung, um personalisierte Ausflüge und Führungen durch die Herzegowina zu organisieren und Ihnen dabei zu helfen, ihre reiche Kultur, natürliche Schönheit und verborgene Schätze zu entdecken.',
     'about-p6': 'Beliebte Sehenswürdigkeiten in Fußnähe sind das Haus Muslibegović (900 Meter) und das Alte Basar Kujundžiluk (100 Meter). Die nächsten Flughäfen sind der Flughafen Mostar und der Flughafen Sarajevo (110 km). Flughafentransfers können auf Anfrage arrangiert werden (Zusatzgebühren anfallen).',
+    'about-p7': 'Familien schätzen die Lage besonders — sie bewerteten sie mit 9,7 für einen Aufenthalt mit Kindern.',
     'rooms-title': 'Unsere Zimmer',
     'rooms-subtitle': 'Entdecken Sie unsere Sammlung komfortabler und eleganter Unterkünfte',
     'view-details': 'Details Anzeigen',
@@ -651,6 +726,11 @@ const translation = {
     'footer-guest-reviews': 'Gästebewertungen',
     'footer-follow-title': 'Folgen Sie Uns',
     'footer-copyright': '© 2026 Sinan Han. Alle Rechte vorbehalten. | Mit ♥ für Reisende entworfen',
+    'hero-title': 'Pension \u201eSinan Han\u201c',
+    'nav-logo-title': 'Pension \u201eSinan Han\u201c',
+    'footer-company-name': 'Pension \u201eSINAN-HAN\u201c Inh. Arif Ja\u0161ari',
+    'footer-registry': 'Registergericht: Gemeindegericht Mostar | MBS: 58-01-0026-21',
+    'footer-tax-number': 'Steuernummer (JIB): 4323213370002',
     'social-facebook-title': 'Folgen Sie uns auf Facebook',
     'social-instagram-title': 'Folgen Sie uns auf Instagram',
     'social-booking-title': 'Buchen Sie auf Booking.com',
@@ -659,6 +739,37 @@ const translation = {
     'footer-guest-reviews-title': 'Lesen Sie Gästebewertungen auf Booking.com',
     'footer-registration-title': 'Offizielles Gewerbeanmeldedokument anzeigen',
     'modal-book-btn': 'Dieses Zimmer Buchen',
+    'footer-terms-privacy': 'AGB & Datenschutz',
+    'tpc-modal-title': 'Nutzungsbedingungen, Datenschutz & Kaufbedingungen',
+    'tpc-last-updated': 'Letzte Aktualisierung: Juni 2026',
+    'tpc-company-title': 'Dienstleister',
+    'tpc-general-title': 'Allgemeine Gesch\u00e4ftsbedingungen',
+    'tpc-general-p1': 'Diese Bedingungen regeln die Buchung, Zahlung und Nutzung der Unterkunftsleistungen des Gasthofs Sinan Han. Mit Abschluss einer Buchung best\u00e4tigen Sie, dass Sie alle Bedingungen gelesen und akzeptiert haben.',
+    'tpc-general-p2': 'Der Dienstleister verpflichtet sich, die Unterkunft wie auf der Website beschrieben bereitzustellen und im Interesse des Gastes gem\u00e4\u00df den Branchenstandards zu handeln. Der Anbieter haftet f\u00fcr Sch\u00e4den, die dem Gast durch Nicht- oder schlechte Erf\u00fcllung der vereinbarten Leistungen entstehen.',
+    'tpc-general-p3': 'Bei au\u00dferordentlichen, unvorhersehbaren Umst\u00e4nden (h\u00f6here Gewalt \u2014 Krieg, Naturkatastrophen, Pandemie, Streiks usw.) kann der Anbieter die Reservierung \u00e4ndern oder stornieren. In diesem Fall hat der Gast Anspruch auf volle R\u00fcckerstattung.',
+    'tpc-obligations-title': 'Pflichten des Gastes',
+    'tpc-obligations-p1': 'Der Gast verpflichtet sich, den vereinbarten Preis gem\u00e4\u00df diesen Bedingungen zu zahlen und alle f\u00fcr die Buchung erforderlichen Daten bereitzustellen sowie sicherzustellen, dass er und seine Reisedokumente allen einschl\u00e4gigen Vorschriften entsprechen.',
+    'tpc-obligations-p2': 'Der Gast haftet f\u00fcr Sch\u00e4den, die durch die Nichterf\u00fcllung seiner Pflichten entstehen. Beschwerden m\u00fcssen schriftlich innerhalb von 8 Tagen nach dem Check-out eingereicht werden.',
+    'tpc-cancellation-title': 'Buchungs- & Stornierungsbedingungen',
+    'tpc-cancellation-p1': 'Buchungen erfolgen \u00fcber das Online-Reservierungsformular und gelten nach Zahlungseingang als best\u00e4tigt. Bei Stornierung durch den Gast gelten folgende Geb\u00fchren:',
+    'tpc-cancel-tier1': 'Mehr als 30 Tage vor Anreise: 30 % des Gesamtbetrags',
+    'tpc-cancel-tier2': '15\u201330 Tage vor Anreise: 60 % des Gesamtbetrags',
+    'tpc-cancel-tier3': 'Weniger als 15 Tage vor Anreise oder Nichterscheinen: 100 % des Gesamtbetrags',
+    'tpc-cancellation-p2': 'Alle Stornierungen m\u00fcssen schriftlich per E-Mail eingereicht werden. Bei wesentlichen \u00c4nderungen seitens des Anbieters wird der Gast schriftlich informiert und kann die \u00c4nderung akzeptieren oder innerhalb von 2 Werktagen kostenlos stornieren.',
+    'tpc-payment-title': 'Zahlungsmethoden',
+    'tpc-payment-p1': 'Zahlungen werden sicher online \u00fcber folgende Kredit- und Debitkarten abgewickelt:',
+    'tpc-security-title': 'Sichere Zahlung',
+    'tpc-security-p1': 'Ihre Zahlungsdaten sind durch SSL-128-Bit-Verschl\u00fcsselung gesch\u00fctzt, die unbefugten Zugriff bei der \u00dcbertragung verhindert.',
+    'tpc-security-p2': 'Monri Payments ist PCI-DSS-Level-1-zertifiziert. Der Monri WebPay Payment Gateway tauscht Daten mit Finanzinstituten \u00fcber ein gesch\u00fctztes VPN aus.',
+    'tpc-security-p3': 'Kreditkartennummern werden vom H\u00e4ndler nicht gespeichert und sind f\u00fcr unbefugte Personen nicht zug\u00e4nglich.',
+    'tpc-security-p4': 'Alle Zahlungen werden in BAM (Bosnisch-Herzegowinische Konvertible Mark) abgewickelt. Die W\u00e4hrungsumrechnung erfolgt durch Ihren Kartenaussteller.',
+    'tpc-complaints-title': 'Reklamationen',
+    'tpc-complaints-p1': 'G\u00e4ste haben das Recht, schriftliche Reklamationen f\u00fcr nicht erbrachte Leistungen einzureichen. Reklamationen m\u00fcssen innerhalb von 8 Tagen nach Check-out eingereicht werden.',
+    'tpc-complaints-p2': 'Es liegt im Interesse des Gastes, Probleme zun\u00e4chst vor Ort beim Dienstleister anzusprechen und eine schriftliche Best\u00e4tigung zu erhalten. Der Anbieter antwortet schriftlich innerhalb von 15 Tagen.',
+    'tpc-complaints-p3': 'F\u00fcr die Online-Streitbeilegung: ec.europa.eu/consumers/odr',
+    'tpc-privacy-title': 'Datenschutz',
+    'tpc-privacy-p1': 'Wir erheben nur die zur Buchungsabwicklung notwendigen Mindestdaten (Name, E-Mail, Telefon) und informieren G\u00e4ste \u00fcber deren Verwendung.',
+    'tpc-privacy-p2': 'Alle personenbezogenen Daten werden streng vertraulich behandelt und sind nur den zust\u00e4ndigen Mitarbeitern zug\u00e4nglich. Der Anbieter beh\u00e4lt sich das Recht vor, diese Bedingungen zu \u00e4ndern; \u00c4nderungen werden auf der Website ver\u00f6ffentlicht.',
     'review-1-text': '"Vielen Dank, dass Sie meine verspätete Ankunft berücksichtigt haben und für die wunderbare Unterstützung Ihres Rezeptionsteams, besonders für jemanden wie mich, der dazu neigt, Dinge zu vergessen. Der Standort war sehr praktisch und der Ort war sauber und gut gepflegt. Obwohl mein Aufenthalt kurz war, war er sehr komfortabel und angenehm. Wenn ich Mostar wieder besuche, würde ich gerne hier übernachten. Danke nochmal für Ihre Freundlichkeit."',
     'review-1-author': 'Takako',
     'review-1-location': 'Japan • Deluxe Suite • Februar 2026',
@@ -770,6 +881,7 @@ const translation = {
     'about-p4': 'Toutes les chambres sont entièrement climatisées et disposent de salles de bains privées. Certaines chambres offrent des vues spectaculaires sur les montagnes environnantes ou la ville. Chaque unité est équipée d\'une Smart TV avec chaînes satellites, offrant un accès aux services de streaming. Les unités récemment ajoutées disposent également d\'une cuisine entièrement équipée, idéale pour les clients souhaitant plus d\'indépendance et de commodité pendant leur séjour.',
     'about-p5': 'Notre équipe de réception est disponible pour vous aider avec des excursions personnalisées et des visites guidées à travers l\'Herzégovine, vous aidant à découvrir sa culture riche, sa beauté naturelle et ses joyaux cachés.',
     'about-p6': 'Les points d\'intérêt populaires à distance de marche incluent la Maison Muslibegović (900 mètres) et le Vieux Bazar Kujundžiluk (100 mètres). Les aéroports les plus proches sont l\'Aéroport International de Mostar et l\'Aéroport International de Sarajevo (110 km). Les transferts aéroportuaires peuvent être organisés sur demande (des frais supplémentaires s\'appliquent).',
+    'about-p7': 'Les familles apprécient particulièrement l\'emplacement — elles l\'ont noté 9,7 pour un séjour avec des enfants.',
     'rooms-title': 'Nos Chambres',
     'rooms-subtitle': 'Découvrez notre collection d\'hébergements confortables et élégants',
     'view-details': 'Voir les Détails',
@@ -873,11 +985,47 @@ const translation = {
     'footer-guest-reviews': 'Avis des Clients',
     'footer-follow-title': 'Nous Suivre',
     'footer-copyright': '© 2026 Sinan Han. Tous droits réservés. | Conçu avec ♥ pour les voyageurs',
+    'hero-title': 'Chambres d\u2019h\u00f4tes \u201eSinan Han\u201c',
+    'nav-logo-title': 'Chambres d\u2019h\u00f4tes \u201eSinan Han\u201c',
+    'footer-company-name': 'Chambres d\u2019h\u00f4tes \u201eSINAN-HAN\u201c prop. Arif Ja\u0161ari',
+    'footer-registry': 'Registre: Tribunal municipal de Mostar | MBS: 58-01-0026-21',
+    'footer-tax-number': 'Numéro fiscal (JIB): 4323213370002',
     'footer-house-rules-title': 'Voir nos règles de la maison et politiques sur Booking.com',
     'footer-important-info-title': 'Voir les informations juridiques importantes sur Booking.com',
     'footer-guest-reviews-title': 'Lire les avis des clients sur Booking.com',
     'footer-registration-title': 'Voir le document officiel d\'immatriculation de l\'entreprise',
     'modal-book-btn': 'Réserver Cette Chambre',
+    'footer-terms-privacy': 'CGU & Confidentialité',
+    'tpc-modal-title': "Conditions d'utilisation, confidentialité et d'achat",
+    'tpc-last-updated': 'Dernière mise à jour : juin 2026',
+    'tpc-company-title': 'Prestataire de service',
+    'tpc-general-title': 'Conditions générales',
+    'tpc-general-p1': "Ces conditions régissent la réservation, le paiement et l'utilisation des services d'hébergement de la Maison d'hôtes Sinan Han. En finalisant une réservation, vous confirmez avoir lu et accepté toutes les conditions.",
+    'tpc-general-p2': "Le prestataire s'engage à fournir l'hébergement tel que décrit sur le site et à agir dans l'intérêt du client conformément aux normes du secteur. Le prestataire est responsable des dommages causés par le non-respect des obligations contractuelles.",
+    'tpc-general-p3': "En cas de circonstances extraordinaires et imprévisibles hors du contrôle du prestataire (force majeure), celui-ci peut modifier ou annuler la réservation. Dans ce cas, le client a droit au remboursement intégral.",
+    'tpc-obligations-title': 'Obligations du client',
+    'tpc-obligations-p1': "Le client s'engage à payer le prix convenu conformément aux présentes conditions et à fournir toutes les données nécessaires à la bonne réalisation de la réservation.",
+    'tpc-obligations-p2': 'Le client est responsable des dommages résultant du non-respect de ses obligations. Toute réclamation doit être soumise par écrit dans les 8 jours suivant le départ.',
+    'tpc-cancellation-title': 'Politique de réservation et annulation',
+    'tpc-cancellation-p1': 'Les réservations sont effectuées via le formulaire en ligne et confirmées à réception du paiement. En cas d\'annulation par le client, les frais suivants s\'appliquent :',
+    'tpc-cancel-tier1': 'Plus de 30 jours avant l\'arrivée : 30 % du montant total',
+    'tpc-cancel-tier2': '15 à 30 jours avant l\'arrivée : 60 % du montant total',
+    'tpc-cancel-tier3': 'Moins de 15 jours avant l\'arrivée ou non-présentation : 100 % du montant total',
+    'tpc-cancellation-p2': 'Toute annulation doit être soumise par email. En cas de modification importante, le client sera informé par écrit et pourra accepter ou annuler gratuitement dans les 2 jours ouvrables.',
+    'tpc-payment-title': 'Modes de paiement',
+    'tpc-payment-p1': 'Les paiements sont traités en ligne de manière sécurisée via les cartes suivantes :',
+    'tpc-security-title': 'Paiement sécurisé',
+    'tpc-security-p1': 'Vos données sont protégées par un chiffrement SSL 128 bits empêchant tout accès non autorisé lors du transfert.',
+    'tpc-security-p2': 'Monri Payments est certifié PCI DSS Niveau 1. Les données sont échangées via un réseau privé virtuel (VPN) protégé.',
+    'tpc-security-p3': 'Les numéros de carte bancaire ne sont pas stockés par le marchand.',
+    'tpc-security-p4': 'Tous les paiements sont effectués en BAM (Mark convertible de Bosnie-Herzégovine). La conversion est effectuée par votre émetteur de carte.',
+    'tpc-complaints-title': 'Réclamations',
+    'tpc-complaints-p1': 'Les clients ont le droit de déposer une réclamation écrite pour tout service non fourni, dans les 8 jours suivant le départ.',
+    'tpc-complaints-p2': "Il est conseillé de signaler tout problème directement sur place. Le prestataire répondra par écrit dans les 15 jours.",
+    'tpc-complaints-p3': 'Règlement en ligne des litiges : ec.europa.eu/consumers/odr',
+    'tpc-privacy-title': 'Protection des données personnelles',
+    'tpc-privacy-p1': "Nous collectons uniquement les données minimales nécessaires à la réservation (nom, email, téléphone) et informons les clients de leur utilisation.",
+    'tpc-privacy-p2': 'Toutes les données sont strictement protégées et accessibles uniquement au personnel compétent. Le prestataire se réserve le droit de modifier ces conditions; les changements seront publiés sur ce site.',
     'review-1-text': '"Merci beaucoup de m\'avoir accueilli late check-in et pour la merveilleuse aide de votre personnel de réception, particulièrement pour quelqu\'un comme moi qui a tendance à oublier les choses. L\'emplacement était très pratique et l\'endroit était propre et bien entretenu. Bien que mon séjour était court, c\'était très confortable et agréable. La prochaine fois que je visite Mostar, j\'aimerais rester ici. Merci encore pour votre gentillesse."',
     'review-1-author': 'Takako',
     'review-1-location': 'Japon • Deluxe Suite • Février 2026',
@@ -989,6 +1137,7 @@ const translation = {
     'about-p4': 'Tutte le camere sono completamente climatizzate e dispongono di bagni privati. Alcune camere offrono viste spettacolari sulle montagne circostanti o sulla città. Ogni unità è dotata di Smart TV con canali satellitari, fornendo accesso ai servizi di streaming. Le unità di recente aggiunta sono anche dotate di una cucina completamente attrezzata, ideale per gli ospiti che desiderano maggiore indipendenza e comodità durante il loro soggiorno.',
     'about-p5': 'Il nostro team di ricezione è disponibile per assistere con escursioni personalizzate e tour guidati in tutta l\'Erzegovina, aiutandovi a scoprire la sua ricca cultura, bellezza naturale e gemme nascoste.',
     'about-p6': 'I punti di interesse popolari a distanza di passeggiata includono la Casa Muslibegović (900 metri) e il Vecchio Bazar di Kujundžiluk (100 metri). L\'aeroporto più vicino è l\'Aeroporto Internazionale di Mostar e l\'Aeroporto Internazionale di Sarajevo (110 km), e i trasferimenti aeroportuali possono essere organizzati su richiesta (si applicano spese aggiuntive).',
+    'about-p7': 'Le famiglie apprezzano particolarmente la posizione — l\'hanno valutata 9,7 per un soggiorno con bambini.',
     'rooms-title': 'Le Nostre Camere',
     'rooms-subtitle': 'Scopri la nostra collezione di alloggi confortevoli ed eleganti',
     'view-details': 'Visualizza Dettagli',
@@ -1092,11 +1241,47 @@ const translation = {
     'footer-guest-reviews': 'Recensioni degli Ospiti',
     'footer-follow-title': 'Seguici',
     'footer-copyright': '© 2026 Sinan Han. Tutti i diritti riservati. | Progettato con ♥ per i viaggiatori',
+    'hero-title': 'Casa vacanze \u201eSinan Han\u201c',
+    'nav-logo-title': 'Casa vacanze \u201eSinan Han\u201c',
+    'footer-company-name': 'Casa vacanze \u201eSINAN-HAN\u201c tit. Arif Ja\u0161ari',
+    'footer-registry': 'Registro: Tribunale municipale di Mostar | MBS: 58-01-0026-21',
+    'footer-tax-number': 'Codice fiscale (JIB): 4323213370002',
     'footer-house-rules-title': 'Visualizza le regole della casa e le politiche su Booking.com',
     'footer-important-info-title': 'Visualizza informazioni legali importanti su Booking.com',
     'footer-guest-reviews-title': 'Leggi le recensioni degli ospiti su Booking.com',
     'footer-registration-title': 'Visualizza il documento ufficiale di registrazione dell\'attività',
     'modal-book-btn': 'Prenota Questa Camera',
+    'footer-terms-privacy': 'Termini & Privacy',
+    'tpc-modal-title': 'Termini di utilizzo, privacy e acquisto',
+    'tpc-last-updated': 'Ultimo aggiornamento: giugno 2026',
+    'tpc-company-title': 'Fornitore del servizio',
+    'tpc-general-title': 'Termini e condizioni generali',
+    'tpc-general-p1': 'Questi Termini disciplinano la prenotazione, il pagamento e l\'utilizzo dei servizi di alloggio forniti dalla Casa vacanze Sinan Han. Completando una prenotazione confermate di aver letto e accettato tutte le condizioni.',
+    'tpc-general-p2': 'Il fornitore si impegna a erogare il servizio come descritto sul sito e ad agire nell\'interesse dell\'ospite secondo gli standard del settore. Il fornitore è responsabile per i danni causati da inadempimento contrattuale.',
+    'tpc-general-p3': 'In caso di circostanze straordinarie e imprevedibili al di fuori del controllo del fornitore (forza maggiore), il fornitore può modificare o cancellare la prenotazione. In tal caso l\'ospite ha diritto al rimborso completo.',
+    'tpc-obligations-title': 'Obblighi dell\'ospite',
+    'tpc-obligations-p1': 'L\'ospite si impegna a pagare il prezzo concordato e a fornire tutti i dati necessari per la prenotazione, assicurandosi che i propri documenti rispettino le normative vigenti.',
+    'tpc-obligations-p2': 'L\'ospite è responsabile per i danni derivanti dal mancato adempimento dei propri obblighi. I reclami devono essere presentati per iscritto entro 8 giorni dal check-out.',
+    'tpc-cancellation-title': 'Prenotazione e politica di cancellazione',
+    'tpc-cancellation-p1': 'Le prenotazioni vengono effettuate tramite il modulo online e si considerano confermate al ricevimento del pagamento. In caso di cancellazione da parte dell\'ospite si applicano le seguenti penali:',
+    'tpc-cancel-tier1': 'Più di 30 giorni prima dell\'arrivo: 30% dell\'importo totale',
+    'tpc-cancel-tier2': 'Da 15 a 30 giorni prima dell\'arrivo: 60% dell\'importo totale',
+    'tpc-cancel-tier3': 'Meno di 15 giorni prima dell\'arrivo o no-show: 100% dell\'importo totale',
+    'tpc-cancellation-p2': 'Tutte le cancellazioni devono essere inviate via email. In caso di modifiche significative il fornitore informerà l\'ospite per iscritto; l\'ospite potrà accettare o cancellare gratuitamente entro 2 giorni lavorativi.',
+    'tpc-payment-title': 'Metodi di pagamento',
+    'tpc-payment-p1': 'I pagamenti vengono elaborati in modo sicuro online tramite le seguenti carte:',
+    'tpc-security-title': 'Pagamento sicuro',
+    'tpc-security-p1': 'I vostri dati sono protetti dalla crittografia SSL a 128 bit che impedisce accessi non autorizzati durante il trasferimento.',
+    'tpc-security-p2': 'Monri Payments è certificato PCI DSS Livello 1. I dati vengono scambiati tramite VPN protetta.',
+    'tpc-security-p3': 'I numeri di carta di credito non vengono memorizzati dal fornitore.',
+    'tpc-security-p4': 'Tutti i pagamenti sono in BAM (Marco Convertibile della Bosnia-Erzegovina). La conversione è effettuata dal vostro emittente della carta.',
+    'tpc-complaints-title': 'Reclami',
+    'tpc-complaints-p1': 'Gli ospiti hanno il diritto di presentare reclami scritti entro 8 giorni dal check-out per servizi non forniti.',
+    'tpc-complaints-p2': 'È nell\'interesse dell\'ospite segnalare i problemi direttamente in loco. Il fornitore risponderà per iscritto entro 15 giorni.',
+    'tpc-complaints-p3': 'Risoluzione online delle controversie: ec.europa.eu/consumers/odr',
+    'tpc-privacy-title': 'Protezione dei dati personali',
+    'tpc-privacy-p1': 'Raccogliamo solo i dati minimi necessari per la prenotazione (nome, email, telefono) e informiamo gli ospiti del loro utilizzo.',
+    'tpc-privacy-p2': 'Tutti i dati personali sono strettamente custoditi e accessibili solo al personale competente. Il fornitore si riserva il diritto di modificare questi termini; le modifiche saranno pubblicate sul sito.',
     'review-1-text': '"Grazie mille per aver accomodato il mio check-in tardivo e il meraviglioso supporto dal vostro personale di reception, specialmente per qualcuno come me che tende a dimenticare le cose. La posizione era molto conveniente, e il luogo era pulito e ben mantenuto. Anche se il mio soggiorno è stato breve, è stato molto confortevole e piacevole. Quando visiterò di nuovo Mostar, starei definitivamente qui di nuovo. Grazie ancora per la vostra gentilezza."',
     'review-1-author': 'Takako',
     'review-1-location': 'Giappone • Deluxe Suite • Febbraio 2026',
@@ -1208,6 +1393,7 @@ const translation = {
     'about-p4': 'Tüm misafir odaları tam klimalaşmış olup özel banyolara sahiptir. Seçili odalar çevredeki dağ veya şehir manzaralarını sunmaktadır. Her birim uydu kanalları olan Akıllı TV ile donatılmış olup yayın hizmetlerine erişim sağlar. Yeni eklenen birimler tam donanımlı mutfak içermekte olup, konforluluk ve rahatlık isteyenlerin konaklama sırasında teknikleri istiyorlar.',
     'about-p5': 'Resepsiyon ekibimiz Herzegovina genelinde kişisel geziler ve rehberli turlar sağlamaya yardımcı olmaya hazırdır. Böylece zengin kültürü, doğal güzelliği ve gizli mücevherleri keşfetmenize yardımcı oluruz.',
     'about-p6': 'Yürüyüş mesafesi içindeki popüler ilgi noktaları Muslibegović Evi (900 metre) ve Eski Kujundžiluk Pazarı (100 metre) içermektedir. En yakın havaalanı Mostar Uluslararası Havaalanı ve Saraybosna Uluslararası Havaalanı (110 km) olarak bulunmaktadır, havaalanı transferleri talep üzerine düzenlenebilir (ek ücret uygulanır).',
+    'about-p7': 'Aileler konumu özellikle beğeniyor — çocuklarıyla konaklama için 9,7 puan verdiler.',
     'rooms-title': 'Odalarımız',
     'rooms-subtitle': 'Rahat ve zarif konaklama koleksiyonumuzu keşfedin',
     'view-details': 'Detayları Görüntüle',
@@ -1311,11 +1497,47 @@ const translation = {
     'footer-guest-reviews': 'Misafir Yorumları',
     'footer-follow-title': 'Bizi İzleyin',
     'footer-copyright': '© 2026 Sinan Han. Tüm hakları saklıdır. | Gezginler için ♥ ile tasarlandı',
+    'hero-title': 'Ev Pansiyonu \u201eSinan Han\u201c',
+    'nav-logo-title': 'Ev Pansiyonu \u201eSinan Han\u201c',
+    'footer-company-name': 'Ev Pansiyonu \u201eSINAN-HAN\u201c sah. Arif Ja\u0161ari',
+    'footer-registry': 'Sicil: Mostar Belediye Mahkemesi | MBS: 58-01-0026-21',
+    'footer-tax-number': 'Vergi Numarası (JIB): 4323213370002',
     'footer-house-rules-title': 'Booking.com\'da ev kurallarımızı ve politikalarımızı görüntüleyin',
     'footer-important-info-title': 'Booking.com\'da önemli yasal bilgileri görüntüleyin',
     'footer-guest-reviews-title': 'Booking.com\'da misafir yorumlarını okuyun',
     'footer-registration-title': 'Resmi işletme kayıt belgesini görüntüleyin',
     'modal-book-btn': 'Bu Odayı Rezervasyon Yap',
+    'footer-terms-privacy': 'Şartlar & Gizlilik',
+    'tpc-modal-title': 'Kullanım Koşulları, Gizlilik ve Satın Alma Politikası',
+    'tpc-last-updated': 'Son güncelleme: Haziran 2026',
+    'tpc-company-title': 'Hizmet Sağlayıcı',
+    'tpc-general-title': 'Genel Şartlar ve Koşullar',
+    'tpc-general-p1': 'Bu Şartlar, Sinan Han Ev Pansiyonu tarafından sağlanan konaklama hizmetlerinin rezervasyonunu, ödenmesini ve kullanımını düzenlemektedir. Rezervasyonu tamamlayarak tüm şartları okuduğunuzu ve kabul ettiğinizi onaylarsınız.',
+    'tpc-general-p2': 'Hizmet sağlayıcı, konaklama hizmetini web sitesinde belirtildiği şekilde sunmayı ve sektör standartlarına uygun olarak misafirin çıkarları doğrultusunda hareket etmeyi taahhüt eder.',
+    'tpc-general-p3': 'Hizmet sağlayıcının kontrolü dışındaki olağanüstü ve öngörülemeyen koşullarda (mücbir sebep) rezervasyon değiştirilebilir veya iptal edilebilir. Bu durumda misafir tam iade hakkına sahiptir.',
+    'tpc-obligations-title': 'Misafirin Yükümlülükleri',
+    'tpc-obligations-p1': 'Misafir, kararlaştırılan ücreti ödemeyi ve rezervasyonun doğru işlenebilmesi için gerekli tüm bilgileri sağlamayı kabul eder.',
+    'tpc-obligations-p2': 'Misafir, yükümlülüklerini yerine getirmemesinden doğan zararlardan sorumludur. Şikayetler, check-out tarihinden itibaren 8 gün içinde yazılı olarak iletilmelidir.',
+    'tpc-cancellation-title': 'Rezervasyon ve İptal Politikası',
+    'tpc-cancellation-p1': 'Rezervasyonlar çevrimiçi form aracılığıyla yapılır ve ödeme alındığında onaylanır. Misafirin iptali halinde aşağıdaki ücretler uygulanır:',
+    'tpc-cancel-tier1': 'Varıştan 30 günden fazla önce: toplam tutarın %30\'u',
+    'tpc-cancel-tier2': 'Varıştan 15–30 gün önce: toplam tutarın %60\'ı',
+    'tpc-cancel-tier3': 'Varıştan 15 günden az önce veya gelmeme: toplam tutarın %100\'ü',
+    'tpc-cancellation-p2': 'Tüm iptaller e-posta yoluyla yazılı olarak yapılmalıdır. Önemli değişiklikler halinde misafir yazılı olarak bilgilendirilir ve 2 iş günü içinde ücretsiz iptal edebilir.',
+    'tpc-payment-title': 'Ödeme Yöntemleri',
+    'tpc-payment-p1': 'Ödemeler aşağıdaki kredi ve banka kartları aracılığıyla güvenli olarak işlenir:',
+    'tpc-security-title': 'Güvenli Ödeme',
+    'tpc-security-p1': 'Verileriniz, yetkisiz erişimi önleyen 128 bit SSL şifrelemesiyle korunmaktadır.',
+    'tpc-security-p2': 'Monri Payments, PCI DSS Seviye 1 sertifikalı bir ödeme hizmet sağlayıcısıdır. Veriler, korumalı VPN aracılığıyla değiştirilir.',
+    'tpc-security-p3': 'Kredi kartı numaraları satıcı tarafından saklanmaz ve yetkisiz kişilerin erişimine kapalıdır.',
+    'tpc-security-p4': 'Tüm ödemeler BAM (Bosna-Hersek Konvertibl Markı) cinsinden işlenir. Döviz dönüşümü kart kuruluşunuz tarafından yapılır.',
+    'tpc-complaints-title': 'Şikayetler',
+    'tpc-complaints-p1': 'Misafirler, sağlanmayan hizmetler için check-out tarihinden itibaren 8 gün içinde yazılı şikayet hakkına sahiptir.',
+    'tpc-complaints-p2': 'Sorunların önce yerinde hizmet sağlayıcıya bildirilmesi misafirin yararınadır. Sağlayıcı, şikayeti aldıktan itibaren 15 gün içinde yazılı yanıt verir.',
+    'tpc-complaints-p3': 'Çevrimiçi uyuşmazlık çözümü: ec.europa.eu/consumers/odr',
+    'tpc-privacy-title': 'Kişisel Verilerin Korunması',
+    'tpc-privacy-p1': 'Yalnızca rezervasyon yükümlülüklerimizi yerine getirmek için gerekli asgari kişisel verileri (ad, e-posta, telefon) topluyoruz.',
+    'tpc-privacy-p2': 'Tüm kişisel veriler sıkı biçimde korunur ve yalnızca yetkili çalışanların erişimine açıktır. Sağlayıcı bu şartları değiştirme hakkını saklı tutar; değişiklikler web sitesinde yayımlanır.',
     'select-room': 'Bir oda seçin',
     'currency-bam': 'BAM (Bosnian Marka)',
     'currency-eur': 'EUR (Euro)',
@@ -1430,6 +1652,7 @@ const translation = {
     'about-p4': 'جميع غرف الضيوف مكيفة بالكامل وتشمل حمامات خاصة. تتمتع بعض الغرف بإطلالات رائعة على الجبال أو المدينة المحيطة. كل وحدة مزودة بتلفزيون ذكي يحتوي على قنوات فضائية توفر إمكانية الوصول إلى خدمات البث. تشمل الوحدات المضافة حديثا أيضا مطبخا مجهزا بالكامل، وهو مثالي للضيوف الذين يبحثون عن المزيد من الاستقلالية والراحة أثناء إقامتهم.',
     'about-p5': 'فريق الاستقبال لدينا متاح للمساعدة في الرحلات المخصصة والجولات الموجهة في جميع أنحاء الهرسك، مما يساعدك على اكتشاف ثقافتها الغنية والجمال الطبيعي والنوى المخفية.',
     'about-p6': 'تشمل نقاط الاهتمام الشهيرة على مسافة قريبة بيت موسليبيجوفتش (900 متر) وبازار كوجونجيلوك القديم (100 متر). يقع أقرب مطار إلى مطار موستار الدولي ومطار سراييفو الدولي (110 كم)، ويمكن ترتيب النقل من المطار عند الطلب (رسوم إضافية).',
+    'about-p7': 'العائلات تحب الموقع بشكل خاص — قيّمته بـ 9.7 للإقامة مع الأطفال.',
     'rooms-title': 'غرفنا',
     'rooms-subtitle': 'اكتشف مجموعتنا من أماكن الإقامة المريحة والأنيقة',
     'view-details': 'عرض التفاصيل',
@@ -1533,11 +1756,47 @@ const translation = {
     'footer-guest-reviews': 'تقييمات الضيوف',
     'footer-follow-title': 'تابعنا',
     'footer-copyright': '© 2026 سنان هان. جميع الحقوق محفوظة. | صممت بـ ♥ للمسافرين',
+    'hero-title': '\u063a\u0631\u0641 \u0645\u0646\u0632\u0644\u064a\u0629 \u201eSinan Han\u201c',
+    'nav-logo-title': '\u063a\u0631\u0641 \u0645\u0646\u0632\u0644\u064a\u0629 \u201eSinan Han\u201c',
+    'footer-company-name': '\u063a\u0631\u0641 \u0645\u0646\u0632\u0644\u064a\u0629 \u201eSINAN-HAN\u201c \u0635\u0627\u062d\u0628 \u0623\u0631\u064a\u0641 \u064a\u0627\u0634\u0627\u0631\u064a',
+    'footer-registry': 'السجل: المحكمة البلدية في موستار | MBS: 58-01-0026-21',
+    'footer-tax-number': 'الرقم الضريبي (JIB): 4323213370002',
     'footer-house-rules-title': 'اعرض قواعد المنزل والسياسات على Booking.com',
     'footer-important-info-title': 'اعرض المعلومات القانونية المهمة على Booking.com',
     'footer-guest-reviews-title': 'اقرأ تقييمات الضيوف على Booking.com',
     'footer-registration-title': 'عرض وثيقة التسجيل التجاري الرسمية',
     'modal-book-btn': 'احجز هذه الغرفة',
+    'footer-terms-privacy': 'الشروط والخصوصية',
+    'tpc-modal-title': 'شروط الاستخدام والخصوصية وسياسة الشراء',
+    'tpc-last-updated': 'آخر تحديث: يونيو 2026',
+    'tpc-company-title': 'مزود الخدمة',
+    'tpc-general-title': 'الشروط والأحكام العامة',
+    'tpc-general-p1': 'تحكم هذه الشروط عملية الحجز والدفع واستخدام خدمات الإقامة التي تقدمها غرف منزلية سينان هان. باستكمال الحجز، تؤكد قراءتك لجميع الشروط وموافقتك عليها.',
+    'tpc-general-p2': 'يلتزم مزود الخدمة بتقديم خدمة الإقامة كما هو موضح على الموقع الإلكتروني، ويتحمل المسؤولية عن الأضرار الناجمة عن عدم الوفاء بالالتزامات التعاقدية.',
+    'tpc-general-p3': 'في حالة ظروف استثنائية غير متوقعة خارجة عن سيطرة مزود الخدمة (القوة القاهرة)، يحق له تعديل الحجز أو إلغاؤه، وفي هذه الحالة يحق للضيف استرداد المبلغ المدفوع بالكامل.',
+    'tpc-obligations-title': 'التزامات الضيف',
+    'tpc-obligations-p1': 'يلتزم الضيف بدفع السعر المتفق عليه وتزويد جميع البيانات اللازمة لمعالجة الحجز بشكل صحيح.',
+    'tpc-obligations-p2': 'يتحمل الضيف مسؤولية الأضرار الناجمة عن إخلاله بالتزاماته. يجب تقديم أي شكوى كتابياً خلال 8 أيام من تاريخ المغادرة.',
+    'tpc-cancellation-title': 'سياسة الحجز والإلغاء',
+    'tpc-cancellation-p1': 'تتم الحجوزات عبر نموذج الحجز الإلكتروني وتُعتبر مؤكدة عند استلام الدفع. في حالة الإلغاء من قِبل الضيف تُطبَّق الرسوم التالية:',
+    'tpc-cancel-tier1': 'أكثر من 30 يوماً قبل الوصول: 30% من المبلغ الإجمالي',
+    'tpc-cancel-tier2': 'من 15 إلى 30 يوماً قبل الوصول: 60% من المبلغ الإجمالي',
+    'tpc-cancel-tier3': 'أقل من 15 يوماً قبل الوصول أو عدم الحضور: 100% من المبلغ الإجمالي',
+    'tpc-cancellation-p2': 'يجب إرسال جميع طلبات الإلغاء عبر البريد الإلكتروني. في حالة التغييرات الجوهرية، سيتم إخطار الضيف كتابياً ويمكنه الإلغاء مجاناً خلال يومي عمل.',
+    'tpc-payment-title': 'طرق الدفع',
+    'tpc-payment-p1': 'تُعالج المدفوعات بأمان عبر الإنترنت من خلال بطاقات الائتمان والخصم التالية:',
+    'tpc-security-title': 'الدفع الآمن',
+    'tpc-security-p1': 'تتمتع بياناتك بالحماية عبر تشفير SSL بـ 128 بت يمنع أي وصول غير مصرح به أثناء نقل البيانات.',
+    'tpc-security-p2': 'Monri Payments شركة معتمدة وفق معيار PCI DSS المستوى الأول. يتم تبادل البيانات عبر شبكة VPN محمية.',
+    'tpc-security-p3': 'لا يتم تخزين أرقام بطاقات الائتمان من قِبل التاجر ولا يمكن لأي شخص غير مصرح له الوصول إليها.',
+    'tpc-security-p4': 'جميع المدفوعات تتم بالمارك الإقليمي البوسني (BAM). يقوم مصدر بطاقتك بتحويل العملة وفق سعر الصرف المعمول به.',
+    'tpc-complaints-title': 'الشكاوى',
+    'tpc-complaints-p1': 'يحق للضيوف تقديم شكاوى كتابية خلال 8 أيام من المغادرة عن أي خدمة غير مُقدَّمة.',
+    'tpc-complaints-p2': 'يُنصح الضيف بالإبلاغ عن أي مشكلة أولاً مباشرةً في الموقع. سيرد مزود الخدمة كتابياً خلال 15 يوماً.',
+    'tpc-complaints-p3': 'لتسوية النزاعات عبر الإنترنت: ec.europa.eu/consumers/odr',
+    'tpc-privacy-title': 'حماية البيانات الشخصية',
+    'tpc-privacy-p1': 'نجمع فقط الحد الأدنى من البيانات الشخصية اللازمة للحجز (الاسم، البريد الإلكتروني، الهاتف) ونُبلغ الضيوف بطريقة استخدامها.',
+    'tpc-privacy-p2': 'جميع البيانات الشخصية محمية بصرامة ولا يمكن الوصول إليها إلا للموظفين المعنيين. يحتفظ مزود الخدمة بحق تعديل هذه الشروط وسيتم نشر أي تغييرات على الموقع.',
     'select-room': 'اختر غرفة',
     'currency-bam': 'BAM (العلامة البوسنية)',
     'currency-eur': 'EUR (اليورو)',
@@ -1645,25 +1904,52 @@ const translation = {
  * object, then re-applies the current language.
  * Falls back to the inline object if the file cannot be loaded.
  */
-async function loadExternalTranslations() {
-    try {
-        const cached = localStorage.getItem('sinanhan_translations_v1');
-        if (cached) {
-            const data = JSON.parse(cached);
-            mergeTranslations(data);
-            return;
-        }
+const TRANSLATION_CACHE_KEY = 'sinanhan_translations_v3';
 
-        const response = await fetch('/translations.json');
+function isValidTranslationPayload(data) {
+    if (!data || typeof data !== 'object' || Array.isArray(data)) return false;
+
+    const requiredLangs = ['en', 'bs', 'de', 'fr', 'it', 'tr', 'ar'];
+    return requiredLangs.every(lang => {
+        const bag = data[lang];
+        return bag &&
+            typeof bag === 'object' &&
+            !Array.isArray(bag) &&
+            typeof bag['footer-terms-privacy'] === 'string' &&
+            typeof bag['tpc-modal-title'] === 'string' &&
+            typeof bag['tpc-privacy-p2'] === 'string';
+    });
+}
+
+async function loadExternalTranslations() {
+    // Invalidate legacy cache to avoid stale translations masking current keys.
+    localStorage.removeItem('sinanhan_translations_v2');
+
+    try {
+        const response = await fetch('/translations.json', { cache: 'no-store' });
         if (!response.ok) throw new Error('translations.json not found');
 
         const data = await response.json();
+        if (!isValidTranslationPayload(data)) {
+            throw new Error('translations.json payload is invalid');
+        }
+
         mergeTranslations(data);
 
-        // Cache locally for 24h (avoid repeat fetches)
-        localStorage.setItem('sinanhan_translations_v1', JSON.stringify(data));
+        // Cache validated payload.
+        localStorage.setItem(TRANSLATION_CACHE_KEY, JSON.stringify(data));
     } catch (err) {
-        // Silent fallback – inline translations still work
+        try {
+            const cached = localStorage.getItem(TRANSLATION_CACHE_KEY);
+            if (!cached) return;
+
+            const data = JSON.parse(cached);
+            if (isValidTranslationPayload(data)) {
+                mergeTranslations(data);
+            }
+        } catch (_cacheErr) {
+            // Silent fallback – inline translations still work.
+        }
     }
 }
 
@@ -1989,6 +2275,7 @@ function changeLanguage(lang) {
 
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
+        if (key === 'nav-logo-title') return;
         if (translation[lang] && translation[lang][key]) {
             el.textContent = translation[lang][key];
         }
@@ -2010,13 +2297,21 @@ function changeLanguage(lang) {
     });
 }
 
+window.changeLanguage = changeLanguage;
+
 window.addEventListener('load', function () {
     // Always start with English - don't persist language across refreshes
     const defaultLang = 'en';
     const desktopSelector = document.getElementById('language-selector');
     const mobileSelector = document.getElementById('language-selector-mobile');
-    if (desktopSelector) desktopSelector.value = defaultLang;
-    if (mobileSelector) mobileSelector.value = defaultLang;
+    if (desktopSelector) {
+        desktopSelector.value = defaultLang;
+        desktopSelector.addEventListener('change', function () { changeLanguage(this.value); });
+    }
+    if (mobileSelector) {
+        mobileSelector.value = defaultLang;
+        mobileSelector.addEventListener('change', function () { changeLanguage(this.value); });
+    }
     changeLanguage(defaultLang);
 });
 

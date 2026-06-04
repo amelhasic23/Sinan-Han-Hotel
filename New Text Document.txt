@@ -1,0 +1,38 @@
+booking-ui.min.js?v=2:1  POST https://hotelsinanhan.com/api/bookings 403 (Forbidden)
+
+The response was:
+550 5.7.26 Your email has been blocked because the sender is unauthenticated. Gmail requires all senders to authenticate with either SPF or DKIM. Authentication results: DKIM = did not pass SPF [hotelsinanhan.com] with ip: [209.85.220.41] = did not pass For instructions on setting up authentication, go to https://support.google.com/mail/answer/81126#authentication 5b1f17b1804b1-490b0e16381sor5516125e9.2 - gsmtp
+
+
+
+358.07 eur
+
+
+
+Za stranicu https://hotelsinanhan.com/ potrebno je izvršiti sljedeće izmjene i dopune:
+
+Dodati puni naziv tvrtke.
+Dodati broj sudskog ili drugog javnog registra u koji je subjekt upisan, zajedno s podacima o registru.
+Dodati porezni broj.
+Dodati nedostajući logotip kartičnog brenda Maestro.
+Dodati logotipove sigurnosnih programa Visa Secure i MasterCard Identity Check.
+Uskladiti redoslijed prikaza logotipova prema preporučenom rasporedu:
+Visa → MasterCard → Maestro → Visa Secure → MasterCard Identity Check → Monri x UniCredit Bank.
+Dodati obavezne tekstove propisane dokumentacijom. Navedene tekstove možete pronaći u dokumentaciji, poglavlje 1.5.
+
+
+
+Tip: TXT
+
+Host/Name: @ (ili ostavite prazno, zavisno od provajdera)
+
+Value/Content: v=spf1 include:_spf.google.com ~all
+
+
+
+
+Ako je to Google Workspace: Idite na Admin Console -> Apps -> Google Workspace -> Gmail -> Authenticate email.
+
+Tamo generišite novi TXT zapis, dobićete nešto poput google._domainkey kao naziv i dugačak niz karaktera kao vrednost.
+
+Taj zapis prekopirajte u DNS podešavanja domena.
