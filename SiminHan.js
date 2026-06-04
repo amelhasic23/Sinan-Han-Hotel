@@ -1909,16 +1909,10 @@ const TRANSLATION_CACHE_KEY = 'sinanhan_translations_v3';
 function isValidTranslationPayload(data) {
     if (!data || typeof data !== 'object' || Array.isArray(data)) return false;
 
-    const requiredLangs = ['en', 'bs', 'de', 'fr', 'it', 'tr', 'ar'];
-    return requiredLangs.every(lang => {
-        const bag = data[lang];
-        return bag &&
-            typeof bag === 'object' &&
-            !Array.isArray(bag) &&
-            typeof bag['footer-terms-privacy'] === 'string' &&
-            typeof bag['tpc-modal-title'] === 'string' &&
-            typeof bag['tpc-privacy-p2'] === 'string';
-    });
+    const languageBags = Object.values(data);
+    if (languageBags.length === 0) return false;
+
+    return languageBags.every(bag => bag && typeof bag === 'object' && !Array.isArray(bag));
 }
 
 async function loadExternalTranslations() {
@@ -1956,6 +1950,9 @@ async function loadExternalTranslations() {
 /** Deep merge external data into the existing `translation` object */
 function mergeTranslations(data) {
     for (const lang of Object.keys(data)) {
+        if (!data[lang] || typeof data[lang] !== 'object' || Array.isArray(data[lang])) {
+            continue;
+        }
         if (!translation[lang]) {
             translation[lang] = {};
         }
@@ -2276,23 +2273,35 @@ function changeLanguage(lang) {
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (key === 'nav-logo-title') return;
-        if (translation[lang] && translation[lang][key]) {
-            el.textContent = translation[lang][key];
+        const localizedValue = translation[lang] && translation[lang][key];
+        const fallbackValue = translation.en && translation.en[key];
+        if (localizedValue) {
+            el.textContent = localizedValue;
+        } else if (fallbackValue) {
+            el.textContent = fallbackValue;
         }
     });
 
     document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
         const key = el.getAttribute('data-i18n-placeholder');
-        if (translation[lang] && translation[lang][key]) {
-            el.setAttribute('placeholder', translation[lang][key]);
+        const localizedValue = translation[lang] && translation[lang][key];
+        const fallbackValue = translation.en && translation.en[key];
+        if (localizedValue) {
+            el.setAttribute('placeholder', localizedValue);
+        } else if (fallbackValue) {
+            el.setAttribute('placeholder', fallbackValue);
         }
     });
 
     // Handle title attributes for tooltips
     document.querySelectorAll('[data-i18n-title]').forEach(el => {
         const key = el.getAttribute('data-i18n-title');
-        if (translation[lang] && translation[lang][key]) {
-            el.setAttribute('title', translation[lang][key]);
+        const localizedValue = translation[lang] && translation[lang][key];
+        const fallbackValue = translation.en && translation.en[key];
+        if (localizedValue) {
+            el.setAttribute('title', localizedValue);
+        } else if (fallbackValue) {
+            el.setAttribute('title', fallbackValue);
         }
     });
 }
