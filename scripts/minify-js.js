@@ -1,42 +1,28 @@
 #!/usr/bin/env node
 
-/**
- * Simple JavaScript minifier
- * Removes comments, whitespace, and basic optimizations
- */
-
 const fs = require('fs');
 const path = require('path');
+const { minify } = require('terser');
 
-function minifyJS(inputFile, outputFile) {
+async function minifyJS(inputFile, outputFile) {
     try {
-        // Read the file
-        let code = fs.readFileSync(inputFile, 'utf8');
+        const code = fs.readFileSync(inputFile, 'utf8');
+        const result = await minify(code, {
+            compress: {
+                passes: 2,
+                defaults: true
+            },
+            mangle: true,
+            format: {
+                comments: false
+            }
+        });
 
-        // Remove single-line comments (except directives like shebang)
-        code = code.replace(/^[\s]*\/\/.*$/gm, '');
+        if (!result.code) {
+            throw new Error('Terser returned empty output');
+        }
 
-        // Remove multi-line comments
-        code = code.replace(/\/\*[\s\S]*?\*\//g, '');
-
-        // Remove leading/trailing whitespace on each line
-        code = code.split('\n')
-            .map(line => line.trim())
-            .filter(line => line.length > 0)
-            .join('\n');
-
-        // Remove extra newlines
-        code = code.replace(/\n\s*\n/g, '\n');
-
-        // Remove spaces around operators (carefully)
-        code = code.replace(/\s*([=+\-*/%<>!&|^~?:;,.])\s*/g, '$1');
-
-        // Add spaces back after keywords
-        code = code.replace(/(if|else|for|while|function|return|var|let|const|switch|case|default)\(/g, '$1 (');
-        code = code.replace(/(if|else|for|while|function|return|var|let|const|switch|case|default) \(/g, '$1 (');
-
-        // Write minified file
-        fs.writeFileSync(outputFile, code);
+        fs.writeFileSync(outputFile, result.code);
 
         const originalSize = fs.statSync(inputFile).size;
         const minifiedSize = fs.statSync(outputFile).size;
@@ -48,12 +34,15 @@ function minifyJS(inputFile, outputFile) {
         console.log(`  Savings: ${savings}%`);
     } catch (err) {
         console.error(`✗ Error minifying ${inputFile}:`, err.message);
+        process.exitCode = 1;
     }
 }
 
-// Minify both JS files
-minifyJS('SiminHan.js', 'SiminHan.min.js');
-minifyJS('booking-ui.js', 'booking-ui.min.js');
-minifyJS('sw.js', 'sw.min.js');
+async function main() {
+    await minifyJS('SiminHan.js', 'SiminHan.min.js');
+    await minifyJS('booking-ui.js', 'booking-ui.min.js');
+    await minifyJS('sw.js', 'sw.min.js');
+    console.log('\n✓ JavaScript minification complete!');
+}
 
-console.log('\n✓ JavaScript minification complete!');
+main();

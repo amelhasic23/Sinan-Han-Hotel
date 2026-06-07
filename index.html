@@ -53,18 +53,38 @@
     <style>
     :root{--primary:#c19a6b;--primary-dark:#9a7a52;--secondary:#2c3e50;--light:#f5f5f5;--white:#fff;--text:#333;--text-light:#666}
     *{margin:0;padding:0;box-sizing:border-box}
-    html{scroll-behavior:smooth}
+    html{scroll-behavior:smooth;overflow-x:hidden}
     body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;color:var(--text);line-height:1.6;overflow-x:hidden}
-    .navbar{position:fixed;top:0;width:100%;background:rgba(255,255,255,.98);backdrop-filter:blur(10px);box-shadow:0 2px 10px rgba(0,0,0,.1);z-index:1000;transition:all .3s ease;display:flex;align-items:center;justify-content:center;height:70px;padding:0 2rem;border-bottom:1px solid rgba(193,154,107,.1)}
+    .navbar{position:fixed;top:0;width:100%;max-width:100%;background:rgba(255,255,255,.98);backdrop-filter:blur(10px);box-shadow:0 2px 10px rgba(0,0,0,.1);z-index:1000;transition:all .3s ease;display:flex;align-items:center;justify-content:center;height:70px;padding:0 2rem;border-bottom:1px solid rgba(193,154,107,.1)}
+    .nav-container{display:flex;align-items:center;justify-content:flex-start;flex:0 0 auto;gap:2rem}
+    .nav-logo{display:flex;align-items:center;cursor:pointer;text-decoration:none}
+    .nav-menu{display:flex;gap:2rem;align-items:center;flex:1;justify-content:center}
+    .nav-link-active{color:var(--text);text-decoration:none;font-weight:500;position:relative;transition:color .3s ease;padding:.5rem 0;display:inline-block}
+    .nav-link-active.active{color:var(--primary-dark)}
+    .nav-link-active::after{content:"";position:absolute;width:0;height:2px;bottom:-5px;left:0;background:var(--primary);transition:width .3s ease}
+    .nav-link-active.active::after{width:100%}
+    #navHamburger{display:none;flex-direction:column;background:transparent;border:none;cursor:pointer;gap:6px;padding:.5rem;min-width:44px;min-height:44px;align-items:center;justify-content:center}
+    #navHamburger span{display:block;width:24px;height:2px;background:var(--text)}
+    .nav-right{display:flex;align-items:center;gap:1rem}
+    .language-dropdown{background:transparent;border:2px solid #ddd;color:var(--text);padding:.5rem .75rem;border-radius:5px;font-size:.9rem;cursor:pointer;font-family:inherit;min-height:44px;min-width:120px}
+    .language-mobile,.mobile-nav-controls{display:none}
+    .language-desktop{display:inline-block}
+    .btn-book{background:var(--primary);color:#1a1a1a;border:none;padding:.75rem 1.5rem;border-radius:5px;font-weight:600;cursor:pointer}
     .container{max-width:1200px;margin:0 auto;padding:0 2rem}
-    .hero{position:relative;height:100vh;min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;background-size:cover;background-position:center;overflow:hidden;contain:layout paint}
+    .hero{position:relative;height:100vh;min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;background-size:cover;background-position:center;overflow:hidden;contain:layout paint;padding-top:70px}
     .hero-background-image{aspect-ratio:16/9}
     .hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,rgba(0,0,0,.6),rgba(193,154,107,.3));z-index:1}
     .hero-content{position:relative;z-index:2;text-align:center;color:var(--white);max-width:800px;padding:2rem}
-    .hero-title{font-size:4rem;font-weight:700;margin-bottom:1rem;text-shadow:2px 2px 4px rgba(0,0,0,.5)}
-    .hero-subtitle{font-size:1.5rem;margin-bottom:2rem;text-shadow:1px 1px 2px rgba(0,0,0,.5)}
-    .skip-to-content{position:absolute;left:-9999px;z-index:999;padding:1rem;background:var(--primary);color:var(--white);text-decoration:none}
-    .skip-to-content:focus{left:50%;transform:translateX(-50%);top:1rem}
+    .hero-title{font-size:4rem;font-weight:800;margin-bottom:1rem;letter-spacing:3px;line-height:1.2;text-shadow:2px 2px 12px rgba(0,0,0,.8)}
+    .hero-subtitle{font-size:1.3rem;margin:0 auto 2rem;font-weight:300;letter-spacing:.5px;line-height:1.6;max-width:90%;text-shadow:2px 2px 8px rgba(0,0,0,.8)}
+    .scroll-indicator{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:2}
+    .mouse{width:26px;height:40px;border:2px solid #fff;border-radius:13px;position:relative;margin-bottom:20px}
+    .wheel{width:4px;height:6px;background:#fff;border-radius:2px;position:absolute;top:8px;left:50%;transform:translateX(-50%)}
+    .skip-to-content,.skip-nav{position:absolute;left:-9999px;z-index:999;padding:1rem;background:var(--primary);color:var(--white);text-decoration:none}
+    .skip-to-content:focus,.skip-nav:focus{left:50%;transform:translateX(-50%);top:1rem}
+    @media (max-width:1024px){.hero-title{font-size:3.5rem}.hero-subtitle{font-size:1.15rem}}
+    @media (max-width:768px){.navbar{padding:0 1.5rem;justify-content:space-between}.nav-container{flex:1;justify-content:space-between}.nav-menu{display:none;position:fixed;top:70px;left:0;right:0;flex-direction:column;background:#fff;padding:1rem 0;box-shadow:0 4px 12px rgba(0,0,0,.1);z-index:999;max-height:calc(100vh - 80px);overflow-y:auto}.nav-menu.active{display:flex}.mobile-nav-controls,.language-mobile,#navHamburger{display:flex!important}.language-mobile{min-width:60px;padding:.5rem;font-size:.85rem;background:#fff}.language-desktop,.nav-right,.btn-book{display:none!important}.hero-title{font-size:2.5rem}.hero-subtitle{font-size:1rem}}
+    @media (max-width:480px){.hero-title{font-size:1.8rem;letter-spacing:1px}.hero-subtitle{font-size:.95rem}}
     /* Font Awesome 6 — minimal subset, inlined to avoid render-blocking request */
     @font-face{font-family:"Font Awesome 6 Free";font-style:normal;font-weight:900;font-display:swap;src:url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-solid-900.woff2") format("woff2"),url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-solid-900.ttf") format("truetype")}
     @font-face{font-family:"Font Awesome 6 Brands";font-style:normal;font-weight:400;font-display:swap;src:url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-brands-400.woff2") format("woff2"),url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-brands-400.ttf") format("truetype")}
@@ -75,7 +95,8 @@
     .fa-facebook:before{content:"\f09a"}.fa-instagram:before{content:"\f16d"}
     </style>
     <!-- Full CSS -->
-    <link rel="stylesheet" href="SinanHan.min.css?v=2">
+    <link rel="preload" as="style" href="SinanHan.min.css?v=3" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="SinanHan.min.css?v=3"></noscript>
     <!-- Structured Data (JSON-LD) for Google rich results -->
     <script type="application/ld+json">
     {
@@ -157,10 +178,8 @@
 <body>
     <script>
         if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-        if (location.hash) history.replaceState(null, '', location.pathname);
+        if (location.hash) history.replaceState(null, '', location.pathname + location.search);
         window.scrollTo(0, 0);
-        document.addEventListener('DOMContentLoaded', function() { window.scrollTo(0, 0); });
-        window.addEventListener('load', function() { window.scrollTo(0, 0); });
     </script>
     <!-- Skip Navigation (Accessibility) -->
     <a href="#main-content" class="skip-nav">Skip to main content</a>
@@ -1109,10 +1128,10 @@
     </div>
 
     <!-- Deferred script loading for non-blocking render - LOAD FIRST for CSRF functions -->
-    <script defer src="SiminHan.min.js?v=3"></script>
+    <script defer src="SiminHan.min.js?v=4"></script>
 
     <!-- Deferred Booking UI Module (Desktop Optimized - Phase 6) - depends on SiminHan.min.js -->
-    <script defer src="booking-ui.min.js?v=2"></script>
+    <script defer src="booking-ui.min.js?v=3"></script>
 
     <!-- Share modal — null-safe, Web Share API with clipboard fallback -->
     <script defer src="share-modal.js?v=1"></script>
