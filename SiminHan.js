@@ -2407,31 +2407,40 @@ function onScroll() {
 
 window.addEventListener('scroll', onScroll, { passive: true });
 
-if (typeof AOS === 'undefined') {
-    const script = document.createElement('script');
-    script.src = 'https://unpkg.com/aos@2.3.1/dist/aos.js';
-    script.onload = function () {
-        AOS.init({
-            duration: 800,
-            easing: 'ease-in-out',
-            once: true,
-            offset: 100
-        });
-    };
-    document.head.appendChild(script);
+// ============================================
+// LIGHTWEIGHT SCROLL ANIMATIONS (replaces AOS)
+// Uses IntersectionObserver — zero forced reflow
+// ============================================
+(function initScrollAnimations() {
+    const style = document.createElement('style');
+    style.textContent = [
+        '[data-aos]{opacity:0;transition:opacity .8s ease-in-out,transform .8s ease-in-out}',
+        '[data-aos="fade-up"],[data-aos="fadeup"]{transform:translateY(30px)}',
+        '[data-aos="fade-down"]{transform:translateY(-30px)}',
+        '[data-aos="fade-left"]{transform:translateX(30px)}',
+        '[data-aos="fade-right"]{transform:translateX(-30px)}',
+        '[data-aos].aos-animate{opacity:1;transform:none}'
+    ].join('');
+    document.head.appendChild(style);
 
-    const css = document.createElement('link');
-    css.rel = 'stylesheet';
-    css.href = 'https://unpkg.com/aos@2.3.1/dist/aos.css';
-    document.head.appendChild(css);
-} else {
-    AOS.init({
-        duration: 800,
-        easing: 'ease-in-out',
-        once: true,
-        offset: 100
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (!entry.isIntersecting) return;
+            const el = entry.target;
+            const delay = parseInt(el.getAttribute('data-aos-delay')) || 0;
+            if (delay) {
+                setTimeout(function() { el.classList.add('aos-animate'); }, delay);
+            } else {
+                el.classList.add('aos-animate');
+            }
+            observer.unobserve(el);
+        });
+    }, { rootMargin: '0px 0px -80px 0px', threshold: 0.05 });
+
+    document.querySelectorAll('[data-aos]').forEach(function(el) {
+        observer.observe(el);
     });
-}
+}());
 
 // ============================================
 // INPUT VALIDATION UTILITIES

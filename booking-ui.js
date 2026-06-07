@@ -569,61 +569,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Active Navigation Link Highlighting (Desktop Optimized with cached positions)
-document.addEventListener('DOMContentLoaded', function() {
-    const navLinks = document.querySelectorAll('.nav-link-active, .nav-link');
-    let sectionCache = [];
-    let navScrollTicking = false;
-
-    // Cache section positions to prevent forced reflow
-    function cacheSectionPositions() {
-        sectionCache = [];
-        navLinks.forEach(link => {
-            const sectionId = link.getAttribute('href').substring(1);
-            const section = document.getElementById(sectionId);
-            if (section) {
-                sectionCache.push({
-                    link: link,
-                    top: section.offsetTop,
-                    bottom: section.offsetTop + section.offsetHeight
-                });
-            }
-        });
-    }
-
-    function updateActiveLink() {
-        const scrollPosition = window.scrollY + 100;
-        navLinks.forEach(l => l.classList.remove('active'));
-
-        for (let i = sectionCache.length - 1; i >= 0; i--) {
-            if (scrollPosition >= sectionCache[i].top && scrollPosition < sectionCache[i].bottom) {
-                sectionCache[i].link.classList.add('active');
-                break;
-            }
-        }
-    }
-
-    // Initialize cache and update on resize (debounced)
-    cacheSectionPositions();
-    let resizeTimeout;
-    window.addEventListener('resize', function() {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(cacheSectionPositions, 150);
-    }, { passive: true });
-
-    // Throttled scroll handler
-    window.addEventListener('scroll', function() {
-        if (!navScrollTicking) {
-            requestAnimationFrame(function() {
-                updateActiveLink();
-                navScrollTicking = false;
-            });
-            navScrollTicking = true;
-        }
-    }, { passive: true });
-
-    updateActiveLink();
-});
+// Active Navigation Link Highlighting is handled by IntersectionObserver in SiminHan.js
+// (removed offsetTop/offsetHeight polling to eliminate forced reflow)
 
 // ============================================================
 // MONRI PAY BY LINK — intercepts bookingPaymentForm

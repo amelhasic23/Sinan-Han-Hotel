@@ -53,6 +53,7 @@ function minifyJS(inputFile, outputFile) {
 
 // Minify both JS files
 minifyJS('SiminHan.js', 'SiminHan.min.js');
+minifyJS('booking-ui.js', 'booking-ui.min.js');
 minifyJS('sw.js', 'sw.min.js');
 
 console.log('\n✓ JavaScript minification complete!');
