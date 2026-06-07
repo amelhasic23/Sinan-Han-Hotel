@@ -2097,14 +2097,17 @@ body.nav-open {
     border: none;
     border-radius: 50%;
     cursor: pointer;
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
     z-index: 999;
-    transition: all 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(12px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s, background 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 4px 12px rgba(193, 154, 107, 0.4);
-    animation: fadeInUp 0.3s ease;
 }
 
 .back-to-top:hover {
@@ -2113,8 +2116,13 @@ body.nav-open {
     box-shadow: 0 6px 16px rgba(193, 154, 107, 0.5);
 }
 
-.back-to-top.show {
-    display: flex;
+.back-to-top.show,
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+    transition-delay: 0s;
 }
 
 /* Responsive Breakpoints */

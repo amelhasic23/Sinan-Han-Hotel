@@ -401,32 +401,6 @@ function showBookingSuccessModal(data) {
     }, { once: true });
 }
 
-// Back to Top Button (Desktop optimized with throttle)
-document.addEventListener('DOMContentLoaded', function() {
-    const backToTopBtn = document.getElementById('backToTop');
-    if (!backToTopBtn) return;
-
-    let scrollTicking = false;
-
-    window.addEventListener('scroll', function() {
-        if (!scrollTicking) {
-            requestAnimationFrame(function() {
-                if (window.pageYOffset > 300) {
-                    backToTopBtn.classList.add('show');
-                } else {
-                    backToTopBtn.classList.remove('show');
-                }
-                scrollTicking = false;
-            });
-            scrollTicking = true;
-        }
-    }, { passive: true });
-
-    backToTopBtn.addEventListener('click', function() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-});
-
 // Email validation helper
 function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);

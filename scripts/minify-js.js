@@ -2,30 +2,40 @@
 
 const fs = require('fs');
 const path = require('path');
-const { minify } = require('terser');
+const { spawnSync } = require('child_process');
 
-async function minifyJS(inputFile, outputFile) {
+const rootDir = path.resolve(__dirname, '..');
+const terserBin = path.join(
+    rootDir,
+    'node_modules',
+    '.bin',
+    process.platform === 'win32' ? 'terser.cmd' : 'terser'
+);
+
+function minifyJS(inputFile, outputFile) {
     try {
-        const code = fs.readFileSync(inputFile, 'utf8');
-        const result = await minify(code, {
-            compress: {
-                passes: 2,
-                defaults: true
-            },
-            mangle: true,
-            format: {
-                comments: false
-            }
-        });
-
-        if (!result.code) {
-            throw new Error('Terser returned empty output');
+        if (!fs.existsSync(terserBin)) {
+            throw new Error(`Terser CLI not found: ${terserBin}`);
         }
 
-        fs.writeFileSync(outputFile, result.code);
+        const resolvedInput = path.join(rootDir, inputFile);
+        const resolvedOutput = path.join(rootDir, outputFile);
+        const result = spawnSync(
+            terserBin,
+            [resolvedInput, '-c', 'passes=2', '-m', '-o', resolvedOutput],
+            {
+                encoding: 'utf8',
+                stdio: 'pipe',
+                shell: process.platform === 'win32'
+            }
+        );
 
-        const originalSize = fs.statSync(inputFile).size;
-        const minifiedSize = fs.statSync(outputFile).size;
+        if (result.status !== 0) {
+            throw new Error((result.stderr || result.stdout || `Terser failed with exit code ${result.status}`).trim());
+        }
+
+        const originalSize = fs.statSync(resolvedInput).size;
+        const minifiedSize = fs.statSync(resolvedOutput).size;
         const savings = ((originalSize - minifiedSize) / originalSize * 100).toFixed(2);
 
         console.log(`✓ Minified ${path.basename(inputFile)}`);
@@ -38,10 +48,10 @@ async function minifyJS(inputFile, outputFile) {
     }
 }
 
-async function main() {
-    await minifyJS('SiminHan.js', 'SiminHan.min.js');
-    await minifyJS('booking-ui.js', 'booking-ui.min.js');
-    await minifyJS('sw.js', 'sw.min.js');
+function main() {
+    minifyJS('SiminHan.js', 'SiminHan.min.js');
+    minifyJS('booking-ui.js', 'booking-ui.min.js');
+    minifyJS('sw.js', 'sw.min.js');
     console.log('\n✓ JavaScript minification complete!');
 }
 

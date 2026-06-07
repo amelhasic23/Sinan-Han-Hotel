@@ -2346,22 +2346,50 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // ============================================
 let _currentNavSection = '';
 let navLinksCache = null;
+let navLinksBySection = null;
+let currentActiveNavLink = null;
 let parallaxLayersCache = null;
 
+function initNavLinkCache() {
+    if (!navLinksCache) {
+        navLinksCache = document.querySelectorAll('.nav-link-active');
+    }
+    if (!navLinksBySection) {
+        navLinksBySection = new Map();
+        navLinksCache.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && href.charAt(0) === '#') {
+                navLinksBySection.set(href.substring(1), link);
+            }
+            if (!currentActiveNavLink && link.classList.contains('active')) {
+                currentActiveNavLink = link;
+            }
+        });
+    }
+}
+
 function _applyNavHighlight(sectionId) {
-    if (!navLinksCache) navLinksCache = document.querySelectorAll('.nav-link-active');
-    navLinksCache.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === '#' + sectionId) {
-            link.classList.add('active');
-        }
-    });
+    initNavLinkCache();
+
+    const nextActiveNavLink = navLinksBySection && navLinksBySection.get(sectionId);
+    if (!nextActiveNavLink || nextActiveNavLink === currentActiveNavLink) {
+        return;
+    }
+
+    if (currentActiveNavLink) {
+        currentActiveNavLink.classList.remove('active');
+        currentActiveNavLink.removeAttribute('aria-current');
+    }
+
+    nextActiveNavLink.classList.add('active');
+    nextActiveNavLink.setAttribute('aria-current', 'page');
+    currentActiveNavLink = nextActiveNavLink;
 }
 
 function initNavObserver() {
     const observer = new IntersectionObserver(function(entries) {
         entries.forEach(function(entry) {
-            if (entry.isIntersecting) {
+            if (entry.isIntersecting && _currentNavSection !== entry.target.id) {
                 _currentNavSection = entry.target.id;
                 _applyNavHighlight(_currentNavSection);
             }
@@ -2645,43 +2673,44 @@ if (contactForm) {
 }
 
 // Navbar scroll effect (uses shared throttled scroll handler)
-let navbarScrolled = false;
-function updateNavbar() {
-    const navbar = document.querySelector('.navbar');
-    if (!navbar) return;
-    const shouldBeScrolled = window.scrollY > 50;
-    if (shouldBeScrolled !== navbarScrolled) {
-        navbarScrolled = shouldBeScrolled;
-        navbar.classList.toggle('scrolled', shouldBeScrolled);
-    }
-}
+const backToTopBtn = document.querySelector('.back-to-top');
 
-// Back-to-top visibility (uses shared throttled scroll handler)
+// Back-to-top visibility
 let backToTopVisible = false;
-function updateBackToTop() {
-    const backToTopBtn = document.querySelector('.back-to-top');
+function setBackToTopVisible(shouldBeVisible) {
     if (!backToTopBtn) return;
-    const shouldBeVisible = window.scrollY > 300;
     if (shouldBeVisible !== backToTopVisible) {
         backToTopVisible = shouldBeVisible;
         backToTopBtn.classList.toggle('visible', shouldBeVisible);
     }
 }
 
-// Combined throttled scroll handler
-let combinedScrollTicking = false;
-function onCombinedScroll() {
-    if (!combinedScrollTicking) {
-        requestAnimationFrame(() => {
-            updateNavbar();
-            updateBackToTop();
-            combinedScrollTicking = false;
-        });
-        combinedScrollTicking = true;
-    }
-}
+function initBackToTopObserver() {
+    const sentinel = document.getElementById('backToTopSentinel');
+    if (!backToTopBtn || !sentinel) return;
 
-window.addEventListener('scroll', onCombinedScroll, { passive: true });
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(entries => {
+            setBackToTopVisible(!entries[0].isIntersecting);
+        }, { threshold: 0 });
+        observer.observe(sentinel);
+        return;
+    }
+
+    let scrollTicking = false;
+    function syncBackToTopVisibility() {
+        if (!scrollTicking) {
+            requestAnimationFrame(() => {
+                setBackToTopVisible(window.scrollY > 300);
+                scrollTicking = false;
+            });
+            scrollTicking = true;
+        }
+    }
+
+    window.addEventListener('scroll', syncBackToTopVisibility, { passive: true });
+    syncBackToTopVisibility();
+}
 
 // Image Lazy Loading with Fallback
 function loadImages() {
@@ -2720,9 +2749,8 @@ if (document.readyState === 'loading') {
     loadImages();
 }
 
-const backToTopBtn = document.querySelector('.back-to-top');
 if (backToTopBtn) {
-    // Visibility is now handled by updateBackToTop() in throttled scroll handler
+    // Visibility is handled by initBackToTopObserver().
     backToTopBtn.addEventListener('click', function () {
         window.scrollTo({
             top: 0,
@@ -2733,13 +2761,7 @@ if (backToTopBtn) {
 
 document.addEventListener('DOMContentLoaded', function () {
     initNavObserver();
-    requestAnimationFrame(() => {
-        if (!_currentNavSection) {
-            _applyNavHighlight('home');
-        }
-        updateNavbar();
-        updateBackToTop();
-    });
+    initBackToTopObserver();
 });
 
 function lockScroll() {
