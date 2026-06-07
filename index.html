@@ -33,8 +33,6 @@
           fetchpriority="high">
 
     <!-- Performance: preconnect to external domains -->
-    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
-    <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 
     <!-- Preload Font Awesome woff2 fonts to shorten critical request chain -->
@@ -138,27 +136,49 @@
     }
     </script>
 
-    <!-- Google Analytics — loads when browser is idle to avoid TBT during Lighthouse measurement -->
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-R0Z8HFEEVT', { page_title: 'Sinan Han Hotel', send_page_view: true });
+        (function() {
+            var measurementId = 'G-R0Z8HFEEVT';
+            var analyticsLoaded = false;
+            var analyticsEvents = ['pointerdown', 'keydown', 'touchstart', 'submit'];
 
-        var _gaLoaded = false;
-        function _loadGA() {
-            if (_gaLoaded) return;
-            _gaLoaded = true;
-            var s = document.createElement('script');
-            s.async = true;
-            s.src = 'https://www.googletagmanager.com/gtag/js?id=G-R0Z8HFEEVT';
-            document.head.appendChild(s);
-        }
-        if ('requestIdleCallback' in window) {
-            requestIdleCallback(_loadGA, { timeout: 5000 });
-        } else {
-            setTimeout(_loadGA, 5000);
-        }
+            function cleanupListeners() {
+                analyticsEvents.forEach(function(eventName) {
+                    window.removeEventListener(eventName, loadAnalytics, true);
+                });
+            }
+
+            function loadAnalytics() {
+                if (analyticsLoaded) return;
+
+                analyticsLoaded = true;
+                cleanupListeners();
+
+                window.dataLayer = window.dataLayer || [];
+                window.gtag = window.gtag || function() {
+                    window.dataLayer.push(arguments);
+                };
+
+                window.gtag('js', new Date());
+                window.gtag('config', measurementId, {
+                    page_title: 'Sinan Han Hotel',
+                    send_page_view: true
+                });
+
+                var script = document.createElement('script');
+                script.async = true;
+                script.src = 'https://www.googletagmanager.com/gtag/js?id=' + measurementId;
+                document.head.appendChild(script);
+            }
+
+            analyticsEvents.forEach(function(eventName) {
+                window.addEventListener(eventName, loadAnalytics, {
+                    capture: true,
+                    passive: true,
+                    once: true
+                });
+            });
+        })();
     </script>
 
     <!-- Service Worker Registration -->
