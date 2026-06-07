@@ -29,6 +29,9 @@ Host/Name: @ (ili ostavite prazno, zavisno od provajdera)
 Value/Content: v=spf1 include:_spf.google.com ~all
 
 
+Dodati obavezne tekstove propisane dokumentacijom. Navedene tekstove možete pronaći u dokumentaciji, poglavlje 1.5.
+
+
 
 
 Ako je to Google Workspace: Idite na Admin Console -> Apps -> Google Workspace -> Gmail -> Authenticate email.
