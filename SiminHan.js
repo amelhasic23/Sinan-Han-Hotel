@@ -2313,6 +2313,7 @@ window.addEventListener('load', function () {
     const defaultLang = 'en';
     const desktopSelector = document.getElementById('language-selector');
     const mobileSelector = document.getElementById('language-selector-mobile');
+    document.documentElement.lang = defaultLang;
     if (desktopSelector) {
         desktopSelector.value = defaultLang;
         desktopSelector.addEventListener('change', function () { changeLanguage(this.value); });
@@ -2321,7 +2322,6 @@ window.addEventListener('load', function () {
         mobileSelector.value = defaultLang;
         mobileSelector.addEventListener('change', function () { changeLanguage(this.value); });
     }
-    changeLanguage(defaultLang);
 });
 
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -2733,12 +2733,13 @@ if (backToTopBtn) {
 
 document.addEventListener('DOMContentLoaded', function () {
     initNavObserver();
-    setTimeout(() => {
-        updateActiveNavLink();
-        updateParallax();
+    requestAnimationFrame(() => {
+        if (!_currentNavSection) {
+            _applyNavHighlight('home');
+        }
         updateNavbar();
         updateBackToTop();
-    }, 100);
+    });
 });
 
 function lockScroll() {

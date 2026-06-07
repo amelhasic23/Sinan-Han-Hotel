@@ -34,15 +34,15 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.22.1",
-    "nodemailer": "^8.0.10"
+    "nodemailer": "^8.0.10",
+    "terser": "^5.48.0"
   },
   "devDependencies": {
     "cssnano-cli": "^1.0.5",
     "csso-cli": "^4.0.2",
     "html-minifier-terser": "^7.2.0",
     "nodemon": "^3.0.1",
-    "sharp": "^0.33.5",
-    "terser": "^5.46.1"
+    "sharp": "^0.33.5"
   },
   "engines": {
     "node": ">=16.0.0"
