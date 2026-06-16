@@ -16,10 +16,12 @@ const sharp = require('sharp');
 
 const ROOMS_DIR = path.join(__dirname, 'Rooms');
 const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.JPG', '.JPEG', '.PNG'];
+const overwriteExisting = process.argv.includes('--force');
 
 // Define responsive sizes
 const SIZES = [
     { suffix: '-small', width: 400, quality: 80 },   // Mobile
+    { suffix: '-mobile', width: 640, quality: 60 },  // Large mobile phones
     { suffix: '-medium', width: 800, quality: 85 },  // Tablet
     { suffix: '-large', width: 1200, quality: 85 }   // Desktop
 ];
@@ -38,7 +40,7 @@ function findImages(dir, imageList = []) {
             findImages(filePath, imageList);
         } else if (IMAGE_EXTENSIONS.includes(path.extname(file))) {
             // Skip already processed responsive images
-            if (!/-small|-medium|-large/.test(file)) {
+            if (!/-small|-mobile|-medium|-large/.test(file)) {
                 imageList.push(filePath);
             }
         }
@@ -60,6 +62,11 @@ async function createResponsiveVersions(inputPath) {
     for (const size of SIZES) {
         const outputPathWebP = `${basePath}${size.suffix}.webp`;
         const outputPathJPG = `${basePath}${size.suffix}.jpg`;
+
+        if (!overwriteExisting && fs.existsSync(outputPathWebP) && fs.existsSync(outputPathJPG)) {
+            console.log(`  ↷ ${size.suffix.replace('-', '').toUpperCase()}: existing files kept`);
+            continue;
+        }
 
         try {
             // Create WebP version
@@ -123,6 +130,7 @@ async function main() {
     console.log('═'.repeat(60));
 
     console.log('\n✅ Responsive images created successfully!');
+    console.log(`\nℹ️ Existing derivatives are kept unless you pass --force.`);
     console.log('\n📝 Next step: Update your HTML to use srcset');
     console.log('See IMAGE-OPTIMIZATION-GUIDE.md for implementation details.');
 }
