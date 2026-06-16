@@ -1,4 +1,52 @@
 // ============================================
+// DEFERRED ANALYTICS BOOTSTRAP
+// ============================================
+(function initDeferredAnalytics() {
+    const measurementId = 'G-R0Z8HFEEVT';
+    let analyticsLoaded = false;
+    const analyticsEvents = ['pointerdown', 'keydown', 'touchstart', 'submit'];
+
+    function cleanupListeners() {
+        analyticsEvents.forEach(eventName => {
+            window.removeEventListener(eventName, loadAnalytics, true);
+        });
+    }
+
+    function loadAnalytics() {
+        if (analyticsLoaded) {
+            return;
+        }
+
+        analyticsLoaded = true;
+        cleanupListeners();
+
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = window.gtag || function() {
+            window.dataLayer.push(arguments);
+        };
+
+        window.gtag('js', new Date());
+        window.gtag('config', measurementId, {
+            page_title: 'Sinan Han Hotel',
+            send_page_view: true
+        });
+
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
+        document.head.appendChild(script);
+    }
+
+    analyticsEvents.forEach(eventName => {
+        window.addEventListener(eventName, loadAnalytics, {
+            capture: true,
+            passive: true,
+            once: true
+        });
+    });
+})();
+
+// ============================================
 // SERVICE WORKER REGISTRATION (Phase 3)
 // ============================================
 if ('serviceWorker' in navigator) {
@@ -2078,8 +2126,33 @@ const toast = new ToastNotification();
 // LOADING SPINNER UTILITIES
 // ============================================
 const spinner = {
+    ensure: function() {
+        let spinnerElement = document.getElementById('loadingSpinner');
+        if (spinnerElement) {
+            return spinnerElement;
+        }
+
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = `
+            <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+                <div class="spinner-overlay"></div>
+                <div class="spinner">
+                    <div class="spinner-ring"></div>
+                    <p class="spinner-text">Processing...</p>
+                </div>
+            </div>
+        `.trim();
+
+        spinnerElement = wrapper.firstElementChild;
+        if (spinnerElement) {
+            document.body.appendChild(spinnerElement);
+        }
+
+        return spinnerElement;
+    },
+
     show: function(message = 'Processing...') {
-        const spinnerElement = document.getElementById('loadingSpinner');
+        const spinnerElement = this.ensure();
         const spinnerText = spinnerElement?.querySelector('.spinner-text');
         if (spinnerElement) {
             if (spinnerText) spinnerText.textContent = message;
@@ -2111,7 +2184,20 @@ function ensureElementFromTemplate(templateId, elementId) {
 
     const template = document.getElementById(templateId);
     if (!template || !template.content) {
-        return null;
+        const lazyMarkup = window.lazyTemplateMarkup && window.lazyTemplateMarkup[templateId];
+        if (!lazyMarkup) {
+            return null;
+        }
+
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = lazyMarkup.trim();
+        const element = wrapper.firstElementChild;
+        if (!element) {
+            return null;
+        }
+
+        document.body.appendChild(element);
+        return document.getElementById(elementId);
     }
 
     const fragment = template.content.cloneNode(true);
@@ -2241,6 +2327,80 @@ window.applyTranslationsToRoot = applyTranslationsToRoot;
 window.openInfoModal = openInfoModal;
 window.closeInfoModal = closeInfoModal;
 
+function initMobileMenu() {
+    const navHamburger = document.getElementById('navHamburger');
+    const navMenu = document.getElementById('navMenu');
+
+    if (!navHamburger || !navMenu || navHamburger.dataset.bound === 'true') {
+        return;
+    }
+
+    navHamburger.addEventListener('click', function(event) {
+        event.stopPropagation();
+        navMenu.classList.toggle('active');
+        navHamburger.classList.toggle('active');
+    });
+
+    navMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', function() {
+            navMenu.classList.remove('active');
+            navHamburger.classList.remove('active');
+        });
+    });
+
+    document.addEventListener('click', function(event) {
+        if (!navMenu.contains(event.target) && !navHamburger.contains(event.target) && navMenu.classList.contains('active')) {
+            navMenu.classList.remove('active');
+            navHamburger.classList.remove('active');
+        }
+    });
+
+    navHamburger.dataset.bound = 'true';
+}
+
+window.monriSDKReady = false;
+window.monriSDKLoading = false;
+window.monriSDKPromise = null;
+
+window.loadPaymentSDK = function() {
+    if (window.monriSDKPromise) {
+        return window.monriSDKPromise;
+    }
+
+    if (window.monriSDKReady && typeof Monri !== 'undefined') {
+        return Promise.resolve();
+    }
+
+    window.monriSDKLoading = true;
+
+    window.monriSDKPromise = new Promise(function(resolve, reject) {
+        const script = document.createElement('script');
+        script.src = (window.SINAN_ENV === 'production')
+            ? 'https://ipg.monri.com/v2/monri.js'
+            : 'https://ipgtest.monri.com/v2/monri.js';
+        script.async = true;
+
+        script.onload = function() {
+            window.monriSDKReady = true;
+            window.monriSDKLoading = false;
+            console.log('Monri SDK loaded successfully');
+            window.dispatchEvent(new CustomEvent('monriSDKReady'));
+            resolve();
+        };
+
+        script.onerror = function(error) {
+            window.monriSDKLoading = false;
+            window.monriSDKPromise = null;
+            console.error('Failed to load Monri SDK:', error);
+            reject(new Error('Failed to load payment SDK. Please check your connection.'));
+        };
+
+        document.head.appendChild(script);
+    });
+
+    return window.monriSDKPromise;
+};
+
 window.addEventListener('load', function () {
     // Always start with English - don't persist language across refreshes
     const defaultLang = 'en';
@@ -2255,6 +2415,8 @@ window.addEventListener('load', function () {
         mobileSelector.value = defaultLang;
         mobileSelector.addEventListener('change', function () { changeLanguage(this.value); });
     }
+
+    initMobileMenu();
 });
 
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {

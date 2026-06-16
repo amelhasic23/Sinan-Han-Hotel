@@ -50,6 +50,7 @@ function minifyJS(inputFile, outputFile) {
 
 function main() {
     minifyJS('SiminHan.js', 'SiminHan.min.js');
+    minifyJS('lazy-templates.js', 'lazy-templates.min.js');
     minifyJS('booking-ui.js', 'booking-ui.min.js');
     minifyJS('sw.js', 'sw.min.js');
     console.log('\n✓ JavaScript minification complete!');
