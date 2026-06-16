@@ -1958,13 +1958,18 @@ function mergeTranslations(data) {
         }
         Object.assign(translation[lang], data[lang]);
     }
-    // Re-apply current language after merge
-    const current = localStorage.getItem('language') || 'en';
-    changeLanguage(current);
 }
 
-// Load external translations on startup
-document.addEventListener('DOMContentLoaded', loadExternalTranslations);
+// Load external translations after the first paint so startup text stays stable.
+window.addEventListener('load', function() {
+    if ('requestIdleCallback' in window) {
+        requestIdleCallback(function() {
+            loadExternalTranslations();
+        }, { timeout: 2000 });
+    } else {
+        setTimeout(loadExternalTranslations, 0);
+    }
+}, { once: true });
 
 // ============================================
 // TOAST NOTIFICATION SYSTEM
@@ -2141,7 +2146,7 @@ function syncBodyScrollLock() {
     document.body.style.overflow = hasOpenModal ? 'hidden' : '';
 }
 
-function applyTranslationsToRoot(root, lang = localStorage.getItem('language') || 'en') {
+function applyTranslationsToRoot(root, lang = document.documentElement.lang || 'en') {
     if (!root) {
         return;
     }
@@ -2215,7 +2220,6 @@ function closeInfoModal(modalId) {
 }
 
 function changeLanguage(lang) {
-    localStorage.setItem("language", lang);
     document.documentElement.lang = lang;
 
     // Sync both language selectors (desktop and mobile)
