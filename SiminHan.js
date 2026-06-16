@@ -202,7 +202,7 @@ const translation = {
     'footer-guest-reviews': 'Guest Reviews',
     'footer-follow-title': 'Follow Us',
     'footer-copyright': '© 2026 Sinan Han. All rights reserved. | Designed with ♥ for travelers',
-    'hero-title': 'Guesthouse \u201eSinan Han\u201c',
+    'hero-title': 'Hotel Sinan Han',
     'nav-logo-title': 'Guesthouse \u201eSinan Han\u201c',
     'footer-company-name': 'Guesthouse \u201eSINAN-HAN\u201c owner Arif Jašari',
     'footer-registry': 'Registry: Municipal Court in Mostar | MBS: 58-01-0026-21',
@@ -464,7 +464,7 @@ const translation = {
     'footer-guest-reviews': 'Recenzije Gostiju',
     'footer-follow-title': 'Pratite Nas',
     'footer-copyright': '© 2026 Sinan Han. Sva prava zadržana. | Dizajnirano sa ♥ za putnika',
-    'hero-title': 'Sobe u doma\u0107instvu \u201eSinan Han\u201c',
+    'hero-title': 'Hotel Sinan Han',
     'nav-logo-title': 'Sobe u doma\u0107instvu \u201eSinan Han\u201c',
     'footer-company-name': 'Sobe u doma\u0107instvu \u201eSINAN-HAN\u201c vl. Arif Ja\u0161ari',
     'footer-registry': 'Registar: Op\u0107inski sud u Mostaru | MBS: 58-01-0026-21',
@@ -726,7 +726,7 @@ const translation = {
     'footer-guest-reviews': 'Gästebewertungen',
     'footer-follow-title': 'Folgen Sie Uns',
     'footer-copyright': '© 2026 Sinan Han. Alle Rechte vorbehalten. | Mit ♥ für Reisende entworfen',
-    'hero-title': 'Pension \u201eSinan Han\u201c',
+    'hero-title': 'Hotel Sinan Han',
     'nav-logo-title': 'Pension \u201eSinan Han\u201c',
     'footer-company-name': 'Pension \u201eSINAN-HAN\u201c Inh. Arif Ja\u0161ari',
     'footer-registry': 'Registergericht: Gemeindegericht Mostar | MBS: 58-01-0026-21',
@@ -985,7 +985,7 @@ const translation = {
     'footer-guest-reviews': 'Avis des Clients',
     'footer-follow-title': 'Nous Suivre',
     'footer-copyright': '© 2026 Sinan Han. Tous droits réservés. | Conçu avec ♥ pour les voyageurs',
-    'hero-title': 'Chambres d\u2019h\u00f4tes \u201eSinan Han\u201c',
+    'hero-title': 'Hotel Sinan Han',
     'nav-logo-title': 'Chambres d\u2019h\u00f4tes \u201eSinan Han\u201c',
     'footer-company-name': 'Chambres d\u2019h\u00f4tes \u201eSINAN-HAN\u201c prop. Arif Ja\u0161ari',
     'footer-registry': 'Registre: Tribunal municipal de Mostar | MBS: 58-01-0026-21',
@@ -1241,7 +1241,7 @@ const translation = {
     'footer-guest-reviews': 'Recensioni degli Ospiti',
     'footer-follow-title': 'Seguici',
     'footer-copyright': '© 2026 Sinan Han. Tutti i diritti riservati. | Progettato con ♥ per i viaggiatori',
-    'hero-title': 'Casa vacanze \u201eSinan Han\u201c',
+    'hero-title': 'Hotel Sinan Han',
     'nav-logo-title': 'Casa vacanze \u201eSinan Han\u201c',
     'footer-company-name': 'Casa vacanze \u201eSINAN-HAN\u201c tit. Arif Ja\u0161ari',
     'footer-registry': 'Registro: Tribunale municipale di Mostar | MBS: 58-01-0026-21',
@@ -1497,7 +1497,7 @@ const translation = {
     'footer-guest-reviews': 'Misafir Yorumları',
     'footer-follow-title': 'Bizi İzleyin',
     'footer-copyright': '© 2026 Sinan Han. Tüm hakları saklıdır. | Gezginler için ♥ ile tasarlandı',
-    'hero-title': 'Ev Pansiyonu \u201eSinan Han\u201c',
+    'hero-title': 'Hotel Sinan Han',
     'nav-logo-title': 'Ev Pansiyonu \u201eSinan Han\u201c',
     'footer-company-name': 'Ev Pansiyonu \u201eSINAN-HAN\u201c sah. Arif Ja\u0161ari',
     'footer-registry': 'Sicil: Mostar Belediye Mahkemesi | MBS: 58-01-0026-21',
@@ -1756,7 +1756,7 @@ const translation = {
     'footer-guest-reviews': 'تقييمات الضيوف',
     'footer-follow-title': 'تابعنا',
     'footer-copyright': '© 2026 سنان هان. جميع الحقوق محفوظة. | صممت بـ ♥ للمسافرين',
-    'hero-title': '\u063a\u0631\u0641 \u0645\u0646\u0632\u0644\u064a\u0629 \u201eSinan Han\u201c',
+    'hero-title': 'Hotel Sinan Han',
     'nav-logo-title': '\u063a\u0631\u0641 \u0645\u0646\u0632\u0644\u064a\u0629 \u201eSinan Han\u201c',
     'footer-company-name': '\u063a\u0631\u0641 \u0645\u0646\u0632\u0644\u064a\u0629 \u201eSINAN-HAN\u201c \u0635\u0627\u062d\u0628 \u0623\u0631\u064a\u0641 \u064a\u0627\u0634\u0627\u0631\u064a',
     'footer-registry': 'السجل: المحكمة البلدية في موستار | MBS: 58-01-0026-21',
@@ -2442,10 +2442,32 @@ async function fetchCSRFToken() {
         } else {
             console.error('Failed to fetch CSRF token');
             return null;
+        }
+    } catch (error) {
         console.error('CSRF token fetch error:', error.message);
         return null;
     }
 }
+
+async function getValidCSRFToken() {
+    if (!window_csrfToken || Date.now() >= window_csrfTokenExpiry) {
+        return fetchCSRFToken();
+    }
+
+    return window_csrfToken;
+}
+
+const contactForm = document.querySelector('form');
+if (contactForm) {
+    contactForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        const data = {
+            guestName: Validators.sanitize(formData.get('name') || ''),
+            email: Validators.sanitize(formData.get('email') || ''),
+            phone: Validators.sanitize(formData.get('phone') || ''),
+            checkIn: formData.get('checkIn') || '',
             checkOut: formData.get('checkOut') || '',
             roomType: Validators.sanitize(formData.get('room') || ''),
             guests: formData.get('guests') || '',
