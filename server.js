@@ -60,6 +60,8 @@ app.use(express.static(path.join(__dirname), {
         } else if (/\.(jpg|jpeg|png|gif|webp|svg)$/i.test(filePath)) {
             res.set('Cache-Control', 'public, max-age=31536000, immutable');
             res.set('Vary', 'Accept');
+        } else if (/\.(woff2?|ttf|otf)$/i.test(filePath)) {
+            res.set('Cache-Control', 'public, max-age=31536000, immutable');
         } else if (/sw\.js$/.test(filePath)) {
             res.set('Cache-Control', 'no-store, no-cache');
         } else if (/\.js$/.test(filePath)) {
@@ -81,12 +83,12 @@ app.use((req, res, next) => {
         if (req.url === '/' || req.url.includes('index.html')) {
             // Landing page critical resources
             linkHeaders = [
-                '</SinanHan.min.css?v=5>; rel=preload; as=style; importance=high'
+                '</SinanHan.min.css?v=6>; rel=preload; as=style; importance=high'
             ];
         } else if (req.url.includes('SinanHan.html')) {
             // Legacy landing page critical resources
             linkHeaders = [
-                '</SinanHan.min.css?v=5>; rel=preload; as=style; importance=high'
+                '</SinanHan.min.css?v=6>; rel=preload; as=style; importance=high'
             ];
         }
 

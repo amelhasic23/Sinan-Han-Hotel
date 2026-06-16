@@ -111,7 +111,7 @@ body.nav-open {
     background: rgba(255, 255, 255, 0.99);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-    transition: all 0.3s ease;
+    transition: none;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -158,7 +158,7 @@ body.nav-open {
     text-decoration: none;
     font-weight: 500;
     position: relative;
-    transition: color 0.3s ease;
+    transition: none;
     padding: 0.5rem 0;
     display: inline-block;
 }
@@ -168,7 +168,7 @@ body.nav-open {
     text-decoration: none;
     font-weight: 500;
     position: relative;
-    transition: color 0.3s ease;
+    transition: none;
     padding: 0.5rem 0;
     display: inline-block;
 }
@@ -204,7 +204,7 @@ body.nav-open {
     bottom: -5px;
     left: 0;
     background: var(--primary);
-    transition: width 0.3s ease;
+    transition: none;
 }
 
 .nav-link:hover::after,
@@ -226,7 +226,7 @@ body.nav-open {
     min-height: 44px;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
+    transition: none;
 }
 
 #navHamburger:hover {
@@ -254,7 +254,7 @@ body.nav-open {
     font-size: 0.9rem;
     cursor: pointer;
     font-family: inherit;
-    transition: all 0.3s ease;
+    transition: none;
     min-height: 44px;
     min-width: 120px;
 }
@@ -300,7 +300,7 @@ body.nav-open {
     border-radius: 5px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease;
 }
 
 .btn-book:hover {
@@ -447,7 +447,7 @@ body.nav-open {
     border-radius: 5px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
@@ -813,7 +813,7 @@ body.nav-open {
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     border: 1px solid rgba(0, 0, 0, 0.05);
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -895,7 +895,7 @@ body.nav-open {
     justify-content: center;
     cursor: pointer;
     z-index: 10;
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease;
     opacity: 0;
     font-size: 18px;
     color: var(--text);
@@ -935,7 +935,7 @@ body.nav-open {
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.5);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: none;
 }
 
 .room-image-indicator.active {
@@ -1019,7 +1019,7 @@ body.nav-open {
     padding: 1.25rem 1.5rem;
     margin-top: auto;
     border-top: 1px solid rgba(0, 0, 0, 0.06);
-    transition: all 0.3s ease;
+    transition: none;
 }
 
 .room-card:hover .room-price {
@@ -1094,7 +1094,7 @@ body.nav-open {
     text-align: center;
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease;
     cursor: pointer;
 }
 
@@ -1193,7 +1193,7 @@ body.nav-open {
     padding: 2rem;
     border-radius: 10px;
     border-left: 4px solid var(--primary);
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease;
 }
 
 .review-card:hover {
@@ -1307,7 +1307,7 @@ body.nav-open {
     border-radius: 5px;
     font-size: 1rem;
     font-family: inherit;
-    transition: all 0.3s ease;
+    transition: none;
     background: white;
 }
 
@@ -1422,7 +1422,7 @@ body.nav-open {
     align-items: center;
     justify-content: center;
     color: var(--primary-dark);
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease;
     text-decoration: none;
 }
 
@@ -1467,7 +1467,7 @@ body.nav-open {
 .footer-col a {
     color: #bbb;
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: none;
 }
 
 .footer-col a:hover {
@@ -1487,7 +1487,7 @@ body.nav-open {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease;
 }
 
 .footer-social a:hover {
@@ -1551,7 +1551,7 @@ body.nav-open {
     font-size: 2rem;
     cursor: pointer;
     color: var(--text-light);
-    transition: all 0.3s ease;
+    transition: none;
     z-index: 10;
     background: none;
     border: none;
@@ -1629,7 +1629,7 @@ body.nav-open {
     cursor: pointer;
     font-size: 1.5rem;
     padding: 0;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease;
     border-radius: 5px;
 }
 
@@ -1672,7 +1672,7 @@ body.nav-open {
     justify-content: center;
     border: none;
     padding: 0;
-    transition: all 0.3s ease;
+    transition: none;
 }
 
 .modal-slider-dot::after {
@@ -1681,7 +1681,7 @@ body.nav-open {
     height: 10px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.65);
-    transition: all 0.3s ease;
+    transition: none;
     display: block;
 }
 
@@ -1882,7 +1882,7 @@ body.nav-open {
     visibility: hidden;
     pointer-events: none;
     transform: translateY(12px);
-    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s, background 0.3s ease, box-shadow 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease;
     box-shadow: 0 4px 12px rgba(193, 154, 107, 0.4);
 }
 
@@ -1898,7 +1898,6 @@ body.nav-open {
     visibility: visible;
     pointer-events: auto;
     transform: translateY(0);
-    transition-delay: 0s;
 }
 
 /* Responsive Breakpoints */
@@ -2004,7 +2003,7 @@ body.nav-open {
         color: var(--text);
         text-decoration: none;
         font-weight: 500;
-        transition: all 0.3s ease;
+        transition: none;
     }
 
     .nav-menu a:hover {
