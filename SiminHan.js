@@ -2096,165 +2096,122 @@ const spinner = {
 };
 
 // ============================================
-// MODAL SYSTEM
+// LAZY MODAL HELPERS
 // ============================================
-class Modal {
-    constructor() {
-        this.currentModal = null;
-        this.init();
+function ensureElementFromTemplate(templateId, elementId) {
+    const existingElement = document.getElementById(elementId);
+    if (existingElement) {
+        return existingElement;
     }
 
-    init() {
-        // Create modal container if it doesn't exist
-        if (!document.getElementById('modal-overlay')) {
-            const overlay = document.createElement('div');
-            overlay.id = 'modal-overlay';
-            overlay.className = 'modal-overlay';
-            document.body.appendChild(overlay);
-
-            // Close modal when clicking overlay
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) {
-                    this.close();
-                }
-            });
-        }
-
-        // Close modal with Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.currentModal) {
-                this.close();
-            }
-        });
+    const template = document.getElementById(templateId);
+    if (!template || !template.content) {
+        return null;
     }
 
-    open(title, content) {
-        const overlay = document.getElementById('modal-overlay');
-
-        // Create modal content
-        const modal = document.createElement('div');
-        modal.className = 'modal';
-        modal.setAttribute('role', 'dialog');
-        modal.setAttribute('aria-modal', 'true');
-        modal.setAttribute('aria-labelledby', 'modal-title');
-
-        modal.innerHTML = `
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 id="modal-title" class="modal-title">${this.escapeHtml(title)}</h2>
-                    <button class="modal-close" aria-label="Close modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    ${content}
-                </div>
-            </div>
-        `;
-
-        overlay.innerHTML = '';
-        const closeBtn = modal.querySelector('.modal-close');
-        overlay.appendChild(modal);
-        overlay.classList.add('active');
-
-        // Close button handler
-        closeBtn.addEventListener('click', () => {
-            this.close();
-        });
-
-        // Lock scroll
-        lockScroll();
-        this.currentModal = modal;
-
-        return modal;
-    }
-
-    close() {
-        const overlay = document.getElementById('modal-overlay');
-        if (overlay) {
-            overlay.classList.remove('active');
-            setTimeout(() => {
-                overlay.innerHTML = '';
-                unlockScroll();
-                this.currentModal = null;
-            }, 300);
-        }
-    }
-
-    escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
+    const fragment = template.content.cloneNode(true);
+    document.body.appendChild(fragment);
+    return document.getElementById(elementId);
 }
 
-// Initialize modal system
-const modal = new Modal();
-
-// Room modal data
-const roomModalData = {
-    'standard-double': {
-        titleKey: 'modal-standard-double-title',
-        descKey: 'modal-standard-double-desc'
-    },
-    'superior-suite': {
-        titleKey: 'modal-superior-suite-title',
-        descKey: 'modal-superior-suite-desc'
-    },
-    'double-terrace': {
-        titleKey: 'modal-double-terrace-title',
-        descKey: 'modal-double-terrace-desc'
-    },
-    'standard-queen': {
-        titleKey: 'modal-standard-queen-title',
-        descKey: 'modal-standard-queen-desc'
-    },
-    'superior-apartment': {
-        titleKey: 'modal-superior-apartment-title',
-        descKey: 'modal-superior-apartment-desc'
-    },
-    'two-bedroom-deluxe': {
-        titleKey: 'modal-two-bedroom-deluxe-title',
-        descKey: 'modal-two-bedroom-deluxe-desc'
+function isModalVisible(element) {
+    if (!element) {
+        return false;
     }
-};
 
-// Open room details modal
-function openRoomDetailsModal(roomId) {
-    const roomData = roomModalData[roomId];
-    if (!roomData) return;
+    if (element.classList.contains('show') || element.classList.contains('open') || element.classList.contains('active')) {
+        return true;
+    }
 
-    const currentLang = localStorage.getItem('language') || 'en';
-    const roomTitle = translation[currentLang]?.[roomData.titleKey] || roomData.titleKey;
-    const roomDesc = translation[currentLang]?.[roomData.descKey] || roomData.descKey;
+    return element.style.display === 'flex' || element.style.display === 'block';
+}
 
-    // Track room view in analytics
-    analytics.trackRoomView(roomId, roomTitle, 0);
+function syncBodyScrollLock() {
+    const openModalSelectors = [
+        '#roomModal',
+        '#bookingConfirmationModal',
+        '#bookingSuccessModal',
+        '#houseRulesModal',
+        '#legalInfoModal',
+        '#registrationModal',
+        '#termsModal'
+    ];
 
-    const content = `
-        <div class="room-modal-content">
-            <p>${roomDesc.replace(/\n/g, '<br>')}</p>
-            <button class="btn btn-primary modal-book-btn" data-room-id="${roomId}" data-i18n="modal-book-btn">Book Now</button>
-        </div>
-    `;
+    const hasOpenModal = openModalSelectors.some(selector => isModalVisible(document.querySelector(selector)));
+    document.body.style.overflow = hasOpenModal ? 'hidden' : '';
+}
 
-    modal.open(roomTitle, content);
+function applyTranslationsToRoot(root, lang = localStorage.getItem('language') || 'en') {
+    if (!root) {
+        return;
+    }
 
-    // Use event delegation to avoid querySelector after DOM insertion
-    const overlay = document.getElementById('modal-overlay');
-    overlay.addEventListener('click', function handler(e) {
-        if (e.target.classList.contains('modal-book-btn')) {
-            overlay.removeEventListener('click', handler);
-            modal.close();
-            const bookingSection = document.querySelector('#booking');
-            if (bookingSection) {
-                bookingSection.scrollIntoView({ behavior: 'smooth' });
-            }
+    root.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (key === 'nav-logo-title') {
+            return;
+        }
+
+        const localizedValue = translation[lang] && translation[lang][key];
+        const fallbackValue = translation.en && translation.en[key];
+        if (localizedValue) {
+            el.textContent = localizedValue;
+        } else if (fallbackValue) {
+            el.textContent = fallbackValue;
+        }
+    });
+
+    root.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        const localizedValue = translation[lang] && translation[lang][key];
+        const fallbackValue = translation.en && translation.en[key];
+        if (localizedValue) {
+            el.setAttribute('placeholder', localizedValue);
+        } else if (fallbackValue) {
+            el.setAttribute('placeholder', fallbackValue);
+        }
+    });
+
+    root.querySelectorAll('[data-i18n-title]').forEach(el => {
+        const key = el.getAttribute('data-i18n-title');
+        const localizedValue = translation[lang] && translation[lang][key];
+        const fallbackValue = translation.en && translation.en[key];
+        if (localizedValue) {
+            el.setAttribute('title', localizedValue);
+        } else if (fallbackValue) {
+            el.setAttribute('title', fallbackValue);
         }
     });
 }
 
-// Keep old openRoomDetails function for backwards compatibility but use new modal
-function openRoomDetails(roomId) {
-    openRoomDetailsModal(roomId);
+function openInfoModal(modalId) {
+    const modal = ensureElementFromTemplate(`${modalId}Template`, modalId);
+    if (!modal) {
+        return false;
+    }
+
+    if (modal.dataset.bound !== 'true') {
+        modal.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                closeInfoModal(modalId);
+            }
+        });
+        modal.dataset.bound = 'true';
+    }
+
+    applyTranslationsToRoot(modal);
+    modal.style.display = 'flex';
+    syncBodyScrollLock();
+    return false;
+}
+
+function closeInfoModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'none';
+        syncBodyScrollLock();
+    }
+    return false;
 }
 
 function changeLanguage(lang) {
@@ -2270,43 +2227,15 @@ function changeLanguage(lang) {
     // Track language change for analytics
     analytics.trackLanguageChange(lang);
 
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (key === 'nav-logo-title') return;
-        const localizedValue = translation[lang] && translation[lang][key];
-        const fallbackValue = translation.en && translation.en[key];
-        if (localizedValue) {
-            el.textContent = localizedValue;
-        } else if (fallbackValue) {
-            el.textContent = fallbackValue;
-        }
-    });
-
-    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-        const key = el.getAttribute('data-i18n-placeholder');
-        const localizedValue = translation[lang] && translation[lang][key];
-        const fallbackValue = translation.en && translation.en[key];
-        if (localizedValue) {
-            el.setAttribute('placeholder', localizedValue);
-        } else if (fallbackValue) {
-            el.setAttribute('placeholder', fallbackValue);
-        }
-    });
-
-    // Handle title attributes for tooltips
-    document.querySelectorAll('[data-i18n-title]').forEach(el => {
-        const key = el.getAttribute('data-i18n-title');
-        const localizedValue = translation[lang] && translation[lang][key];
-        const fallbackValue = translation.en && translation.en[key];
-        if (localizedValue) {
-            el.setAttribute('title', localizedValue);
-        } else if (fallbackValue) {
-            el.setAttribute('title', fallbackValue);
-        }
-    });
+    applyTranslationsToRoot(document.body, lang);
 }
 
 window.changeLanguage = changeLanguage;
+window.ensureElementFromTemplate = ensureElementFromTemplate;
+window.syncBodyScrollLock = syncBodyScrollLock;
+window.applyTranslationsToRoot = applyTranslationsToRoot;
+window.openInfoModal = openInfoModal;
+window.closeInfoModal = closeInfoModal;
 
 window.addEventListener('load', function () {
     // Always start with English - don't persist language across refreshes
@@ -2348,7 +2277,6 @@ let _currentNavSection = '';
 let navLinksCache = null;
 let navLinksBySection = null;
 let currentActiveNavLink = null;
-let parallaxLayersCache = null;
 
 function initNavLinkCache() {
     if (!navLinksCache) {
@@ -2400,40 +2328,9 @@ function initNavObserver() {
     });
 }
 
-parallaxLayersCache = null;
-
 function updateActiveNavLink() {
     _applyNavHighlight(_currentNavSection);
 }
-
-function updateParallax() {
-    if (!parallaxLayersCache) return;
-    const scrollY = window.scrollY;
-
-    parallaxLayersCache.forEach(layer => {
-        const depth = parseFloat(layer.getAttribute('data-depth'));
-        const offset = scrollY * depth;
-        layer.style.transform = `translateY(${offset}px)`;
-    });
-}
-
-// ============================================
-// PERFORMANCE: THROTTLED SCROLL HANDLERS
-// Uses requestAnimationFrame to batch scroll updates
-// ============================================
-let scrollTicking = false;
-
-function onScroll() {
-    if (!scrollTicking) {
-        requestAnimationFrame(() => {
-            updateParallax();
-            scrollTicking = false;
-        });
-        scrollTicking = true;
-    }
-}
-
-window.addEventListener('scroll', onScroll, { passive: true });
 
 // ============================================
 // LIGHTWEIGHT SCROLL ANIMATIONS (replaces AOS)
@@ -2545,41 +2442,10 @@ async function fetchCSRFToken() {
         } else {
             console.error('Failed to fetch CSRF token');
             return null;
-        }
-    } catch (error) {
         console.error('CSRF token fetch error:', error.message);
         return null;
     }
 }
-
-/** Returns a valid token, re-fetching if the current one has expired. */
-async function getValidCSRFToken() {
-    if (!window_csrfToken || Date.now() >= window_csrfTokenExpiry) {
-        return fetchCSRFToken();
-    }
-    return window_csrfToken;
-}
-
-// Fetch CSRF token on page load
-// Commented out to prevent 404 errors when not running backend server
-// document.addEventListener('DOMContentLoaded', function() {
-//     fetchCSRFToken();
-// });
-
-// ============================================
-// BOOKING FORM HANDLER WITH VALIDATION
-// ============================================
-const contactForm = document.querySelector('form');
-if (contactForm) {
-    contactForm.addEventListener('submit', async function (e) {
-        e.preventDefault();
-
-        const formData = new FormData(this);
-        const data = {
-            guestName: Validators.sanitize(formData.get('name') || ''),
-            email: Validators.sanitize(formData.get('email') || ''),
-            phone: Validators.sanitize(formData.get('phone') || ''),
-            checkIn: formData.get('checkIn') || '',
             checkOut: formData.get('checkOut') || '',
             roomType: Validators.sanitize(formData.get('room') || ''),
             guests: formData.get('guests') || '',
@@ -2764,23 +2630,204 @@ document.addEventListener('DOMContentLoaded', function () {
     initBackToTopObserver();
 });
 
-function lockScroll() {
-    document.body.style.overflow = 'hidden';
-}
-
-function unlockScroll() {
-    document.body.style.overflow = '';
-}
-
 // Resize handling is now done by cacheSectionPositions debounced handler
 
 // ============================================
 // BOOKING CONFIRMATION MODAL
 // ============================================
 const BAM_TO_EUR = 0.51;
+function bindBookingConfirmationModal(modal) {
+    if (!modal || modal.dataset.confirmationBound === 'true') {
+        return;
+    }
+
+    const closeButton = modal.querySelector('#closeConfirmModal');
+    const cancelButton = modal.querySelector('#cancelConfirmBtn');
+    const billingAddressCheckbox = modal.querySelector('#billingAddress');
+    const paymentMethodSelect = modal.querySelector('#paymentMethod');
+    const cardNumberInput = modal.querySelector('#cardNumber');
+    const expiryDateInput = modal.querySelector('#expiryDate');
+    const paymentForm = modal.querySelector('#bookingPaymentForm');
+
+    closeButton?.addEventListener('click', closeBookingConfirmationModal);
+    cancelButton?.addEventListener('click', closeBookingConfirmationModal);
+
+    modal.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            closeBookingConfirmationModal();
+        }
+    });
+
+    billingAddressCheckbox?.addEventListener('change', function() {
+        const billingForm = modal.querySelector('#billingAddressForm');
+        if (billingForm) {
+            billingForm.style.display = this.checked ? 'block' : 'none';
+        }
+    });
+
+    paymentMethodSelect?.addEventListener('change', function() {
+        const cardDetails = modal.querySelector('#cardDetails');
+        if (cardDetails) {
+            cardDetails.style.display = ['credit-card', 'debit-card'].includes(this.value) ? 'block' : 'none';
+        }
+        if (this.value) {
+            analytics.trackPaymentMethodSelected(this.value);
+        }
+    });
+
+    cardNumberInput?.addEventListener('input', function(event) {
+        let value = event.target.value.replace(/\D/g, '');
+        let formattedValue = '';
+        for (let index = 0; index < value.length; index++) {
+            if (index > 0 && index % 4 === 0) {
+                formattedValue += ' ';
+            }
+            formattedValue += value[index];
+        }
+        event.target.value = formattedValue;
+    });
+
+    expiryDateInput?.addEventListener('input', function(event) {
+        let value = event.target.value.replace(/\D/g, '');
+        if (value.length >= 2) {
+            value = value.substring(0, 2) + '/' + value.substring(2, 4);
+        }
+        event.target.value = value;
+    });
+
+    paymentForm?.addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const bookingData = JSON.parse(modal.dataset.bookingData || '{}');
+        const paymentMethod = paymentMethodSelect ? paymentMethodSelect.value : '';
+        if (!paymentMethod) {
+            toast.error('Please select a payment method');
+            return;
+        }
+
+        const agreeTermsCheckbox = modal.querySelector('#agreeTerms');
+        if (!agreeTermsCheckbox?.checked) {
+            toast.error('Please agree to terms and conditions');
+            return;
+        }
+
+        if (['credit-card', 'debit-card'].includes(paymentMethod)) {
+            const cardHolderEl = modal.querySelector('#cardHolder');
+            const cardNumberEl = modal.querySelector('#cardNumber');
+            const expiryDateEl = modal.querySelector('#expiryDate');
+            const cvvEl = modal.querySelector('#cvv');
+            if (cardHolderEl && cardNumberEl && expiryDateEl && cvvEl) {
+                const cardHolder = cardHolderEl.value.trim();
+                const cardNumber = cardNumberEl.value.replace(/\s/g, '');
+                const expiryDate = expiryDateEl.value;
+                const cvv = cvvEl.value;
+                if (!cardHolder || cardNumber.length < 13 || !expiryDate || cvv.length < 3) {
+                    toast.error('Please enter valid card details');
+                    return;
+                }
+            }
+        }
+
+        const confirmBtn = modal.querySelector('#confirmPaymentBtn');
+        const originalText = confirmBtn ? confirmBtn.textContent : 'Complete Payment';
+        if (confirmBtn) {
+            confirmBtn.disabled = true;
+            confirmBtn.textContent = 'Processing...';
+        }
+        spinner.show('Processing payment...');
+
+        try {
+            const paymentData = {
+                bookingId: bookingData.bookingId || 'TEMP_' + Date.now(),
+                amount: bookingData.totalPrice,
+                currency: 'BAM',
+                paymentMethod: paymentMethod,
+                cardLastFour: ['credit-card', 'debit-card'].includes(paymentMethod)
+                    ? (modal.querySelector('#cardNumber')?.value.slice(-4) ?? null)
+                    : null,
+                billingAddress: billingAddressCheckbox?.checked ? {
+                    street: modal.querySelector('#billingStreet')?.value || '',
+                    city: modal.querySelector('#billingCity')?.value || '',
+                    postal: modal.querySelector('#billingPostal')?.value || '',
+                    country: modal.querySelector('#billingCountry')?.value || ''
+                } : null
+            };
+
+            if (!window_csrfToken) {
+                window_csrfToken = await getValidCSRFToken();
+            }
+
+            const response = await fetch('/api/payments', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': window_csrfToken
+                },
+                credentials: 'include',
+                body: JSON.stringify(paymentData)
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                toast.success('Payment processed successfully! Booking confirmed.');
+                const storedBookingData = JSON.parse(modal.dataset.bookingData || '{}');
+                analytics.trackBookingSuccess(
+                    result.transactionId || 'TXN_' + Date.now(),
+                    storedBookingData.roomType || '',
+                    storedBookingData.totalPrice || 0
+                );
+                closeBookingConfirmationModal();
+                document.querySelector('form')?.reset();
+            } else {
+                analytics.trackBookingFailure(result.message || 'payment_failed');
+                toast.error(result.message || 'Payment failed. Please try again.');
+            }
+        } catch (error) {
+            console.error('Payment error:', error.message);
+            toast.error('Network error during payment. Please try again.');
+        } finally {
+            spinner.hide();
+            if (confirmBtn) {
+                confirmBtn.disabled = false;
+                confirmBtn.textContent = originalText;
+            }
+        }
+    });
+
+    modal.dataset.confirmationBound = 'true';
+}
+
+function ensureBookingConfirmationModal() {
+    const modal = ensureElementFromTemplate('bookingConfirmationModalTemplate', 'bookingConfirmationModal') || document.getElementById('bookingConfirmationModal');
+    if (!modal) {
+        return null;
+    }
+
+    bindBookingConfirmationModal(modal);
+    applyTranslationsToRoot(modal);
+
+    if (typeof window.bindPayByLinkForm === 'function') {
+        window.bindPayByLinkForm();
+    }
+
+    return modal;
+}
+
 function openBookingConfirmationModal(bookingData) {
-    const modal = document.getElementById('bookingConfirmationModal');
-    if (!modal) return;
+    const modal = ensureBookingConfirmationModal();
+    if (!modal || typeof roomData === 'undefined') return;
+
+    const paymentForm = modal.querySelector('#bookingPaymentForm');
+    paymentForm?.reset();
+    const billingForm = modal.querySelector('#billingAddressForm');
+    if (billingForm) {
+        billingForm.style.display = 'none';
+    }
+    const cardDetails = modal.querySelector('#cardDetails');
+    if (cardDetails) {
+        cardDetails.style.display = 'none';
+    }
 
     // Calculate nights
     const checkIn = new Date(bookingData.checkIn);
@@ -2788,25 +2835,26 @@ function openBookingConfirmationModal(bookingData) {
     const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
 
     // Get room price (from roomData object defined in HTML inline script)
-    const roomPrice = roomData[bookingData.roomType]?.price || 0;
+    const selectedRoom = roomData[bookingData.roomType] || {};
+    const roomPrice = selectedRoom.price || 0;
     const extraGuests = Math.max(0, (parseInt(bookingData.guests) || 2) - 2);
     const pricePerNight = roomPrice + extraGuests * 40;
     const totalPrice = pricePerNight * nights;
     const totalPriceEUR = (totalPrice * BAM_TO_EUR).toFixed(2);
 
     // Populate modal with booking details
-    document.getElementById('confirmRoomName').textContent = roomData[bookingData.roomType]?.title || bookingData.roomType;
-    document.getElementById('confirmCheckIn').textContent = checkIn.toLocaleDateString();
-    document.getElementById('confirmCheckOut').textContent = checkOut.toLocaleDateString();
-    document.getElementById('confirmGuests').textContent = bookingData.guests + ' Guest' + (bookingData.guests > 1 ? 's' : '');
-    document.getElementById('confirmPricePerNight').textContent = `BAM ${pricePerNight} (EUR ${(pricePerNight * BAM_TO_EUR).toFixed(2)})`;
-    document.getElementById('confirmNights').textContent = nights;
-    document.getElementById('confirmTotalPrice').textContent = `BAM ${totalPrice} (EUR ${totalPriceEUR})`;
+    modal.querySelector('#confirmRoomName').textContent = selectedRoom.title || bookingData.roomType;
+    modal.querySelector('#confirmCheckIn').textContent = checkIn.toLocaleDateString();
+    modal.querySelector('#confirmCheckOut').textContent = checkOut.toLocaleDateString();
+    modal.querySelector('#confirmGuests').textContent = bookingData.guests + ' Guest' + (bookingData.guests > 1 ? 's' : '');
+    modal.querySelector('#confirmPricePerNight').textContent = `BAM ${pricePerNight} (EUR ${(pricePerNight * BAM_TO_EUR).toFixed(2)})`;
+    modal.querySelector('#confirmNights').textContent = nights;
+    modal.querySelector('#confirmTotalPrice').textContent = `BAM ${totalPrice} (EUR ${totalPriceEUR})`;
 
     // Populate guest information
-    document.getElementById('confirmGuestName').textContent = bookingData.guestName;
-    document.getElementById('confirmGuestEmail').textContent = bookingData.email;
-    document.getElementById('confirmGuestPhone').textContent = bookingData.phone;
+    modal.querySelector('#confirmGuestName').textContent = bookingData.guestName;
+    modal.querySelector('#confirmGuestEmail').textContent = bookingData.email;
+    modal.querySelector('#confirmGuestPhone').textContent = bookingData.phone;
 
     // Store booking data for submission
     modal.dataset.bookingData = JSON.stringify({
@@ -2818,172 +2866,16 @@ function openBookingConfirmationModal(bookingData) {
 
     // Show modal
     modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden'; // Prevent scrolling
+    syncBodyScrollLock();
 }
 
 function closeBookingConfirmationModal() {
     const modal = document.getElementById('bookingConfirmationModal');
     if (modal) {
         modal.style.display = 'none';
-        document.body.style.overflow = 'auto'; // Re-enable scrolling
+        syncBodyScrollLock();
     }
 }
-
-// Modal close button
-document.getElementById('closeConfirmModal')?.addEventListener('click', closeBookingConfirmationModal);
-document.getElementById('cancelConfirmBtn')?.addEventListener('click', closeBookingConfirmationModal);
-
-// Close modal when clicking outside
-document.getElementById('bookingConfirmationModal')?.addEventListener('click', function(e) {
-    if (e.target === this) {
-        closeBookingConfirmationModal();
-    }
-});
-
-// Show/hide billing address form
-document.getElementById('billingAddress')?.addEventListener('change', function() {
-    const billingForm = document.getElementById('billingAddressForm');
-    if (billingForm) {
-        billingForm.style.display = this.checked ? 'block' : 'none';
-    }
-});
-
-// Show/hide card details based on payment method
-document.getElementById('paymentMethod')?.addEventListener('change', function() {
-    const cardDetails = document.getElementById('cardDetails');
-    if (cardDetails) {
-        cardDetails.style.display = ['credit-card', 'debit-card'].includes(this.value) ? 'block' : 'none';
-    }
-    // Track payment method selection
-    if (this.value) analytics.trackPaymentMethodSelected(this.value);
-});
-
-// Format card number with spaces
-document.getElementById('cardNumber')?.addEventListener('input', function(e) {
-    let value = e.target.value.replace(/\D/g, '');
-    let formattedValue = '';
-    for (let i = 0; i < value.length; i++) {
-        if (i > 0 && i % 4 === 0) {
-            formattedValue += ' ';
-        }
-        formattedValue += value[i];
-    }
-    e.target.value = formattedValue;
-});
-
-// Format expiry date as MM/YY
-document.getElementById('expiryDate')?.addEventListener('input', function(e) {
-    let value = e.target.value.replace(/\D/g, '');
-    if (value.length >= 2) {
-        value = value.substring(0, 2) + '/' + value.substring(2, 4);
-    }
-    e.target.value = value;
-});
-
-// Payment form submission
-document.getElementById('bookingPaymentForm')?.addEventListener('submit', async function(e) {
-    e.preventDefault();
-
-    const modal = document.getElementById('bookingConfirmationModal');
-    const bookingData = JSON.parse(modal.dataset.bookingData || '{}');
-
-    // Validate form
-    const paymentMethod = document.getElementById('paymentMethod').value;
-    if (!paymentMethod) {
-        toast.error('Please select a payment method');
-        return;
-    }
-
-    if (!document.getElementById('agreeTerms').checked) {
-        toast.error('Please agree to terms and conditions');
-        return;
-    }
-
-    // Validate card details if credit/debit card selected
-    if (['credit-card', 'debit-card'].includes(paymentMethod)) {
-        const cardHolderEl = document.getElementById('cardHolder');
-        const cardNumberEl = document.getElementById('cardNumber');
-        const expiryDateEl = document.getElementById('expiryDate');
-        const cvvEl = document.getElementById('cvv');
-        if (cardHolderEl && cardNumberEl && expiryDateEl && cvvEl) {
-            const cardHolder = cardHolderEl.value.trim();
-            const cardNumber = cardNumberEl.value.replace(/\s/g, '');
-            const expiryDate = expiryDateEl.value;
-            const cvv = cvvEl.value;
-            if (!cardHolder || cardNumber.length < 13 || !expiryDate || cvv.length < 3) {
-                toast.error('Please enter valid card details');
-                return;
-            }
-        }
-    }
-
-    // Show loading spinner
-    const confirmBtn = document.getElementById('confirmPaymentBtn');
-    const originalText = confirmBtn.textContent;
-    confirmBtn.disabled = true;
-    confirmBtn.textContent = 'Processing...';
-    spinner.show('Processing payment...');
-
-    try {
-        // Prepare payment data
-        const paymentData = {
-            bookingId: bookingData.bookingId || 'TEMP_' + Date.now(),
-            amount: bookingData.totalPrice,
-            currency: 'BAM',
-            paymentMethod: paymentMethod,
-            cardLastFour: ['credit-card', 'debit-card'].includes(paymentMethod)
-                ? (document.getElementById('cardNumber')?.value.slice(-4) ?? null)
-                : null,
-            billingAddress: document.getElementById('billingAddress').checked ? {
-                street: document.getElementById('billingStreet').value,
-                city: document.getElementById('billingCity').value,
-                postal: document.getElementById('billingPostal').value,
-                country: document.getElementById('billingCountry').value
-            } : null
-        };
-
-        // Ensure CSRF token exists
-        if (!window_csrfToken) {
-            window_csrfToken = await getValidCSRFToken();
-        }
-
-        // Make payment request
-        const response = await fetch('/api/payments', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': window_csrfToken
-            },
-            credentials: 'include',
-            body: JSON.stringify(paymentData)
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
-            toast.success('Payment processed successfully! Booking confirmed.');
-            // Track successful booking/purchase
-            const bd = JSON.parse(modal.dataset.bookingData || '{}');
-            analytics.trackBookingSuccess(
-                result.transactionId || 'TXN_' + Date.now(),
-                bd.roomType || '',
-                bd.totalPrice || 0
-            );
-            closeBookingConfirmationModal();
-            document.querySelector('form')?.reset();
-        } else {
-            analytics.trackBookingFailure(result.message || 'payment_failed');
-            toast.error(result.message || 'Payment failed. Please try again.');
-        }
-    } catch (error) {
-        console.error('Payment error:', error.message);
-        toast.error('Network error during payment. Please try again.');
-    } finally {
-        spinner.hide();
-        confirmBtn.disabled = false;
-        confirmBtn.textContent = originalText;
-    }
-});
 
 // ============================================
 // BOOKING.COM API INTEGRATION (Now through backend)

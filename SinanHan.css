@@ -109,7 +109,6 @@ body.nav-open {
     top: 0;
     width: 100%;
     background: rgba(255, 255, 255, 0.98);
-    backdrop-filter: blur(10px);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     transition: all 0.3s ease;
@@ -350,14 +349,6 @@ body.nav-open {
     background: rgba(0, 0, 0, 0.5);
     z-index: 1;
 }
-.parallax-layer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 0;
-}
 
 .hero-content {
     position: relative;
@@ -427,36 +418,6 @@ body.nav-open {
         word-break: normal;
         overflow-wrap: break-word;
     }
-}
-
-.scroll-indicator {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
-    animation: bounce 0.8s infinite;
-}
-
-.mouse {
-    width: 26px;
-    height: 40px;
-    border: 2px solid white;
-    border-radius: 13px;
-    position: relative;
-    margin-bottom: 20px;
-}
-
-.wheel {
-    width: 4px;
-    height: 6px;
-    background: white;
-    border-radius: 2px;
-    position: absolute;
-    top: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    animation: scroll 0.5s infinite;
 }
 
 .arrow {
@@ -872,14 +833,6 @@ body.nav-open {
         transform: translateY(-6px);
         box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14);
     }
-
-    .room-overlay {
-        opacity: 0.92;
-    }
-
-    .room-card:active .room-overlay {
-        opacity: 1;
-    }
 }
 
 /* Image area */
@@ -986,186 +939,6 @@ body.nav-open {
     background: var(--primary);
     width: 24px;
     border-radius: 4px;
-}
-
-/* Hover overlay — transparent dark with centered content */
-.room-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.45);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1.25rem 1.5rem;
-    opacity: 0;
-    transition: opacity 0.35s ease-in-out;
-    z-index: 10;
-    border-radius: inherit;
-    pointer-events: none;
-}
-
-.room-overlay button {
-    background: white !important;
-    color: #ea580c !important;
-    font-weight: 600 !important;
-    padding: 10px 28px !important;
-    border: none !important;
-    border-radius: 5px !important;
-    cursor: pointer !important;
-    font-size: 0.95rem !important;
-    transition: all 0.3s ease !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
-    pointer-events: auto !important;
-    min-width: 44px !important;
-    min-height: 44px !important;
-}
-
-.room-overlay button:hover {
-    background: #f3f4f6 !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
-}
-
-.room-card:hover .room-overlay {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-/* Mobile touch-friendly overlay visibility */
-@media (max-width: 768px) {
-    .rooms-grid {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .room-card {
-        width: 100%;
-        max-width: 420px;
-        text-align: left;
-    }
-
-    .room-overlay {
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, transparent 62%) !important;
-        opacity: 1 !important;
-        pointer-events: auto !important;
-        justify-content: flex-end !important;
-        align-items: flex-start !important;
-        padding: 0.6rem 0.85rem 0.75rem !important;
-        gap: 0.25rem !important;
-    }
-
-    .room-card:hover .room-overlay {
-        opacity: 1 !important;
-        pointer-events: auto !important;
-    }
-
-    .room-overlay button {
-        opacity: 1 !important;
-        pointer-events: auto !important;
-        padding: 0.3rem 0.9rem !important;
-        font-size: 0.78rem !important;
-        box-shadow: none !important;
-        align-self: flex-start !important;
-    }
-
-    .room-content {
-        align-items: flex-start !important;
-        text-align: left !important;
-    }
-
-    .room-content span,
-    .room-content .room-highlights {
-        display: none !important;
-    }
-}
-
-/* For touch devices - show overlay button always */
-@media (hover: none) and (pointer: coarse) {
-    .room-overlay {
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, transparent 62%) !important;
-        opacity: 1 !important;
-        pointer-events: auto !important;
-        justify-content: flex-end !important;
-        align-items: flex-start !important;
-        padding: 0.6rem 0.85rem 0.75rem !important;
-        gap: 0.25rem !important;
-    }
-
-    .room-overlay button {
-        display: block;
-        opacity: 1;
-        pointer-events: auto !important;
-        padding: 0.3rem 0.9rem !important;
-        font-size: 0.78rem !important;
-        box-shadow: none !important;
-        align-self: flex-start !important;
-    }
-
-    .room-card:active {
-        transform: scale(0.98);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12) !important;
-    }
-}
-
-/* Keyboard focus accessibility */
-.room-overlay button:focus-visible {
-    outline: 3px solid #ea580c;
-    outline-offset: 2px;
-}
-
-.room-overlay .btn {
-    align-self: center;
-    padding: 0.5rem 1.4rem;
-    font-size: 0.9rem;
-}
-
-/* Content inside overlay */
-.room-content {
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    flex-wrap: wrap;
-    width: 100%;
-}
-
-.room-content h3 {
-    font-size: 1rem;
-    font-weight: 700;
-    margin-bottom: 0.2rem;
-    letter-spacing: 0.3px;
-    width: 100%;
-}
-
-.room-content .room-description {
-    font-size: 0.8rem;
-    opacity: 0.8;
-    margin-bottom: 0.5rem;
-    width: 100%;
-}
-
-.room-content span {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    font-size: 0.78rem;
-    opacity: 0.9;
-    margin-right: 0.6rem;
-    margin-bottom: 0.2rem;
-}
-
-.room-content span i {
-    color: var(--primary-dark);
-    font-size: 0.75rem;
-}
-
-.room-content .room-highlights {
-    display: none;
 }
 
 /* "Most Popular" badge */
@@ -2746,65 +2519,24 @@ body.nav-open {
 
 
 @media (max-width: 768px) {
-    .room-overlay {
-        padding: 1rem 1.2rem;
-        opacity: 0.95;
+    .room-info {
+        padding: 1rem 1.1rem 0.5rem;
     }
 
-    .room-overlay .btn {
-        padding: 0.4rem 0.9rem;
-        font-size: 0.8rem;
-    }
-
-    .room-content h3 {
-        font-size: 1.1rem;
-        margin-bottom: 0.4rem;
-    }
-
-    .room-description {
-        font-size: 0.8rem;
-        margin-bottom: 0.4rem;
-    }
-
-    .room-content span {
-        font-size: 0.8rem;
-        display: block;
-        margin-bottom: 0.3rem;
-    }
-
-    .room-highlights {
-        font-size: 0.75rem;
-        line-height: 1.3;
-        margin-top: 0.4rem;
+    .room-price {
+        padding: 1rem 1.1rem 1.1rem;
     }
 }
 
 /* Extra small mobile room cards (max 360px) */
 @media (max-width: 360px) {
-    .rooms {
-        padding: 3rem 1rem;
+    .room-info {
+        padding: 0.95rem 1rem 0.4rem;
     }
 
-    .rooms-grid {
-        gap: 1.25rem;
+    .room-price {
+        padding: 0.95rem 1rem 1rem;
     }
-
-    .room-overlay {
-        padding: 0.8rem 1rem;
-        opacity: 0.95;
-    }
-
-    .room-content h3 {
-        font-size: 1rem;
-        margin-bottom: 0.3rem;
-    }
-
-    .room-description {
-        font-size: 0.75rem;
-        margin-bottom: 0.3rem;
-    }
-
-    .room-content span {
         font-size: 0.75rem;
         margin-bottom: 0.2rem;
     }
@@ -2877,16 +2609,8 @@ body.nav-open {
         max-height: 320px;
     }
 
-    .room-overlay {
-        padding: 1.5rem 1.75rem;
-    }
-
-    .room-content h3 {
-        font-size: 1.1rem;
-    }
-
-    .room-content span {
-        font-size: 0.85rem;
+    .room-info {
+        padding: 1.1rem 1.25rem 0.55rem;
     }
 }
 
@@ -2989,9 +2713,6 @@ body.nav-open {
         overflow-wrap: break-word;
     }
 
-    .scroll-indicator {
-        display: none;
-    }
 }
 
 /* Ensure proper text rendering on mobile */

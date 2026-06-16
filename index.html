@@ -53,7 +53,7 @@
     *{margin:0;padding:0;box-sizing:border-box}
     html{scroll-behavior:smooth;overflow-x:hidden}
     body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;color:var(--text);line-height:1.6;overflow-x:hidden}
-    .navbar{position:fixed;top:0;width:100%;max-width:100%;background:rgba(255,255,255,.98);backdrop-filter:blur(10px);box-shadow:0 2px 10px rgba(0,0,0,.1);z-index:1000;transition:all .3s ease;display:flex;align-items:center;justify-content:center;height:70px;padding:0 2rem;border-bottom:1px solid rgba(193,154,107,.1)}
+    .navbar{position:fixed;top:0;width:100%;max-width:100%;background:rgba(255,255,255,.99);box-shadow:0 2px 10px rgba(0,0,0,.1);z-index:1000;transition:all .3s ease;display:flex;align-items:center;justify-content:center;height:70px;padding:0 2rem;border-bottom:1px solid rgba(193,154,107,.1)}
     .nav-container{display:flex;align-items:center;justify-content:flex-start;flex:0 0 auto;gap:2rem}
     .nav-logo{display:flex;align-items:center;cursor:pointer;text-decoration:none}
     .nav-menu{display:flex;gap:2rem;align-items:center;flex:1;justify-content:center}
@@ -296,25 +296,13 @@
                  decoding="async"
                  style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;">
         </picture>
-        <div class="paralax-layer" data-depth="0.5"></div>
         <div class="hero-content">
-            <h1 class="hero-title" data-aos="fadeup" data-i18n="hero-title">Sobe u domaćinstvu „Sinan Han"</h1>
-            <p class="hero-subtitle" data-aos="fadeup" data-aos-delay="100ms" data-i18n="hero-subtitle">Where Heritage Meets Comfort</p>
+            <h1 class="hero-title" data-i18n="hero-title">Sobe u domaćinstvu „Sinan Han"</h1>
+            <p class="hero-subtitle" data-i18n="hero-subtitle">Where Heritage Meets Comfort</p>
 
-            <button class="btn btn-primary btn-lg" data-aos="fadeup" data-aos-delay="200ms" onclick="document.getElementById('rooms').scrollIntoView({behavior: 'smooth'})">
+            <button class="btn btn-primary btn-lg" onclick="document.getElementById('rooms').scrollIntoView({behavior: 'smooth'})">
                 <i class="fas fa-calendar"></i> <span data-i18n="reserve-btn">Reserve Now</span>
             </button>
-        </div>
-
-        <div class="scroll-indicator">
-            <div class="mouse">
-                <div class="wheel"></div>
-                <div class="arrow">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -389,22 +377,10 @@
                                  width="800"
                                  height="600">
                         </picture>
-                        <div class="room-overlay">
-                            <button class="btn btn-white" onclick="openModal('standard-double')" data-i18n="view-details">View Details</button>
-                            <div class="room-content">
-                                <h3 data-i18n="std-dbl-name">Standard Double Room</h3>
-                                <p class="room-description" data-i18n="std-dbl-desc">Room • 18 m²</p>
-                                <span><i class="fas fa-bed"></i> <span data-i18n="std-dbl-feat1">1 Large Double Bed</span></span>
-                                <span><i class="fas fa-tv"></i> <span data-i18n="std-dbl-feat2">Flat-Screen TV</span></span>
-                                <span><i class="fas fa-door-open"></i> <span data-i18n="std-dbl-feat3">Terrace with City Views</span></span>
-                                <p class="room-highlights" data-i18n="std-dbl-highlights">This air-conditioned double room includes a flat-screen TV with cable channels, a private bathroom as well as a terrace with city views. Free toiletries included.</p>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="room-info">
                         <h3 class="room-title" data-i18n="std-dbl-name">Standard Double Room</h3>
-                        <p class="room-desc" data-i18n="std-dbl-desc">Room • 18 m²</p>
                     </div>
 
                     <div class="room-price">
@@ -412,7 +388,7 @@
                             <span class="price" data-i18n="std-dbl-price">BAM 177</span>
                             <span class="per-night" data-i18n="per-night">per night</span>
                         </div>
-                        <button class="btn btn-primary" onclick="selectRoomForBooking('standard-double', 177, 'Standard Double Room')" data-i18n="book-now">Book Now</button>
+                        <button class="btn btn-primary" onclick="openModal('standard-double')" data-i18n="view-details">View Details</button>
                     </div>
                 </div>
 
@@ -440,28 +416,16 @@
                                  width="800"
                                  height="600">
                         </picture>
-                        <div class="room-overlay">
-                            <button class="btn btn-white" onclick="openModal('superior-suite')" data-i18n="view-details">View Details</button>
-                            <div class="room-content">
-                                <h3 data-i18n="sup-suite-name">Superior Suite</h3>
-                                <p class="room-description" data-i18n="sup-suite-desc">Entire apartment • 45 m²</p>
-                                <span><i class="fas fa-bed"></i> <span data-i18n="sup-suite-feat1">1 Extra-Large Double Bed + Sofa Bed</span></span>
-                                <span><i class="fas fa-utensils"></i> <span data-i18n="sup-suite-feat2">Full Kitchen</span></span>
-                                <span><i class="fas fa-tv"></i> <span data-i18n="sup-suite-feat3">Flat-Screen TV</span></span>
-                                <p class="room-highlights" data-i18n="sup-suite-highlights">Boasting a private entrance, this air-conditioned apartment features 1 living room, 1 separate bedroom and 1 bathroom with a walk-in shower and a bidet. In the well-fitted kitchen, guests will find a stovetop, refrigerator, kitchenware and an oven. Featuring a terrace with garden views, this apartment also features soundproof walls and a flat-screen TV with cable channels.</p>
-                            </div>
-                        </div>
                     </div>
                     <div class="room-info">
                         <h3 class="room-title" data-i18n="sup-suite-name">Superior Suite</h3>
-                        <p class="room-desc" data-i18n="sup-suite-desc">Entire apartment • 45 m²</p>
                     </div>
                     <div class="room-price">
                         <div>
                             <span class="price" data-i18n="sup-suite-price">BAM 204</span>
                             <span class="per-night" data-i18n="per-night">per night</span>
                         </div>
-                        <button class="btn btn-primary" onclick="selectRoomForBooking('superior-suite', 204, 'Superior Suite')" data-i18n="book-now">Book Now</button>
+                        <button class="btn btn-primary" onclick="openModal('superior-suite')" data-i18n="view-details">View Details</button>
                     </div>
                 </div>
 
@@ -488,22 +452,10 @@
                                  width="800"
                                  height="600">
                         </picture>
-                        <div class="room-overlay">
-                            <button class="btn btn-white" onclick="openModal('double-terrace')" data-i18n="view-details">View Details</button>
-                            <div class="room-content">
-                                <h3 data-i18n="dbl-terrace-name">Double Room with Terrace</h3>
-                                <p class="room-description" data-i18n="dbl-terrace-desc">Room • 18 m²</p>
-                                <span><i class="fas fa-bed"></i> <span data-i18n="dbl-terrace-feat1">1 Large Double Bed</span></span>
-                                <span><i class="fas fa-door-open"></i> <span data-i18n="dbl-terrace-feat2">Terrace with Mountain Views</span></span>
-                                <span><i class="fas fa-tv"></i> <span data-i18n="dbl-terrace-feat3">Smart TV</span></span>
-                                <p class="room-highlights" data-i18n="dbl-terrace-highlights">This air-conditioned double room includes a flat-screen TV with cable channels, a private bathroom as well as a terrace with mountain views.</p>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="room-info">
                         <h3 class="room-title" data-i18n="dbl-terrace-name">Double Room with Terrace</h3>
-                        <p class="room-desc" data-i18n="dbl-terrace-desc">Room • 18 m²</p>
                     </div>
 
                     <div class="room-price">
@@ -511,7 +463,7 @@
                             <span class="price" data-i18n="dbl-terrace-price">BAM 223</span>
                             <span class="per-night" data-i18n="per-night">per night</span>
                         </div>
-                        <button class="btn btn-primary" onclick="selectRoomForBooking('double-terrace', 223, 'Double Room with Terrace')" data-i18n="book-now">Book Now</button>
+                        <button class="btn btn-primary" onclick="openModal('double-terrace')" data-i18n="view-details">View Details</button>
                     </div>
                 </div>
 
@@ -538,22 +490,10 @@
                                  width="800"
                                  height="600">
                         </picture>
-                        <div class="room-overlay">
-                            <button class="btn btn-white" onclick="openModal('standard-queen')" data-i18n="view-details">View Details</button>
-                            <div class="room-content">
-                                <h3 data-i18n="std-queen-name">Standard Queen Room</h3>
-                                <p class="room-description" data-i18n="std-queen-desc">Room • 24 m²</p>
-                                <span><i class="fas fa-bed"></i> <span data-i18n="std-queen-feat1">1 Extra-Large Double Bed</span></span>
-                                <span><i class="fas fa-door-open"></i> <span data-i18n="std-queen-feat2">Garden Views</span></span>
-                                <span><i class="fas fa-tv"></i> <span data-i18n="std-queen-feat3">Flat-Screen TV</span></span>
-                                <p class="room-highlights" data-i18n="std-queen-highlights">Offering free toiletries, this double room includes a private bathroom with a walk-in shower and a bidet. Features soundproof walls and a minibar.</p>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="room-info">
                         <h3 class="room-title" data-i18n="std-queen-name">Standard Queen Room</h3>
-                        <p class="room-desc" data-i18n="std-queen-desc">Room • 24 m²</p>
                     </div>
 
                     <div class="room-price">
@@ -561,7 +501,7 @@
                             <span class="price" data-i18n="std-queen-price">BAM 242</span>
                             <span class="per-night" data-i18n="per-night">per night</span>
                         </div>
-                        <button class="btn btn-primary" onclick="selectRoomForBooking('standard-queen', 242, 'Standard Queen Room')" data-i18n="book-now">Book Now</button>
+                        <button class="btn btn-primary" onclick="openModal('standard-queen')" data-i18n="view-details">View Details</button>
                     </div>
                 </div>
 
@@ -588,22 +528,10 @@
                                  width="800"
                                  height="600">
                         </picture>
-                        <div class="room-overlay">
-                            <button class="btn btn-white" onclick="openModal('superior-apartment')" data-i18n="view-details">View Details</button>
-                            <div class="room-content">
-                                <h3 data-i18n="sup-apt-name">Superior Apartment</h3>
-                                <p class="room-description" data-i18n="sup-apt-desc">Entire apartment • 45 m²</p>
-                                <span><i class="fas fa-bed"></i> <span data-i18n="sup-apt-feat1">1 Extra-Large Double Bed + Sofa Bed</span></span>
-                                <span><i class="fas fa-utensils"></i> <span data-i18n="sup-apt-feat2">Full Kitchen</span></span>
-                                <span><i class="fas fa-tv"></i> <span data-i18n="sup-apt-feat3">Flat-Screen TV</span></span>
-                                <p class="room-highlights" data-i18n="sup-apt-highlights">Boasting a private entrance, this air-conditioned apartment features 1 living room, 1 separate bedroom and 1 bathroom with a walk-in shower and a bidet. In the well-fitted kitchen, guests will find a stovetop, a refrigerator, kitchenware and an oven. Featuring a terrace with garden views, this apartment also features soundproof walls and a flat-screen TV with cable channels.</p>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="room-info">
                         <h3 class="room-title" data-i18n="sup-apt-name">Superior Apartment</h3>
-                        <p class="room-desc" data-i18n="sup-apt-desc">Entire apartment • 45 m²</p>
                     </div>
 
                     <div class="room-price">
@@ -611,7 +539,7 @@
                             <span class="price" data-i18n="sup-apt-price">BAM 300</span>
                             <span class="per-night" data-i18n="per-night">per night</span>
                         </div>
-                        <button class="btn btn-primary" onclick="selectRoomForBooking('superior-apartment', 260, 'Superior Apartment')" data-i18n="book-now">Book Now</button>
+                        <button class="btn btn-primary" onclick="openModal('superior-apartment')" data-i18n="view-details">View Details</button>
                     </div>
                 </div>
 
@@ -638,22 +566,10 @@
                                  width="800"
                                  height="600">
                         </picture>
-                        <div class="room-overlay">
-                            <button class="btn btn-white" onclick="openModal('deluxe-suite')" data-i18n="view-details">View Details</button>
-                            <div class="room-content">
-                                <h3 data-i18n="deluxe-name">Deluxe Suite</h3>
-                                <p class="room-description" data-i18n="deluxe-desc">Room • 29 m²</p>
-                                <span><i class="fas fa-bed"></i> <span data-i18n="deluxe-feat1">1 Sofa Bed + 1 Large Double Bed</span></span>
-                                <span><i class="fas fa-mountain"></i> <span data-i18n="deluxe-feat2">Mountain & City Views</span></span>
-                                <span><i class="fas fa-tv"></i> <span data-i18n="deluxe-feat3">Flat-Screen TV</span></span>
-                                <p class="room-highlights" data-i18n="deluxe-highlights">High floor deluxe suite featuring 1 sofa bed and 1 large double bed with free cot available on request. Air-conditioned room with patio, ensuite bathroom, terrace, coffee machine, minibar and free WiFi. Includes mountain views, landmark views, city views, and river view. Safety deposit box, hypoallergenic bedding, private entrance with soundproofing.</p>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="room-info">
                         <h3 class="room-title" data-i18n="deluxe-name">Deluxe Suite</h3>
-                        <p class="room-desc" data-i18n="deluxe-desc">Room • 29 m²</p>
                     </div>
 
                     <div class="room-price">
@@ -661,7 +577,7 @@
                             <span class="price" data-i18n="deluxe-price">BAM 195</span>
                             <span class="per-night" data-i18n="per-night">per night</span>
                         </div>
-                        <button class="btn btn-primary" onclick="selectRoomForBooking('deluxe-suite', 195, 'Delux Suite')" data-i18n="book-now">Book Now</button>
+                        <button class="btn btn-primary" onclick="openModal('deluxe-suite')" data-i18n="view-details">View Details</button>
                     </div>
                 </div>
 
@@ -688,22 +604,10 @@
                                  width="800"
                                  height="600">
                         </picture>
-                        <div class="room-overlay">
-                            <button class="btn btn-white" onclick="openModal('two-bedroom-deluxe')" data-i18n="view-details">View Details</button>
-                            <div class="room-content">
-                                <h3 data-i18n="two-bed-deluxe-name">Two-Bedroom Deluxe Apartment</h3>
-                                <p class="room-description" data-i18n="two-bed-deluxe-desc">Entire apartment • 65 m²</p>
-                                <span><i class="fas fa-bed"></i> <span data-i18n="two-bed-deluxe-feat1">2 Extra-Large Double Beds</span></span>
-                                <span><i class="fas fa-utensils"></i> <span data-i18n="two-bed-deluxe-feat2">Full Kitchen</span></span>
-                                <span><i class="fas fa-couch"></i> <span data-i18n="two-bed-deluxe-feat3">Spacious Living Room</span></span>
-                                <p class="room-highlights" data-i18n="two-bed-deluxe-highlights">Spacious two-bedroom deluxe apartment featuring 2 extra-large double beds, a fully equipped kitchen, a separate living room with sofa, and a private bathroom with walk-in shower. Ideal for families or small groups. Air-conditioned with flat-screen TV, free WiFi, and stunning city views.</p>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="room-info">
                         <h3 class="room-title" data-i18n="two-bed-deluxe-name">Two-Bedroom Deluxe Apartment</h3>
-                        <p class="room-desc" data-i18n="two-bed-deluxe-desc">Entire apartment • 65 m²</p>
                     </div>
 
                     <div class="room-price">
@@ -711,7 +615,7 @@
                             <span class="price" data-i18n="two-bed-deluxe-price">BAM 380</span>
                             <span class="per-night" data-i18n="per-night">per night</span>
                         </div>
-                        <button class="btn btn-primary" onclick="selectRoomForBooking('two-bedroom-deluxe', 262, 'Two-Bedroom Deluxe Apartment')" data-i18n="book-now">Book Now</button>
+                        <button class="btn btn-primary" onclick="openModal('two-bedroom-deluxe')" data-i18n="view-details">View Details</button>
                     </div>
                 </div>
 
@@ -991,10 +895,10 @@
                 <div class="footer-col">
                     <h4 data-i18n="footer-policies-title">Policies</h4>
                     <ul>
-                        <li><a href="#" data-i18n="footer-house-rules" data-i18n-title="footer-house-rules-title" title="View our house rules and policies" onclick="document.getElementById('houseRulesModal').style.display='flex';return false;">House Rules</a></li>
-                        <li><a href="#" data-i18n="footer-important-info" data-i18n-title="footer-important-info-title" title="View important legal information" onclick="document.getElementById('legalInfoModal').style.display='flex';return false;">Important Legal &amp; Info</a></li>
-                        <li><a href="#" data-i18n="footer-registration" data-i18n-title="footer-registration-title" title="View official business registration document" onclick="document.getElementById('registrationModal').style.display='flex';return false;">Business Registration</a></li>
-                        <li><a href="#" data-i18n="footer-terms-privacy" onclick="document.getElementById('termsModal').style.display='flex';return false;">Pravila i uvjeti</a></li>
+                        <li><a href="#" data-i18n="footer-house-rules" data-i18n-title="footer-house-rules-title" title="View our house rules and policies" onclick="return openInfoModal('houseRulesModal');">House Rules</a></li>
+                        <li><a href="#" data-i18n="footer-important-info" data-i18n-title="footer-important-info-title" title="View important legal information" onclick="return openInfoModal('legalInfoModal');">Important Legal &amp; Info</a></li>
+                        <li><a href="#" data-i18n="footer-registration" data-i18n-title="footer-registration-title" title="View official business registration document" onclick="return openInfoModal('registrationModal');">Business Registration</a></li>
+                        <li><a href="#" data-i18n="footer-terms-privacy" onclick="return openInfoModal('termsModal');">Pravila i uvjeti</a></li>
                         <li><a href="https://www.booking.com/hotel/ba/sinan-han.en-gb.html?aid=2375516&label=01J1X42R3M4D4ZBF77BKWAKKWV_01KJYSEFYH68GT6ZJXMJVZXK8K&sid=f7a6b00623c7c93c3c26551ddff2dbd5&age=10&all_sr_blocks=187755904_360715149_3_2_0&checkin=2026-03-13&checkout=2026-03-15&dest_id=-89574&dest_type=city&dist=0&group_adults=2&group_children=1&hapos=1&highlighted_blocks=187755904_360715149_3_2_0&hpos=1&matching_block_id=187755904_360715149_3_2_0&no_rooms=1&req_adults=2&req_age=10&req_children=1&room1=A%2CA%2C10&sb_price_type=total&sr_order=popularity&sr_pri_blocks=187755904_360715149_3_2_0__12158&srepoch=1772707339&srpvid=1a214b43f7c304a6&type=total&ucfs=1&activeTab=main&chal_t=1773647176681&force_referer=#tab-reviews" target="_blank" rel="noopener noreferrer" data-i18n="footer-guest-reviews" title="Read guest reviews on Booking.com" data-i18n-title="footer-guest-reviews-title">Guest Reviews</a></li>
                     </ul>
                 </div>
@@ -1011,12 +915,20 @@
                 <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:18px;">
                     <span data-i18n="secure-payment-methods" style="font-size:0.75rem;color:#aaa;letter-spacing:0.06em;text-transform:uppercase;">Secure Payment Methods</span>
                     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:10px 20px;">
-                        <img src="logos/Acceptance_mark/Visa_actual/Visa%202015%2050.gif" alt="Visa" width="46" height="28" style="border-radius:4px;background:#fff;padding:3px 6px;width:46px;height:28px;object-fit:contain;display:block;">
-                        <img src="logos/Acceptance_mark/Mastercard_actual/Artwork/Mastercard%20Brand%20Mark%20Vertical%2053px%20PNG/mc_vrt_opt_pos_53_1x.png" alt="MasterCard" width="46" height="28" style="border-radius:4px;background:#fff;padding:3px 6px;width:46px;height:28px;object-fit:contain;display:block;">
-                        <img src="logos/Acceptance_mark/Maestro_actual/Artwork/PNG%20for%20Web/Horizontal/Positive/75px%20x%2021px/ms_hrz_opt_pos_75_1x.png" alt="Maestro" width="46" height="28" style="border-radius:4px;background:#fff;padding:3px 6px;width:46px;height:28px;object-fit:contain;display:block;">
+                        <a href="https://www.visaeurope.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit Visa">
+                            <img src="logos/Acceptance_mark/Visa_actual/Visa%202015%2050.gif" alt="Visa" width="46" height="28" style="border-radius:4px;background:#fff;padding:3px 6px;width:46px;height:28px;object-fit:contain;display:block;">
+                        </a>
+                        <a href="http://www.mastercard.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit Mastercard">
+                            <img src="logos/Acceptance_mark/Mastercard_actual/Artwork/Mastercard%20Brand%20Mark%20Vertical%2053px%20PNG/mc_vrt_opt_pos_53_1x.png" alt="MasterCard" width="46" height="28" style="border-radius:4px;background:#fff;padding:3px 6px;width:46px;height:28px;object-fit:contain;display:block;">
+                        </a>
+                        <a href="https://brand.mastercard.com/brandcenter/more-about-our-brands.html" target="_blank" rel="noopener noreferrer" aria-label="Visit Maestro">
+                            <img src="logos/Acceptance_mark/Maestro_actual/Artwork/PNG%20for%20Web/Horizontal/Positive/75px%20x%2021px/ms_hrz_opt_pos_75_1x.png" alt="Maestro" width="46" height="28" style="border-radius:4px;background:#fff;padding:3px 6px;width:46px;height:28px;object-fit:contain;display:block;">
+                        </a>
                         <img src="logos/Security_programs/Visa%20Secure/Visa%20Blue/visa-secure_blu_72dpi.jpg" alt="Visa Secure" width="46" height="28" style="border-radius:4px;background:#fff;padding:3px 6px;width:46px;height:28px;object-fit:contain;display:block;">
                         <img src="logos/Security_programs/Mastercard%20Identity%20Check/Artwork/mc_idcheck_hrz_rgb_pos.png" alt="Mastercard Identity Check" width="46" height="28" style="border-radius:4px;background:#fff;padding:3px 6px;width:46px;height:28px;object-fit:contain;display:block;">
-                        <img src="logos/Monri_badge/monri_badge.png" alt="pay@web · Secured by Monri · UniCredit Bank" width="120" height="56" style="border-radius:4px;background:#fff;padding:3px 6px;width:120px;height:56px;object-fit:contain;display:block;">
+                        <a href="http://monri.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit Monri">
+                            <img src="logos/Monri_badge/monri_badge.png" alt="pay@web · Secured by Monri · UniCredit Bank" width="120" height="56" style="border-radius:4px;background:#fff;padding:3px 6px;width:120px;height:56px;object-fit:contain;display:block;">
+                        </a>
                         <img src="logos/UniCredit_Bank_logo_1.png" alt="UniCredit Bank" width="90" height="56" style="border-radius:4px;background:#fff;padding:3px 6px;width:90px;height:56px;object-fit:contain;display:block;">
                     </div>
                 </div>
@@ -1033,121 +945,123 @@
         <i class="fas fa-chevron-up"></i>
     </button>
 
-    <!-- Room Modal -->
-    <div id="roomModal" class="modal">
-        <div class="modal-content">
-            <button class="close" id="closeModal" aria-label="Close modal">&times;</button>
-            <div class="modal-body">
-                <div id="modalImage" class="modal-image">
-                    <div id="modalImagesWrapper" class="modal-images-wrapper"></div>
-                    <button class="modal-slider-btn modal-slider-prev" id="modalSliderPrev" aria-label="Previous image" style="display: none;">❮</button>
-                    <button class="modal-slider-btn modal-slider-next" id="modalSliderNext" aria-label="Next image" style="display: none;">❯</button>
-                    <div id="modalSliderDots" class="modal-slider-dots" style="display: none;"></div>
-                    <div id="modalImageCounter" class="modal-image-counter" style="display: none;"></div>
-                </div>
-                <div class="modal-info">
-                    <h2 id="modalTitle"></h2>
-                    <p id="modalDescription"></p>
-                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                        <button class="btn btn-primary btn-lg" id="modalBookBtn" data-i18n="modal-book-btn">Book This Room</button>
-                        <button class="btn btn-secondary btn-lg" onclick="document.getElementById('houseRulesModal').style.display='flex'" data-i18n="house-rules">House Rules &amp; Policies</button>
+    <template id="roomModalTemplate">
+        <div id="roomModal" class="modal">
+            <div class="modal-content">
+                <button class="close" id="closeModal" aria-label="Close modal">&times;</button>
+                <div class="modal-body">
+                    <div id="modalImage" class="modal-image">
+                        <div id="modalImagesWrapper" class="modal-images-wrapper"></div>
+                        <button class="modal-slider-btn modal-slider-prev" id="modalSliderPrev" aria-label="Previous image" style="display: none;">❮</button>
+                        <button class="modal-slider-btn modal-slider-next" id="modalSliderNext" aria-label="Next image" style="display: none;">❯</button>
+                        <div id="modalSliderDots" class="modal-slider-dots" style="display: none;"></div>
+                        <div id="modalImageCounter" class="modal-image-counter" style="display: none;"></div>
+                    </div>
+                    <div class="modal-info">
+                        <h2 id="modalTitle"></h2>
+                        <p id="modalDescription"></p>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button class="btn btn-primary btn-lg" id="modalBookBtn" data-i18n="modal-book-btn">Book This Room</button>
+                            <button class="btn btn-secondary btn-lg" onclick="return openInfoModal('houseRulesModal');" data-i18n="house-rules">House Rules &amp; Policies</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </template>
 
-    <!-- Booking Confirmation Modal -->
-    <div id="bookingConfirmationModal" class="modal" style="display: none;">
-        <div class="modal-content" style="max-width: 600px; max-height: 90vh; overflow-y: auto;">
-            <button class="close" id="closeConfirmModal">×</button>
+    <template id="bookingConfirmationModalTemplate">
+        <div id="bookingConfirmationModal" class="modal" style="display: none;">
+            <div class="modal-content" style="max-width: 600px; max-height: 90vh; overflow-y: auto;">
+                <button class="close" id="closeConfirmModal">×</button>
 
-            <h2 style="margin-bottom: 20px; text-align: center; color: #2c3e50;">Booking Confirmation</h2>
+                <h2 style="margin-bottom: 20px; text-align: center; color: #2c3e50;">Booking Confirmation</h2>
 
-            <!-- Booking Summary -->
-            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                <h3 style="margin-bottom: 10px; color: #34495e; font-size: 16px;">Booking Details</h3>
-                <p style="margin: 8px 0;"><strong>Room:</strong> <span id="confirmRoomName"></span></p>
-                <p style="margin: 8px 0;"><strong>Check-in:</strong> <span id="confirmCheckIn"></span></p>
-                <p style="margin: 8px 0;"><strong>Check-out:</strong> <span id="confirmCheckOut"></span></p>
-                <p style="margin: 8px 0;"><strong>Guests:</strong> <span id="confirmGuests"></span></p>
-                <p style="margin: 8px 0;"><strong>Price per Night:</strong> <span id="confirmPricePerNight"></span></p>
-                <p style="margin: 8px 0;"><strong>Number of Nights:</strong> <span id="confirmNights"></span></p>
-                <p style="margin: 8px 0; font-size: 18px; color: #e74c3c;"><strong>Total Price: </strong><span id="confirmTotalPrice"></span></p>
-            </div>
-
-            <!-- Guest Information -->
-            <div style="margin-bottom: 20px;">
-                <h3 style="margin-bottom: 10px; color: #34495e; font-size: 16px;">Guest Information</h3>
-                <p style="margin: 8px 0;"><strong>Name:</strong> <span id="confirmGuestName"></span></p>
-                <p style="margin: 8px 0;"><strong>Email:</strong> <span id="confirmGuestEmail"></span></p>
-                <p style="margin: 8px 0;"><strong>Phone:</strong> <span id="confirmGuestPhone"></span></p>
-            </div>
-
-            <!-- Payment Information -->
-            <form id="bookingPaymentForm" style="background: #ecf0f1; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                <h3 style="margin-bottom: 15px; color: #34495e; font-size: 16px;">Payment Information</h3>
-
-                <div style="margin-bottom: 15px;">
-                    <label for="paymentMethod" style="display: block; margin-bottom: 5px; font-weight: bold; color: #34495e;">Payment Method <span style="color: #e74c3c;">*</span></label>
-                    <select id="paymentMethod" name="paymentMethod" required style="width: 100%; padding: 8px; border: 1px solid #bdc3c7; border-radius: 4px; font-size: 14px;">
-                        <option value="">Select Payment Method</option>
-                        <option value="credit-card">Credit Card</option>
-                        <option value="debit-card">Debit Card</option>
-                        <option value="bank-transfer">Bank Transfer</option>
-                    </select>
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="margin-bottom: 10px; color: #34495e; font-size: 16px;">Booking Details</h3>
+                    <p style="margin: 8px 0;"><strong>Room:</strong> <span id="confirmRoomName"></span></p>
+                    <p style="margin: 8px 0;"><strong>Check-in:</strong> <span id="confirmCheckIn"></span></p>
+                    <p style="margin: 8px 0;"><strong>Check-out:</strong> <span id="confirmCheckOut"></span></p>
+                    <p style="margin: 8px 0;"><strong>Guests:</strong> <span id="confirmGuests"></span></p>
+                    <p style="margin: 8px 0;"><strong>Price per Night:</strong> <span id="confirmPricePerNight"></span></p>
+                    <p style="margin: 8px 0;"><strong>Number of Nights:</strong> <span id="confirmNights"></span></p>
+                    <p style="margin: 8px 0; font-size: 18px; color: #e74c3c;"><strong>Total Price: </strong><span id="confirmTotalPrice"></span></p>
                 </div>
 
-                <!-- Card details entered securely in Monri Lightbox -->
-                <div id="cardDetails" style="display:none;"></div>
-
-                <!-- Billing Address -->
-                <div style="margin-bottom: 15px;">
-                    <label style="display: flex; align-items: center; cursor: pointer;">
-                        <input type="checkbox" id="billingAddress" name="billingAddress" style="margin-right: 8px;">
-                        <span style="color: #34495e;">Add Billing Address</span>
-                    </label>
-                </div>
-
-                <div id="billingAddressForm" style="display: none; background: white; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
-                    <div style="margin-bottom: 12px;">
-                        <input type="text" id="billingStreet" name="billingStreet" placeholder="Street Address" style="width: 100%; padding: 8px; border: 1px solid #bdc3c7; border-radius: 4px; box-sizing: border-box;">
-                    </div>
-                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-bottom: 12px;">
-                        <input type="text" id="billingCity" name="billingCity" placeholder="City" style="padding: 8px; border: 1px solid #bdc3c7; border-radius: 4px; box-sizing: border-box;">
-                        <input type="text" id="billingPostal" name="billingPostal" placeholder="Postal Code" style="padding: 8px; border: 1px solid #bdc3c7; border-radius: 4px; box-sizing: border-box;">
-                    </div>
-                    <input type="text" id="billingCountry" name="billingCountry" placeholder="Country" style="width: 100%; padding: 8px; border: 1px solid #bdc3c7; border-radius: 4px; box-sizing: border-box;">
-                </div>
-
-                <!-- Terms & Conditions -->
                 <div style="margin-bottom: 20px;">
-                    <label style="display: flex; align-items: flex-start; cursor: pointer;">
-                        <input type="checkbox" id="agreeTerms" name="agreeTerms" required style="margin-right: 8px; margin-top: 3px;">
-                        <span style="color: #34495e; font-size: 13px;">I agree to the <a href="#" style="color: #3498db; text-decoration: none;">Terms & Conditions</a> and <a href="#" style="color: #3498db; text-decoration: none;">Cancellation Policy</a></span>
-                    </label>
+                    <h3 style="margin-bottom: 10px; color: #34495e; font-size: 16px;">Guest Information</h3>
+                    <p style="margin: 8px 0;"><strong>Name:</strong> <span id="confirmGuestName"></span></p>
+                    <p style="margin: 8px 0;"><strong>Email:</strong> <span id="confirmGuestEmail"></span></p>
+                    <p style="margin: 8px 0;"><strong>Phone:</strong> <span id="confirmGuestPhone"></span></p>
                 </div>
 
-                <!-- Accepted Cards -->
-                <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
-                    <span data-i18n="secure-payments-via" style="font-size:0.78rem;opacity:0.7;flex-shrink:0;">Secure payments via</span>
-                    <img src="logos/Acceptance_mark/Visa_actual/Visa%202015%2050.gif" alt="Visa" width="36" height="22" style="border-radius:3px;background:#fff;padding:2px 4px;width:36px;height:22px;object-fit:contain;">
-                    <img src="logos/Acceptance_mark/Mastercard_actual/Artwork/Mastercard%20Brand%20Mark%20Vertical%2053px%20PNG/mc_vrt_opt_pos_53_1x.png" alt="Mastercard" width="36" height="22" style="border-radius:3px;background:#fff;padding:2px 4px;width:36px;height:22px;object-fit:contain;">
-                    <img src="logos/Acceptance_mark/Maestro_actual/Artwork/PNG%20for%20Web/Horizontal/Positive/75px%20x%2021px/ms_hrz_opt_pos_75_1x.png" alt="Maestro" width="36" height="22" style="border-radius:3px;background:#fff;padding:2px 4px;width:36px;height:22px;object-fit:contain;">
-                    <img src="logos/Security_programs/Visa%20Secure/Visa%20Blue/visa-secure_blu_72dpi.jpg" alt="Visa Secure" width="36" height="22" style="border-radius:3px;background:#fff;padding:2px 4px;width:36px;height:22px;object-fit:contain;">
-                    <img src="logos/Security_programs/Mastercard%20Identity%20Check/Artwork/mc_idcheck_hrz_rgb_pos.png" alt="Mastercard Identity Check" width="36" height="22" style="border-radius:3px;background:#fff;padding:2px 4px;width:36px;height:22px;object-fit:contain;">
-                    <img src="logos/Monri_badge/monri_badge.png" alt="pay@web · Secured by Monri · UniCredit Bank" width="90" height="42" style="border-radius:3px;background:#fff;padding:2px 4px;width:90px;height:42px;object-fit:contain;">
-                    <img src="logos/UniCredit_Bank_logo_1.png" alt="UniCredit Bank" width="70" height="42" style="border-radius:3px;background:#fff;padding:2px 4px;width:70px;height:42px;object-fit:contain;">
-                </div>
+                <form id="bookingPaymentForm" style="background: #ecf0f1; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="margin-bottom: 15px; color: #34495e; font-size: 16px;">Payment Information</h3>
 
-                <!-- Action Buttons -->
-                <div style="display: flex; gap: 10px;">
-                    <button type="submit" id="confirmPaymentBtn" class="btn btn-primary" style="flex: 1; padding: 12px;">Complete Payment</button>
-                    <button type="button" id="cancelConfirmBtn" class="btn btn-secondary" style="flex: 1; padding: 12px;">Cancel</button>
-                </div>
-            </form>
+                    <div style="margin-bottom: 15px;">
+                        <label for="paymentMethod" style="display: block; margin-bottom: 5px; font-weight: bold; color: #34495e;">Payment Method <span style="color: #e74c3c;">*</span></label>
+                        <select id="paymentMethod" name="paymentMethod" required style="width: 100%; padding: 8px; border: 1px solid #bdc3c7; border-radius: 4px; font-size: 14px;">
+                            <option value="">Select Payment Method</option>
+                            <option value="credit-card">Credit Card</option>
+                            <option value="debit-card">Debit Card</option>
+                            <option value="bank-transfer">Bank Transfer</option>
+                        </select>
+                    </div>
+
+                    <div id="cardDetails" style="display:none;"></div>
+
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: flex; align-items: center; cursor: pointer;">
+                            <input type="checkbox" id="billingAddress" name="billingAddress" style="margin-right: 8px;">
+                            <span style="color: #34495e;">Add Billing Address</span>
+                        </label>
+                    </div>
+
+                    <div id="billingAddressForm" style="display: none; background: white; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+                        <div style="margin-bottom: 12px;">
+                            <input type="text" id="billingStreet" name="billingStreet" placeholder="Street Address" style="width: 100%; padding: 8px; border: 1px solid #bdc3c7; border-radius: 4px; box-sizing: border-box;">
+                        </div>
+                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-bottom: 12px;">
+                            <input type="text" id="billingCity" name="billingCity" placeholder="City" style="padding: 8px; border: 1px solid #bdc3c7; border-radius: 4px; box-sizing: border-box;">
+                            <input type="text" id="billingPostal" name="billingPostal" placeholder="Postal Code" style="padding: 8px; border: 1px solid #bdc3c7; border-radius: 4px; box-sizing: border-box;">
+                        </div>
+                        <input type="text" id="billingCountry" name="billingCountry" placeholder="Country" style="width: 100%; padding: 8px; border: 1px solid #bdc3c7; border-radius: 4px; box-sizing: border-box;">
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: flex; align-items: flex-start; cursor: pointer;">
+                            <input type="checkbox" id="agreeTerms" name="agreeTerms" required style="margin-right: 8px; margin-top: 3px;">
+                            <span style="color: #34495e; font-size: 13px;">I agree to the <a href="#" onclick="return openInfoModal('termsModal');" style="color: #3498db; text-decoration: none;">Terms &amp; Conditions</a> and <a href="#" onclick="return openInfoModal('termsModal');" style="color: #3498db; text-decoration: none;">Cancellation Policy</a></span>
+                        </label>
+                    </div>
+
+                    <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+                        <span data-i18n="secure-payments-via" style="font-size:0.78rem;opacity:0.7;flex-shrink:0;">Secure payments via</span>
+                        <a href="https://www.visaeurope.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit Visa">
+                            <img src="logos/Acceptance_mark/Visa_actual/Visa%202015%2050.gif" alt="Visa" width="36" height="22" style="border-radius:3px;background:#fff;padding:2px 4px;width:36px;height:22px;object-fit:contain;">
+                        </a>
+                        <a href="http://www.mastercard.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit Mastercard">
+                            <img src="logos/Acceptance_mark/Mastercard_actual/Artwork/Mastercard%20Brand%20Mark%20Vertical%2053px%20PNG/mc_vrt_opt_pos_53_1x.png" alt="Mastercard" width="36" height="22" style="border-radius:3px;background:#fff;padding:2px 4px;width:36px;height:22px;object-fit:contain;">
+                        </a>
+                        <a href="https://brand.mastercard.com/brandcenter/more-about-our-brands.html" target="_blank" rel="noopener noreferrer" aria-label="Visit Maestro">
+                            <img src="logos/Acceptance_mark/Maestro_actual/Artwork/PNG%20for%20Web/Horizontal/Positive/75px%20x%2021px/ms_hrz_opt_pos_75_1x.png" alt="Maestro" width="36" height="22" style="border-radius:3px;background:#fff;padding:2px 4px;width:36px;height:22px;object-fit:contain;">
+                        </a>
+                        <img src="logos/Security_programs/Visa%20Secure/Visa%20Blue/visa-secure_blu_72dpi.jpg" alt="Visa Secure" width="36" height="22" style="border-radius:3px;background:#fff;padding:2px 4px;width:36px;height:22px;object-fit:contain;">
+                        <img src="logos/Security_programs/Mastercard%20Identity%20Check/Artwork/mc_idcheck_hrz_rgb_pos.png" alt="Mastercard Identity Check" width="36" height="22" style="border-radius:3px;background:#fff;padding:2px 4px;width:36px;height:22px;object-fit:contain;">
+                        <a href="http://monri.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit Monri">
+                            <img src="logos/Monri_badge/monri_badge.png" alt="pay@web · Secured by Monri · UniCredit Bank" width="90" height="42" style="border-radius:3px;background:#fff;padding:2px 4px;width:90px;height:42px;object-fit:contain;">
+                        </a>
+                        <img src="logos/UniCredit_Bank_logo_1.png" alt="UniCredit Bank" width="70" height="42" style="border-radius:3px;background:#fff;padding:2px 4px;width:70px;height:42px;object-fit:contain;">
+                    </div>
+
+                    <div style="display: flex; gap: 10px;">
+                        <button type="submit" id="confirmPaymentBtn" class="btn btn-primary" style="flex: 1; padding: 12px;">Complete Payment</button>
+                        <button type="button" id="cancelConfirmBtn" class="btn btn-secondary" style="flex: 1; padding: 12px;">Cancel</button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
+    </template>
 
     <!-- Deferred script loading for non-blocking render - LOAD FIRST for CSRF functions -->
     <script defer src="SiminHan.min.js?v=6"></script>
@@ -1256,46 +1170,43 @@
         };
     </script>
 
-    <!-- Booking Success Modal -->
-    <div id="bookingSuccessModal" role="dialog" aria-modal="true" aria-labelledby="successModalTitle" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); align-items:center; justify-content:center; padding:16px;">
-        <div style="background:#fff; border-radius:20px; max-width:480px; width:100%; padding:48px 36px 36px; text-align:center; position:relative; box-shadow:0 25px 60px rgba(0,0,0,0.25); animation:successModalIn 0.35s cubic-bezier(0.34,1.56,0.64,1);">
+    <template id="bookingSuccessModalTemplate">
+        <div id="bookingSuccessModal" role="dialog" aria-modal="true" aria-labelledby="successModalTitle" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); align-items:center; justify-content:center; padding:16px;">
+            <div style="background:#fff; border-radius:20px; max-width:480px; width:100%; padding:48px 36px 36px; text-align:center; position:relative; box-shadow:0 25px 60px rgba(0,0,0,0.25); animation:successModalIn 0.35s cubic-bezier(0.34,1.56,0.64,1);">
 
-            <!-- Close button -->
-            <button id="successModalClose" aria-label="Close" style="position:absolute; top:14px; right:18px; background:none; border:none; font-size:24px; cursor:pointer; color:#999; line-height:1;">&#x2715;</button>
+                <button id="successModalClose" aria-label="Close" style="position:absolute; top:14px; right:18px; background:none; border:none; font-size:24px; cursor:pointer; color:#999; line-height:1;">&#x2715;</button>
 
-            <!-- Animated checkmark -->
-            <div style="width:80px; height:80px; border-radius:50%; background:linear-gradient(135deg,#22c55e,#16a34a); display:flex; align-items:center; justify-content:center; margin:0 auto 24px; box-shadow:0 8px 24px rgba(34,197,94,0.35);">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-
-            <h2 id="successModalTitle" style="font-size:1.6rem; color:#2c3e50; margin:0 0 8px; font-weight:700;">Booking Request Sent!</h2>
-            <p style="color:#64748b; margin:0 0 28px; font-size:0.95rem;">Thank you — we have received your request and will reply to your email shortly to confirm.</p>
-
-            <!-- Booking summary box -->
-            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:20px; text-align:left; margin-bottom:24px;">
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
-                    <span style="font-size:18px;">🏨</span>
-                    <strong style="color:#2c3e50; font-size:0.95rem;">Booking Summary</strong>
+                <div style="width:80px; height:80px; border-radius:50%; background:linear-gradient(135deg,#22c55e,#16a34a); display:flex; align-items:center; justify-content:center; margin:0 auto 24px; box-shadow:0 8px 24px rgba(34,197,94,0.35);">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
-                <table style="width:100%; border-collapse:collapse; font-size:0.875rem; color:#475569;">
-                    <tr><td style="padding:4px 0; color:#94a3b8; width:42%;">Guest</td><td id="sm_name" style="font-weight:600; color:#2c3e50;"></td></tr>
-                    <tr><td style="padding:4px 0; color:#94a3b8;">Email</td><td id="sm_email" style="font-weight:600; color:#2c3e50; word-break:break-all;"></td></tr>
-                    <tr><td style="padding:4px 0; color:#94a3b8;">Room</td><td id="sm_room" style="font-weight:600; color:#2c3e50;"></td></tr>
-                    <tr><td style="padding:4px 0; color:#94a3b8;">Check-in</td><td id="sm_checkin" style="font-weight:600; color:#2c3e50;"></td></tr>
-                    <tr><td style="padding:4px 0; color:#94a3b8;">Check-out</td><td id="sm_checkout" style="font-weight:600; color:#2c3e50;"></td></tr>
-                    <tr><td style="padding:4px 0; color:#94a3b8;">Guests</td><td id="sm_guests" style="font-weight:600; color:#2c3e50;"></td></tr>
-                </table>
-            </div>
 
-            <!-- Email notice -->
-            <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:10px; padding:12px 16px; display:flex; align-items:center; gap:10px; margin-bottom:28px; text-align:left;">
-                <span style="font-size:20px; flex-shrink:0;">📧</span>
-                <span style="font-size:0.8rem; color:#1d4ed8; line-height:1.4;">Confirmation sent to <strong>about@hotelsinanhan.com</strong>. We will reply directly to your email to confirm the reservation.</span>
-            </div>
+                <h2 id="successModalTitle" style="font-size:1.6rem; color:#2c3e50; margin:0 0 8px; font-weight:700;">Booking Request Sent!</h2>
+                <p style="color:#64748b; margin:0 0 28px; font-size:0.95rem;">Thank you — we have received your request and will reply to your email shortly to confirm.</p>
 
-            <button id="successModalBtn" style="width:100%; padding:14px; background:linear-gradient(135deg,#4f46e5,#6366f1); color:#fff; border:none; border-radius:12px; font-size:1rem; font-weight:600; cursor:pointer; transition:opacity 0.2s;">Got it, thank you!</button>
+                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:20px; text-align:left; margin-bottom:24px;">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
+                        <span style="font-size:18px;">🏨</span>
+                        <strong style="color:#2c3e50; font-size:0.95rem;">Booking Summary</strong>
+                    </div>
+                    <table style="width:100%; border-collapse:collapse; font-size:0.875rem; color:#475569;">
+                        <tr><td style="padding:4px 0; color:#94a3b8; width:42%;">Guest</td><td id="sm_name" style="font-weight:600; color:#2c3e50;"></td></tr>
+                        <tr><td style="padding:4px 0; color:#94a3b8;">Email</td><td id="sm_email" style="font-weight:600; color:#2c3e50; word-break:break-all;"></td></tr>
+                        <tr><td style="padding:4px 0; color:#94a3b8;">Room</td><td id="sm_room" style="font-weight:600; color:#2c3e50;"></td></tr>
+                        <tr><td style="padding:4px 0; color:#94a3b8;">Check-in</td><td id="sm_checkin" style="font-weight:600; color:#2c3e50;"></td></tr>
+                        <tr><td style="padding:4px 0; color:#94a3b8;">Check-out</td><td id="sm_checkout" style="font-weight:600; color:#2c3e50;"></td></tr>
+                        <tr><td style="padding:4px 0; color:#94a3b8;">Guests</td><td id="sm_guests" style="font-weight:600; color:#2c3e50;"></td></tr>
+                    </table>
+                </div>
+
+                <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:10px; padding:12px 16px; display:flex; align-items:center; gap:10px; margin-bottom:28px; text-align:left;">
+                    <span style="font-size:20px; flex-shrink:0;">📧</span>
+                    <span style="font-size:0.8rem; color:#1d4ed8; line-height:1.4;">Confirmation sent to <strong>about@hotelsinanhan.com</strong>. We will reply directly to your email to confirm the reservation.</span>
+                </div>
+
+                <button id="successModalBtn" style="width:100%; padding:14px; background:linear-gradient(135deg,#4f46e5,#6366f1); color:#fff; border:none; border-radius:12px; font-size:1rem; font-weight:600; cursor:pointer; transition:opacity 0.2s;">Got it, thank you!</button>
+            </div>
         </div>
-    </div>
+    </template>
 
     <style>
         @keyframes successModalIn {
@@ -1306,10 +1217,10 @@
         #successModalBtn:hover { opacity:0.88; }
     </style>
 
-    <!-- House Rules Modal -->
-    <div id="houseRulesModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
-        <div style="background:#fff;border-radius:12px;max-width:680px;width:100%;max-height:88vh;overflow-y:auto;padding:2rem;position:relative;">
-            <button onclick="document.getElementById('houseRulesModal').style.display='none'" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:26px;cursor:pointer;color:#666;">&times;</button>
+    <template id="houseRulesModalTemplate">
+        <div id="houseRulesModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
+            <div style="background:#fff;border-radius:12px;max-width:680px;width:100%;max-height:88vh;overflow-y:auto;padding:2rem;position:relative;">
+                <button onclick="return closeInfoModal('houseRulesModal');" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:26px;cursor:pointer;color:#666;">&times;</button>
             <h2 style="color:#2c3e50;margin-bottom:1.5rem;font-size:1.5rem;" data-i18n="hr-title">House Rules</h2>
             <p style="color:#888;font-style:italic;margin-bottom:1.5rem;" data-i18n="hr-special-requests">Hotel Sinan Han takes special requests — add in the next step!</p>
 
@@ -1350,13 +1261,14 @@
                     <p data-i18n="hr-pets-text">Pets are not allowed.</p>
                 </div>
             </div>
+            </div>
         </div>
-    </div>
+    </template>
 
-    <!-- Important Legal & Info Modal -->
-    <div id="legalInfoModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
-        <div style="background:#fff;border-radius:12px;max-width:680px;width:100%;max-height:88vh;overflow-y:auto;padding:2rem;position:relative;">
-            <button onclick="document.getElementById('legalInfoModal').style.display='none'" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:26px;cursor:pointer;color:#666;">&times;</button>
+    <template id="legalInfoModalTemplate">
+        <div id="legalInfoModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
+            <div style="background:#fff;border-radius:12px;max-width:680px;width:100%;max-height:88vh;overflow-y:auto;padding:2rem;position:relative;">
+                <button onclick="return closeInfoModal('legalInfoModal');" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:26px;cursor:pointer;color:#666;">&times;</button>
             <h2 style="color:#2c3e50;margin-bottom:1.5rem;font-size:1.5rem;" data-i18n="li-title">Important Legal &amp; Info</h2>
 
             <div style="display:grid;gap:1.2rem;">
@@ -1369,13 +1281,14 @@
                     <p data-i18n="li-health-text">In response to Coronavirus (COVID-19), additional safety and sanitation measures are in effect at this property.</p>
                 </div>
             </div>
+            </div>
         </div>
-    </div>
+    </template>
 
-    <!-- Business Registration Modal -->
-    <div id="registrationModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
-        <div style="background:#fff;border-radius:12px;max-width:680px;width:100%;max-height:88vh;overflow-y:auto;padding:2rem;position:relative;">
-            <button onclick="document.getElementById('registrationModal').style.display='none'" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:26px;cursor:pointer;color:#666;">&times;</button>
+    <template id="registrationModalTemplate">
+        <div id="registrationModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
+            <div style="background:#fff;border-radius:12px;max-width:680px;width:100%;max-height:88vh;overflow-y:auto;padding:2rem;position:relative;">
+                <button onclick="return closeInfoModal('registrationModal');" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:26px;cursor:pointer;color:#666;">&times;</button>
             <h2 style="color:#2c3e50;margin-bottom:1.5rem;font-size:1.4rem;" data-i18n="reg-title">Business Classification Notice</h2>
             <div style="font-size:0.9rem;color:#444;line-height:1.8;display:grid;gap:0.6rem;">
                 <p style="text-align:center;font-weight:700;" data-i18n="reg-country">BOSNA I HERCEGOVINA</p>
@@ -1405,13 +1318,14 @@
                     </div>
                 </div>
             </div>
+            </div>
         </div>
-    </div>
+    </template>
 
-    <!-- Terms, Privacy & Purchase Policy Modal -->
-    <div id="termsModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
-        <div style="background:#fff;border-radius:12px;max-width:720px;width:100%;max-height:88vh;overflow-y:auto;padding:2rem;position:relative;">
-            <button onclick="document.getElementById('termsModal').style.display='none'" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:26px;cursor:pointer;color:#666;">&times;</button>
+    <template id="termsModalTemplate">
+        <div id="termsModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
+            <div style="background:#fff;border-radius:12px;max-width:720px;width:100%;max-height:88vh;overflow-y:auto;padding:2rem;position:relative;">
+                <button onclick="return closeInfoModal('termsModal');" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:26px;cursor:pointer;color:#666;">&times;</button>
             <h2 style="color:#2c3e50;margin-bottom:0.4rem;font-size:1.45rem;" data-i18n="tpc-modal-title">Terms of Use, Privacy &amp; Purchase Policy</h2>
             <p style="color:#888;font-size:0.82rem;margin-bottom:1.8rem;" data-i18n="tpc-last-updated">Last updated: June 2026</p>
 
@@ -1494,8 +1408,9 @@
                 </div>
 
             </div>
+            </div>
         </div>
-    </div>
+    </template>
 
 </body>
 </html>

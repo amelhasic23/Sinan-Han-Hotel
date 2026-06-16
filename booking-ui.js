@@ -181,12 +181,78 @@ function calculatePrice() {
 // Modal functionality
 let currentModalRoom = null;
 let modalSliderState = { currentIndex: 0 };
+let roomModalEventsBound = false;
+
+function ensureRoomModal() {
+    const modal = (typeof window.ensureElementFromTemplate === 'function'
+        ? window.ensureElementFromTemplate('roomModalTemplate', 'roomModal')
+        : null) || document.getElementById('roomModal');
+
+    if (!modal) {
+        return null;
+    }
+
+    if (!roomModalEventsBound) {
+        const closeBtn = modal.querySelector('#closeModal');
+        const modalPrevBtn = modal.querySelector('#modalSliderPrev');
+        const modalNextBtn = modal.querySelector('#modalSliderNext');
+
+        closeBtn?.addEventListener('click', closeModal);
+
+        modalPrevBtn?.addEventListener('click', (event) => {
+            event.stopPropagation();
+            modalChangeImage(-1);
+        });
+
+        modalNextBtn?.addEventListener('click', (event) => {
+            event.stopPropagation();
+            modalChangeImage(1);
+        });
+
+        modal.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            const currentModal = document.getElementById('roomModal');
+            if (!currentModal || !currentModal.classList.contains('show')) {
+                return;
+            }
+
+            if (event.key === 'ArrowLeft') modalChangeImage(-1);
+            if (event.key === 'ArrowRight') modalChangeImage(1);
+            if (event.key === 'Escape') closeModal();
+        });
+
+        roomModalEventsBound = true;
+    }
+
+    if (typeof window.applyTranslationsToRoot === 'function') {
+        window.applyTranslationsToRoot(modal);
+    }
+
+    return modal;
+}
+
+function ensureBookingSuccessModal() {
+    const modal = (typeof window.ensureElementFromTemplate === 'function'
+        ? window.ensureElementFromTemplate('bookingSuccessModalTemplate', 'bookingSuccessModal')
+        : null) || document.getElementById('bookingSuccessModal');
+
+    if (modal && typeof window.applyTranslationsToRoot === 'function') {
+        window.applyTranslationsToRoot(modal);
+    }
+
+    return modal;
+}
 
 function openModal(roomId) {
-    const modal = document.getElementById('roomModal');
+    const modal = ensureRoomModal();
     const room = roomData[roomId];
 
-    if (room) {
+    if (modal && room) {
         currentModalRoom = roomId;
         modalSliderState.currentIndex = 0;
 
@@ -206,10 +272,10 @@ function openModal(roomId) {
             }
         }
 
-        document.getElementById('modalTitle').textContent = titleText;
-        document.getElementById('modalDescription').textContent = descText;
+        modal.querySelector('#modalTitle').textContent = titleText;
+        modal.querySelector('#modalDescription').textContent = descText;
 
-        const wrapper = document.getElementById('modalImagesWrapper');
+        const wrapper = modal.querySelector('#modalImagesWrapper');
         wrapper.innerHTML = '';
 
         const images = room.images || [room.image];
@@ -234,11 +300,11 @@ function openModal(roomId) {
         });
 
         const hasMultipleImages = images.length > 1;
-        document.getElementById('modalSliderPrev').style.display = hasMultipleImages ? 'block' : 'none';
-        document.getElementById('modalSliderNext').style.display = hasMultipleImages ? 'block' : 'none';
-        document.getElementById('modalImageCounter').style.display = hasMultipleImages ? 'block' : 'none';
+        modal.querySelector('#modalSliderPrev').style.display = hasMultipleImages ? 'block' : 'none';
+        modal.querySelector('#modalSliderNext').style.display = hasMultipleImages ? 'block' : 'none';
+        modal.querySelector('#modalImageCounter').style.display = hasMultipleImages ? 'block' : 'none';
 
-        const dotsContainer = document.getElementById('modalSliderDots');
+        const dotsContainer = modal.querySelector('#modalSliderDots');
         dotsContainer.innerHTML = '';
         images.forEach((_, index) => {
             const dot = document.createElement('span');
@@ -249,15 +315,19 @@ function openModal(roomId) {
         });
         dotsContainer.style.display = hasMultipleImages ? 'flex' : 'none';
 
-        document.getElementById('modalImageCounter').textContent = `1/${images.length}`;
+        modal.querySelector('#modalImageCounter').textContent = `1/${images.length}`;
 
-        document.getElementById('modalBookBtn').onclick = () => {
+        modal.querySelector('#modalBookBtn').onclick = () => {
             closeModal();
-            selectRoomForBooking(roomId, room.price, room.title);
+            selectRoomForBooking(roomId, room.price, titleText);
         };
 
         modal.classList.add('show');
-        document.body.style.overflow = 'hidden';
+        if (typeof window.syncBodyScrollLock === 'function') {
+            window.syncBodyScrollLock();
+        } else {
+            document.body.style.overflow = 'hidden';
+        }
     }
 }
 
@@ -275,10 +345,15 @@ function modalChangeImage(direction) {
 }
 
 function modalGoToImage(index) {
-    const wrapper = document.getElementById('modalImagesWrapper');
+    const modal = document.getElementById('roomModal');
+    const wrapper = modal ? modal.querySelector('#modalImagesWrapper') : null;
+    if (!wrapper) return;
+
     const imgs = wrapper.querySelectorAll('.modal-img');
-    const dots = document.querySelectorAll('.modal-slider-dot');
-    const counter = document.getElementById('modalImageCounter');
+    const dots = modal.querySelectorAll('.modal-slider-dot');
+    const counter = modal.querySelector('#modalImageCounter');
+
+    if (!imgs[index] || !dots[index] || !counter) return;
 
     imgs.forEach(img => img.classList.remove('active'));
     dots.forEach(dot => dot.classList.remove('active'));
@@ -291,50 +366,15 @@ function modalGoToImage(index) {
 
 function closeModal() {
     const modal = document.getElementById('roomModal');
+    if (!modal) return;
+
     modal.classList.remove('show');
-    document.body.style.overflow = 'auto';
+    if (typeof window.syncBodyScrollLock === 'function') {
+        window.syncBodyScrollLock();
+    } else {
+        document.body.style.overflow = '';
+    }
 }
-
-// Close modal handlers
-document.addEventListener('DOMContentLoaded', function() {
-    const modal = document.getElementById('roomModal');
-    const closeBtn = document.getElementById('closeModal');
-
-    if (closeBtn) {
-        closeBtn.addEventListener('click', closeModal);
-    }
-
-    const modalPrevBtn = document.getElementById('modalSliderPrev');
-    const modalNextBtn = document.getElementById('modalSliderNext');
-
-    if (modalPrevBtn) {
-        modalPrevBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            modalChangeImage(-1);
-        });
-    }
-
-    if (modalNextBtn) {
-        modalNextBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            modalChangeImage(1);
-        });
-    }
-
-    document.addEventListener('keydown', (e) => {
-        if (modal && modal.classList.contains('show')) {
-            if (e.key === 'ArrowLeft') modalChangeImage(-1);
-            if (e.key === 'ArrowRight') modalChangeImage(1);
-            if (e.key === 'Escape') closeModal();
-        }
-    });
-
-    window.addEventListener('click', function(event) {
-        if (event.target === modal) {
-            closeModal();
-        }
-    });
-});
 
 // Language and booking form setup
 document.addEventListener('DOMContentLoaded', function() {
@@ -376,29 +416,37 @@ function showToast(message) {
 }
 
 function showBookingSuccessModal(data) {
-    const modal = document.getElementById('bookingSuccessModal');
+    const modal = ensureBookingSuccessModal();
     if (!modal) return;
 
-    document.getElementById('sm_name').textContent = data.name;
-    document.getElementById('sm_email').textContent = data.email;
-    document.getElementById('sm_room').textContent = data.room;
-    document.getElementById('sm_checkin').textContent = data.checkIn;
-    document.getElementById('sm_checkout').textContent = data.checkOut;
-    document.getElementById('sm_guests').textContent = data.guests;
+    modal.querySelector('#sm_name').textContent = data.name;
+    modal.querySelector('#sm_email').textContent = data.email;
+    modal.querySelector('#sm_room').textContent = data.room;
+    modal.querySelector('#sm_checkin').textContent = data.checkIn;
+    modal.querySelector('#sm_checkout').textContent = data.checkOut;
+    modal.querySelector('#sm_guests').textContent = data.guests;
 
     modal.classList.add('open');
-    document.body.style.overflow = 'hidden';
+    if (typeof window.syncBodyScrollLock === 'function') {
+        window.syncBodyScrollLock();
+    } else {
+        document.body.style.overflow = 'hidden';
+    }
 
     function closeSuccessModal() {
         modal.classList.remove('open');
-        document.body.style.overflow = '';
+        if (typeof window.syncBodyScrollLock === 'function') {
+            window.syncBodyScrollLock();
+        } else {
+            document.body.style.overflow = '';
+        }
     }
 
-    document.getElementById('successModalClose').onclick = closeSuccessModal;
-    document.getElementById('successModalBtn').onclick = closeSuccessModal;
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) closeSuccessModal();
-    }, { once: true });
+    modal.querySelector('#successModalClose').onclick = closeSuccessModal;
+    modal.querySelector('#successModalBtn').onclick = closeSuccessModal;
+    modal.onclick = function(event) {
+        if (event.target === modal) closeSuccessModal();
+    };
 }
 
 // Email validation helper
@@ -550,9 +598,9 @@ document.addEventListener('DOMContentLoaded', function() {
 // MONRI PAY BY LINK — intercepts bookingPaymentForm
 // Calls /api/payment/pay-by-link, then redirects to payment_url
 // ============================================================
-(function () {
+function bindPayByLinkForm() {
     var paymentForm = document.getElementById('bookingPaymentForm');
-    if (!paymentForm) return;
+    if (!paymentForm || paymentForm.dataset.payByLinkBound === 'true') return;
 
     // Button is always enabled — no SDK required for Pay By Link
     var confirmBtn = document.getElementById('confirmPaymentBtn');
@@ -635,4 +683,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (confirmBtn) { confirmBtn.disabled = false; confirmBtn.textContent = originalText; }
         }
     }, true); // capture:true — runs before bubble-phase listeners
-}());
+
+    paymentForm.dataset.payByLinkBound = 'true';
+}
+
+window.bindPayByLinkForm = bindPayByLinkForm;
+bindPayByLinkForm();
