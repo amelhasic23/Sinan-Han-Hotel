@@ -256,19 +256,20 @@ function openModal(roomId) {
         currentModalRoom = roomId;
         modalSliderState.currentIndex = 0;
 
-        const currentLang = localStorage.getItem('language') || 'en';
+        const currentLang = (document.documentElement.lang || 'en').split('-')[0];
         const titleKey = `modal-${roomId}-title`;
         const descKey = `modal-${roomId}-desc`;
 
         let titleText = room.title;
         let descText = room.description;
 
-        if (typeof translation !== 'undefined' && translation[currentLang]) {
-            if (translation[currentLang][titleKey]) {
-                titleText = translation[currentLang][titleKey];
+        if (typeof translation !== 'undefined') {
+            const activeTranslations = translation[currentLang] || translation.en || {};
+            if (activeTranslations[titleKey]) {
+                titleText = activeTranslations[titleKey];
             }
-            if (translation[currentLang][descKey]) {
-                descText = translation[currentLang][descKey];
+            if (activeTranslations[descKey]) {
+                descText = activeTranslations[descKey];
             }
         }
 
