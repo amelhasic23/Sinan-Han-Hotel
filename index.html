@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
     <!-- Primary SEO -->
-    <title>Sobe u domaćinstvu „SINAN-HAN"</title>
+    <title>Hotel Sinan Han</title>
     <meta name="description" content="Sinan Han is a boutique hotel in Mostar, 100m from the Old Bridge. Book rooms, suites and apartments with panoramic views, free WiFi, and authentic Bosnian hospitality.">
     <meta name="keywords" content="Sinan Han hotel Mostar, boutique hotel Mostar, hotel near Old Bridge Mostar, rooms Mostar, booking Mostar">
     <meta name="author" content="Sinan Han Hotel">
@@ -110,14 +110,17 @@
     /* Page load preloader */
     #pageLoader{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--white);transition:opacity .45s ease,visibility .45s ease}
     #pageLoader.hidden{opacity:0;visibility:hidden;pointer-events:none}
-    #pageLoader .page-loader-ring{width:60px;height:60px}
-    #pageLoader .page-loader-ring::after{content:"";display:block;width:48px;height:48px;margin:6px;border-radius:50%;border:5px solid var(--primary);border-color:var(--primary) transparent transparent transparent;animation:spinner-rotate 1.2s cubic-bezier(.5,0,.5,1) infinite}
-    #pageLoader .page-loader-text{margin-top:16px;font-family:'Georgia',serif;font-size:1.2rem;font-weight:600;letter-spacing:.04em;color:var(--primary)}
-    @keyframes spinner-rotate{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+    #pageLoader .page-loader-spin{position:relative;width:96px;height:96px;display:flex;align-items:center;justify-content:center}
+    #pageLoader .page-loader-spin::before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,transparent 0deg,var(--primary) 300deg,var(--primary) 360deg);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 5px));mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 5px));animation:pageloader-spin .9s linear infinite}
+    #pageLoader .page-loader-logo{width:64px;height:64px;border-radius:50%;object-fit:contain;background:var(--white);animation:pageloader-pulse 1.8s ease-in-out infinite}
+    #pageLoader .page-loader-text{margin-top:18px;font-family:'Georgia',serif;font-size:1.2rem;font-weight:600;letter-spacing:.04em;color:var(--primary)}
+    @keyframes pageloader-spin{to{transform:rotate(360deg)}}
+    @keyframes pageloader-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+    @media (prefers-reduced-motion:reduce){#pageLoader .page-loader-spin::before{animation-duration:2s}#pageLoader .page-loader-logo{animation:none}}
     </style>
     <!-- Full CSS -->
-    <link rel="preload" as="style" href="SinanHan.min.css?v=7" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="SinanHan.min.css?v=7"></noscript>
+    <link rel="preload" as="style" href="SinanHan.min.css?v=8" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="SinanHan.min.css?v=8"></noscript>
     <!-- Structured Data (JSON-LD) for Google rich results -->
     <script type="application/ld+json">
     {
@@ -171,7 +174,9 @@
     </script>
     <!-- Page Load Preloader -->
     <div id="pageLoader" role="status" aria-live="polite" aria-label="Loading">
-        <div class="page-loader-ring"></div>
+        <div class="page-loader-spin">
+            <img class="page-loader-logo" src="logo-116.jpg" alt="Sinan Han" width="64" height="64" fetchpriority="high">
+        </div>
         <p class="page-loader-text">Sinan Han</p>
     </div>
 
