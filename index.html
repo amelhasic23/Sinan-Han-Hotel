@@ -107,10 +107,17 @@
     .fas,.fab{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:inline-block;font-style:normal;font-variant:normal;line-height:1;text-rendering:auto}
     .fa-wifi:before{content:"\f1eb"}.fa-utensils:before{content:"\f2e7"}.fa-concierge-bell:before{content:"\f562"}.fa-spa:before{content:"\f5bb"}.fa-briefcase:before{content:"\f0b1"}.fa-lock:before{content:"\f023"}.fa-bed:before{content:"\f236"}.fa-tv:before{content:"\f26c"}.fa-door-open:before{content:"\f52b"}.fa-mountain:before{content:"\f6fc"}.fa-couch:before{content:"\f4b8"}.fa-star:before{content:"\f005"}.fa-map-marker-alt:before{content:"\f3c5"}.fa-phone:before{content:"\f095"}.fa-envelope:before{content:"\f0e0"}.fa-map:before{content:"\f279"}.fa-heart:before{content:"\f004"}.fa-chevron-up:before{content:"\f077"}.fa-credit-card:before{content:"\f09d"}.fa-calendar:before{content:"\f133"}
     .fa-facebook:before{content:"\f09a"}.fa-instagram:before{content:"\f16d"}
+    /* Page load preloader */
+    #pageLoader{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--white);transition:opacity .45s ease,visibility .45s ease}
+    #pageLoader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+    #pageLoader .page-loader-ring{width:60px;height:60px}
+    #pageLoader .page-loader-ring::after{content:"";display:block;width:48px;height:48px;margin:6px;border-radius:50%;border:5px solid var(--primary);border-color:var(--primary) transparent transparent transparent;animation:spinner-rotate 1.2s cubic-bezier(.5,0,.5,1) infinite}
+    #pageLoader .page-loader-text{margin-top:16px;font-family:'Georgia',serif;font-size:1.2rem;font-weight:600;letter-spacing:.04em;color:var(--primary)}
+    @keyframes spinner-rotate{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
     </style>
     <!-- Full CSS -->
-    <link rel="preload" as="style" href="SinanHan.min.css?v=6" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="SinanHan.min.css?v=6"></noscript>
+    <link rel="preload" as="style" href="SinanHan.min.css?v=7" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="SinanHan.min.css?v=7"></noscript>
     <!-- Structured Data (JSON-LD) for Google rich results -->
     <script type="application/ld+json">
     {
@@ -162,6 +169,12 @@
         if (location.hash) history.replaceState(null, '', location.pathname + location.search);
         window.scrollTo(0, 0);
     </script>
+    <!-- Page Load Preloader -->
+    <div id="pageLoader" role="status" aria-live="polite" aria-label="Loading">
+        <div class="page-loader-ring"></div>
+        <p class="page-loader-text">Sinan Han</p>
+    </div>
+
     <!-- Skip Navigation (Accessibility) -->
     <a href="#main-content" class="skip-nav">Skip to main content</a>
 
@@ -924,6 +937,30 @@
 
     <!-- Environment injected by server.js at runtime -->
     <script>window.SINAN_ENV = 'REPLACE_WITH_NODE_ENV';</script>
+
+    <!-- Hide page preloader once the site is fully loaded (with safety fallback) -->
+    <script>
+        (function () {
+            var loader = document.getElementById('pageLoader');
+            if (!loader) return;
+            var hidden = false;
+            function hideLoader() {
+                if (hidden) return;
+                hidden = true;
+                loader.classList.add('hidden');
+                setTimeout(function () {
+                    if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+                }, 600);
+            }
+            if (document.readyState === 'complete') {
+                hideLoader();
+            } else {
+                window.addEventListener('load', hideLoader);
+            }
+            // Safety fallback in case 'load' never fires (e.g. a stalled resource)
+            setTimeout(hideLoader, 4000);
+        })();
+    </script>
 
     <style>
         @keyframes successModalIn {

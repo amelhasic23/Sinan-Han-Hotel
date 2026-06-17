@@ -94,6 +94,51 @@ body {
     font-weight: 500;
 }
 
+/* Page load preloader */
+#pageLoader {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--white);
+    transition: opacity 0.45s ease, visibility 0.45s ease;
+}
+
+#pageLoader.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+#pageLoader .page-loader-ring {
+    width: 60px;
+    height: 60px;
+}
+
+#pageLoader .page-loader-ring::after {
+    content: "";
+    display: block;
+    width: 48px;
+    height: 48px;
+    margin: 6px;
+    border-radius: 50%;
+    border: 5px solid var(--primary);
+    border-color: var(--primary) transparent transparent transparent;
+    animation: spinner-rotate 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+#pageLoader .page-loader-text {
+    margin-top: 16px;
+    font-family: 'Georgia', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--primary);
+}
+
 body.nav-open {
     overflow: hidden;
 }
