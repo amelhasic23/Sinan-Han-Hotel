@@ -11,7 +11,7 @@
 const roomData = {
     'standard-double': {
         title: 'Standard Double Room',
-        price: 177,
+        price: 200,
         image: 'Rooms/Standard Double Room/390516357.jpg',
         images: [
             'Rooms/Standard Double Room/390516357.jpg',
@@ -23,7 +23,7 @@ const roomData = {
     },
     'superior-suite': {
         title: 'Superior Suite',
-        price: 204,
+        price: 240,
         image: 'Rooms/Superior Suite/390594090.jpg',
         images: [
             'Rooms/Superior Suite/390594090.jpg',
@@ -36,7 +36,7 @@ const roomData = {
     },
     'double-terrace': {
         title: 'Double Room with Terrace',
-        price: 223,
+        price: 285,
         image: 'Rooms/Double Room/396531596.jpg',
         images: [
             'Rooms/Double Room/396531596.jpg',
@@ -60,7 +60,7 @@ const roomData = {
     },
     'superior-apartment': {
         title: 'Superior Apartment',
-        price: 300,
+        price: 280,
         image: 'Rooms/Superior Apartment/706475998.jpg',
         images: [
             'Rooms/Superior Apartment/706475998.jpg',
@@ -73,7 +73,7 @@ const roomData = {
     },
     'deluxe-suite': {
         title: 'Deluxe Suite',
-        price: 195,
+        price: 250,
         image: 'Rooms/Deluxe Suit/390516235.jpg',
         images: [
             'Rooms/Deluxe Suit/390516235.jpg',
@@ -89,7 +89,7 @@ const roomData = {
     },
     'two-bedroom-deluxe': {
         title: 'Two-Bedroom Deluxe Apartment',
-        price: 380,
+        price: 320,
         image: 'Rooms/Two Bedroom Deluxe Apartment/714582553.jpg',
         images: [
             'Rooms/Two Bedroom Deluxe Apartment/714582553.jpg',
