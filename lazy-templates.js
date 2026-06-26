@@ -105,6 +105,9 @@ window.lazyTemplateMarkup = Object.freeze({
                             <img src="logos/Monri_badge/monri_badge.png" alt="pay@web · Secured by Monri · UniCredit Bank" width="90" height="42" style="border-radius:3px;background:#fff;padding:2px 4px;width:90px;height:42px;object-fit:contain;">
                         </a>
                         <img src="logos/UniCredit_Bank_logo_1.png" alt="UniCredit Bank" width="70" height="42" style="border-radius:3px;background:#fff;padding:2px 4px;width:70px;height:42px;object-fit:contain;">
+                        <a href="https://www.raiffeisenbank.ba/" target="_blank" rel="noopener noreferrer" aria-label="Visit Raiffeisen Bank">
+                            <img src="logos/download.png" alt="Raiffeisen Bank" width="36" height="22" style="border-radius:3px;background:#fff;padding:2px 4px;width:36px;height:22px;object-fit:contain;">
+                        </a>
                     </div>
 
                     <div style="display: flex; gap: 10px;">
