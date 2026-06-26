@@ -99,7 +99,14 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(express.json());
+app.use(express.json({
+    // Capture raw body for webhook signature verification (must stay in verify callback)
+    verify: (req, res, buf) => {
+        if (req.path && req.path.startsWith('/webhook/')) {
+            req.rawBody = buf.toString('utf8');
+        }
+    }
+}));
 app.use(cookieParser());
 app.use(cors({
     origin: [
@@ -341,20 +348,58 @@ const MONRI_SECRET_KEY = process.env.MONRI_SECRET_KEY;
 const MONRI_ENVIRONMENT = process.env.MONRI_ENVIRONMENT || 'test';
 const PAYMENT_CURRENCY = process.env.PAYMENT_CURRENCY || 'BAM';
 
-function generateMonriDigest(merchantId, amountCents, currency, orderNumber, timestamp) {
-    const data = `${merchantId}|${amountCents}|${currency}|${orderNumber}|${timestamp}`;
-    return crypto.createHmac('sha256', MONRI_SECRET_KEY).update(data).digest('hex');
+// WebPay form digest per Monri docs: SHA512(key + order_number + amount + currency)
+function calcWebPayDigest(key, orderNumber, amountCents, currency) {
+    return crypto.createHash('sha512')
+        .update(key + orderNumber + String(amountCents) + currency)
+        .digest('hex');
 }
 
-function generatePayByLinkAuth(fullpath, bodyStr) {
+// WP3-v2 auth used by Components API and terminal-entry (Pay By Link)
+// Per Monri docs: digest = sha512(merchant_key + timestamp + authenticity_token + body_as_string)
+// Header format: "WP3-v2 {authenticity_token} {timestamp} {digest}"
+function generateWP3Auth(merchantKey, authenticityToken, bodyStr) {
     const timestamp = Math.floor(Date.now() / 1000);
     const digest = crypto.createHash('sha512')
-        .update(MONRI_SECRET_KEY + timestamp + MONRI_MERCHANT_ID + fullpath + bodyStr)
+        .update(merchantKey + String(timestamp) + authenticityToken + bodyStr)
         .digest('hex');
     return {
         timestamp,
-        header: `WP3-v2.1 authenticity_token=${MONRI_MERCHANT_ID} timestamp=${timestamp} digest=${digest}`
+        header: `WP3-v2 ${authenticityToken} ${timestamp} ${digest}`
     };
+}
+
+// Verify Monri callback: Authorization = "WP3-callback sha512(merchant_key + raw_body)"
+function verifyMonriCallback(authHeader, rawBody, merchantKey) {
+    if (!authHeader || !authHeader.startsWith('WP3-callback ')) return false;
+    const received = authHeader.slice('WP3-callback '.length).trim();
+    const expected = crypto.createHash('sha512')
+        .update(merchantKey + rawBody)
+        .digest('hex');
+    try {
+        const a = Buffer.from(received, 'hex');
+        const b = Buffer.from(expected, 'hex');
+        if (a.length !== b.length) return false;
+        return crypto.timingSafeEqual(a, b);
+    } catch { return false; }
+}
+
+// Verify Monri success URL digest: SHA512(key + full_success_url_without_digest_param)
+function verifySuccessDigest(key, fullUrl) {
+    try {
+        const urlObj = new URL(fullUrl);
+        const returnedDigest = (urlObj.searchParams.get('digest') || '').replace(/\s/g, '');
+        if (!returnedDigest) return false;
+        urlObj.searchParams.delete('digest');
+        const urlWithoutDigest = urlObj.toString();
+        const expected = crypto.createHash('sha512')
+            .update(key + urlWithoutDigest)
+            .digest('hex');
+        const a = Buffer.from(returnedDigest, 'hex');
+        const b = Buffer.from(expected, 'hex');
+        if (a.length !== b.length) return false;
+        return crypto.timingSafeEqual(a, b);
+    } catch { return false; }
 }
 
 function httpsPost(url, headers, bodyStr) {
@@ -390,8 +435,12 @@ function validatePaymentInput(data) {
     if (!data.checkin_date || !data.checkout_date) errors.push('Missing check-in or check-out date');
     const checkin = new Date(data.checkin_date);
     const checkout = new Date(data.checkout_date);
+    if (isNaN(checkin.getTime()) || isNaN(checkout.getTime())) errors.push('Invalid date format');
     if (checkout <= checkin) errors.push('Check-out date must be after check-in date');
-    if (checkout < new Date()) errors.push('Check-out date must be in the future');
+    // Compare date-only (strip time) so today is a valid checkout date regardless of server timezone
+    const todayStr = new Date().toISOString().slice(0, 10);
+    const checkoutStr = data.checkout_date.slice(0, 10);
+    if (checkoutStr < todayStr) errors.push('Check-out date must not be in the past');
     if (!data.room_id || data.room_id.trim().length < 1) errors.push('Invalid room ID');
     if (!data.price || data.price <= 0) errors.push('Invalid price');
     if (!data.adults_number || data.adults_number < 1) errors.push('Invalid number of adults');
@@ -416,7 +465,7 @@ app.post('/api/payment/init', async (req, res) => {
         const amountCents = Math.round(parseFloat(totalPrice) * 100);
         const timestamp = Math.floor(Date.now() / 1000);
         const usedCurrency = currency || PAYMENT_CURRENCY;
-        const digest = generateMonriDigest(MONRI_MERCHANT_ID, amountCents, usedCurrency, orderNumber, timestamp);
+        const digest = calcWebPayDigest(MONRI_SECRET_KEY, orderNumber, amountCents, usedCurrency);
 
         const booking = {
             orderNumber,
@@ -502,11 +551,12 @@ app.post('/api/payment/pay-by-link', async (req, res) => {
         };
 
         const bodyStr = JSON.stringify(monriBody);
-        const auth = generatePayByLinkAuth(fullpath, bodyStr);
+        const auth = generateWP3Auth(MONRI_SECRET_KEY, MONRI_MERCHANT_ID, bodyStr);
 
-        console.log(`[Monri] POST ${monriBase}${fullpath}`);
+        console.log(`[Monri] ▶ POST ${monriBase}${fullpath}`);
         console.log(`[Monri] merchantId=${MONRI_MERCHANT_ID} env=${MONRI_ENVIRONMENT} timestamp=${auth.timestamp}`);
-        console.log(`[Monri] body=${bodyStr}`);
+        console.log(`[Monri] auth header=${auth.header}`);
+        console.log(`[Monri] request body=${bodyStr}`);
 
         const monriRes = await httpsPost(`${monriBase}${fullpath}`, {
             'Content-Type': 'application/json',
@@ -514,9 +564,10 @@ app.post('/api/payment/pay-by-link', async (req, res) => {
             'Authorization': auth.header
         }, bodyStr);
 
-        console.log(`[Monri] response status=${monriRes.status} body=${JSON.stringify(monriRes.body)}`);
+        console.log(`[Monri] ◀ response status=${monriRes.status} body=${JSON.stringify(monriRes.body)}`);
 
         if (monriRes.status !== 200 || !monriRes.body.payment_url) {
+            console.error(`[Monri] ✗ Payment URL not received. status=${monriRes.status} details=${JSON.stringify(monriRes.body)}`);
             return res.status(502).json({
                 success: false,
                 error: 'Monri API error',
@@ -596,6 +647,16 @@ app.get('/api/booking/:orderNumber', (req, res) => {
 
 app.post('/webhook/monri', async (req, res) => {
     try {
+        // Verify Monri callback signature (WP3-callback schema)
+        const rawBody = req.rawBody || JSON.stringify(req.body);
+        const authHeader = req.headers['authorization'] || req.headers['http_authorization'] || '';
+        if (MONRI_SECRET_KEY && authHeader) {
+            if (!verifyMonriCallback(authHeader, rawBody, MONRI_SECRET_KEY)) {
+                console.warn('[Monri webhook] Invalid signature — request rejected');
+                return res.status(401).json({ error: 'Invalid signature' });
+            }
+        }
+
         const { order_number, status, transaction_id } = req.body;
         if (!order_number) return res.status(400).json({ error: 'Missing order_number' });
 
@@ -632,6 +693,174 @@ app.post('/webhook/monri', async (req, res) => {
     }
 });
 
+// === Monri WebPay Form — generate form params for direct POST to Monri ===
+app.post('/api/payment/webpay-form', async (req, res) => {
+    try {
+        const body = req.body;
+        const bookingData = {
+            name: ((body.name || body.guestName || '')).trim(),
+            email: (body.email || '').trim(),
+            phone: (body.phone || '').trim(),
+            checkin_date: body.checkin_date || body.checkIn || '',
+            checkout_date: body.checkout_date || body.checkOut || '',
+            room_id: body.room_id || body.roomType || '',
+            adults_number: parseInt(body.adults_number || body.guests || 1),
+            price: parseFloat(body.price || body.totalPrice || 0),
+            currency: (body.currency || PAYMENT_CURRENCY).toUpperCase()
+        };
+
+        const validationErrors = validatePaymentInput(bookingData);
+        if (validationErrors.length > 0) {
+            return res.status(400).json({ success: false, error: 'Validation failed', details: validationErrors });
+        }
+        if (!MONRI_MERCHANT_ID || !MONRI_SECRET_KEY) {
+            return res.status(500).json({ success: false, error: 'Payment not configured' });
+        }
+
+        const orderNumber = 'SH-' + Date.now();
+        const amountCents = Math.round(bookingData.price * 100);
+        const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
+        const monriBase = MONRI_ENVIRONMENT === 'test' ? 'https://ipgtest.monri.com' : 'https://ipg.monri.com';
+        const digest = calcWebPayDigest(MONRI_SECRET_KEY, orderNumber, amountCents, bookingData.currency);
+
+        saveBooking({
+            orderNumber, bookingId: orderNumber,
+            guestName: bookingData.name, email: bookingData.email,
+            phone: bookingData.phone, roomType: bookingData.room_id,
+            checkIn: bookingData.checkin_date, checkOut: bookingData.checkout_date,
+            guests: bookingData.adults_number,
+            totalPrice: bookingData.price, currency: bookingData.currency,
+            status: 'pending', paymentType: 'webpay-form',
+            submittedAt: new Date().toISOString()
+        });
+
+        console.log(`[WebPay] order=${orderNumber} amount=${amountCents} currency=${bookingData.currency}`);
+        res.json({
+            success: true,
+            action: `${monriBase}/v2/form`,
+            fields: {
+                authenticity_token: MONRI_MERCHANT_ID,
+                order_number: orderNumber,
+                amount: amountCents,
+                currency: bookingData.currency,
+                order_info: 'Hotel Sinan Han - Room Booking',
+                ch_full_name: bookingData.name,
+                ch_email: bookingData.email,
+                ch_phone: bookingData.phone || '',
+                ch_address: 'Mostar',
+                ch_city: 'Mostar',
+                ch_zip: '88000',
+                ch_country: 'BA',
+                language: 'en',
+                transaction_type: 'purchase',
+                digest,
+                success_url_override: `${baseUrl}/payment-success?order_number=${orderNumber}`,
+                cancel_url_override: `${baseUrl}/payment-failed?order_number=${orderNumber}`,
+                callback_url_override: `${baseUrl}/webhook/monri`
+            }
+        });
+    } catch (error) {
+        console.error('WebPay form error:', error.message);
+        res.status(500).json({ success: false, error: 'Failed to prepare payment form', message: error.message });
+    }
+});
+
+// === Monri Components API — create payment session (POST /v2/payment/new) ===
+app.post('/api/payment/new', async (req, res) => {
+    try {
+        const body = req.body;
+        const bookingData = {
+            name: ((body.name || body.guestName || '')).trim(),
+            email: (body.email || '').trim(),
+            phone: (body.phone || '').trim(),
+            checkin_date: body.checkin_date || body.checkIn || '',
+            checkout_date: body.checkout_date || body.checkOut || '',
+            room_id: body.room_id || body.roomType || '',
+            adults_number: parseInt(body.adults_number || body.guests || 1),
+            price: parseFloat(body.price || body.totalPrice || 0),
+            currency: (body.currency || PAYMENT_CURRENCY).toUpperCase()
+        };
+
+        const validationErrors = validatePaymentInput(bookingData);
+        if (validationErrors.length > 0) {
+            return res.status(400).json({ success: false, error: 'Validation failed', details: validationErrors });
+        }
+        if (!MONRI_MERCHANT_ID || !MONRI_SECRET_KEY) {
+            return res.status(500).json({ success: false, error: 'Payment not configured' });
+        }
+
+        const orderNumber = 'SH-' + Date.now();
+        const amountCents = Math.round(bookingData.price * 100);
+        const monriBase = MONRI_ENVIRONMENT === 'test' ? 'https://ipgtest.monri.com' : 'https://ipg.monri.com';
+
+        const monriBody = {
+            amount: amountCents,
+            order_number: orderNumber,
+            currency: bookingData.currency,
+            transaction_type: 'purchase',
+            order_info: 'Hotel Sinan Han - Room Booking',
+            scenario: 'charge',
+            supported_payment_methods: ['card']
+        };
+        const bodyStr = JSON.stringify(monriBody);
+        const auth = generateWP3Auth(MONRI_SECRET_KEY, MONRI_MERCHANT_ID, bodyStr);
+
+        console.log(`[Components] ▶ POST ${monriBase}/v2/payment/new order=${orderNumber}`);
+        const monriRes = await httpsPost(`${monriBase}/v2/payment/new`, {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': auth.header
+        }, bodyStr);
+
+        if (!monriRes.body || !monriRes.body.client_secret) {
+            console.error(`[Components] /v2/payment/new failed: status=${monriRes.status} body=${JSON.stringify(monriRes.body)}`);
+            return res.status(502).json({
+                success: false,
+                error: 'Monri API error',
+                monriStatus: monriRes.status,
+                details: monriRes.body
+            });
+        }
+
+        saveBooking({
+            orderNumber, bookingId: orderNumber,
+            guestName: bookingData.name, email: bookingData.email,
+            phone: bookingData.phone, roomType: bookingData.room_id,
+            checkIn: bookingData.checkin_date, checkOut: bookingData.checkout_date,
+            guests: bookingData.adults_number,
+            totalPrice: bookingData.price, currency: bookingData.currency,
+            status: 'pending', paymentType: 'components',
+            submittedAt: new Date().toISOString()
+        });
+
+        console.log(`[Components] client_secret issued for order=${orderNumber}`);
+        res.json({
+            success: true,
+            client_secret: monriRes.body.client_secret,
+            order_number: orderNumber,
+            authenticity_token: MONRI_MERCHANT_ID
+        });
+    } catch (error) {
+        console.error('Components payment/new error:', error.message);
+        res.status(500).json({ success: false, error: 'Failed to create payment session', message: error.message });
+    }
+});
+
+// === Verify Monri success URL digest (server-side) ===
+app.post('/api/payment/verify-success', (req, res) => {
+    try {
+        const { url } = req.body;
+        if (!url) return res.status(400).json({ valid: false, error: 'url required' });
+        if (!MONRI_SECRET_KEY) return res.status(500).json({ valid: false, error: 'Payment not configured' });
+        const urlObj = new URL(url);
+        const orderNumber = urlObj.searchParams.get('order_number') || '';
+        const isValid = verifySuccessDigest(MONRI_SECRET_KEY, url);
+        res.json({ valid: isValid, order_number: orderNumber });
+    } catch (err) {
+        res.status(400).json({ valid: false, error: 'Invalid URL' });
+    }
+});
+
 // === Payment Result Redirect (Monri redirect_url handler) ===
 app.get('/payment/result', (req, res) => {
     const status = (req.query.status || '').toLowerCase();
@@ -641,8 +870,36 @@ app.get('/payment/result', (req, res) => {
     res.redirect(`/${page}?order_number=${encodeURIComponent(orderNumber)}`);
 });
 
-// Explicit routes for payment result pages (linkable from Render.io console)
-app.get('/payment-success', (req, res) => res.sendFile(path.join(__dirname, 'payment-success.html')));
+// /payment-success — verify Monri WebPay success URL digest when digest param is present
+app.get('/payment-success', (req, res) => {
+    if (req.query.digest && MONRI_SECRET_KEY) {
+        const proto = req.headers['x-forwarded-proto'] || req.protocol;
+        const host = req.headers['x-forwarded-host'] || req.get('host');
+        const fullUrl = `${proto}://${host}${req.url}`;
+        const isValid = verifySuccessDigest(MONRI_SECRET_KEY, fullUrl);
+        const orderNumber = req.query.order_number || '';
+        if (!isValid) {
+            console.warn(`[Monri] Success URL digest INVALID for order: ${orderNumber}`);
+        } else if (orderNumber) {
+            try {
+                const bookings = loadBookings();
+                const idx = bookings.findIndex(b => b.orderNumber === orderNumber || b.bookingId === orderNumber);
+                if (idx !== -1 && bookings[idx].status === 'pending') {
+                    bookings[idx].status = 'paid';
+                    bookings[idx].monriDigestVerified = true;
+                    bookings[idx].updatedAt = new Date().toISOString();
+                    fs.writeFileSync(BOOKINGS_FILE, JSON.stringify(bookings, null, 2));
+                    console.log(`✅ WebPay success verified — booking ${orderNumber} marked paid`);
+                }
+            } catch (err) {
+                console.error('Error updating booking on success redirect:', err.message);
+            }
+        }
+        const params = new URLSearchParams({ order_number: orderNumber, verified: isValid ? '1' : '0' });
+        return res.redirect(`/payment-success.html?${params.toString()}`);
+    }
+    res.sendFile(path.join(__dirname, 'payment-success.html'));
+});
 app.get('/payment-failed', (req, res) => res.sendFile(path.join(__dirname, 'payment-failed.html')));
 
 // === Serve index.html with injected environment ===
@@ -675,6 +932,12 @@ app.use((err, req, res, next) => {
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Sinan Han Hotel Server running on 0.0.0.0:${PORT}`);
     console.log(`📝 Environment: ${process.env.NODE_ENV}`);
+    if (MONRI_MERCHANT_ID && MONRI_SECRET_KEY) {
+        console.log(`💳 Monri: env=${MONRI_ENVIRONMENT} merchantId=${MONRI_MERCHANT_ID.slice(0, 12)}... ✓ credentials loaded`);
+        console.log(`💳 Monri debug endpoint: GET /api/debug-monri`);
+    } else {
+        console.warn(`⚠️  Monri: MONRI_MERCHANT_ID or MONRI_SECRET_KEY not set — payments will fail`);
+    }
 });
 
 module.exports = app;

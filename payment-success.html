@@ -39,8 +39,17 @@
     <script>
         var params = new URLSearchParams(window.location.search);
         var orderNumber = params.get('order_number');
+        var verified = params.get('verified');
         if (orderNumber) {
             document.getElementById('order-info').textContent = 'Order #' + orderNumber;
+        }
+        // verified='0' means Monri returned a digest that didn't match — could indicate a forged URL
+        if (verified === '0') {
+            var notice = document.querySelector('.notice');
+            notice.innerHTML = '\u26a0\ufe0f Payment verification could not be confirmed. Please contact us at <a href="mailto:about@hotelsinanhan.com" style="color:#92400e">about@hotelsinanhan.com</a> with your order number before your stay.';
+            notice.style.background = '#fffbeb';
+            notice.style.borderColor = '#fcd34d';
+            notice.style.color = '#92400e';
         }
     </script>
 </body>

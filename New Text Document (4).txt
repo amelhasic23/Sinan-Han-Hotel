@@ -1,0 +1,23 @@
+Poštovani,
+
+dobili smo povratne informacije od banke te ih šaljemo ispod u cjelosti.
+ 
+Stavke su ok, molimo da pored loga UNICREDIT ubacit I RBBH logo.
+
+Dodatno molimo za info prilikom iniciranje za placanje I prebacivanje na placanje putem kartica javlja se sljedeci erorr pa molimo za provjeru.
+
+
+
+ 
+
+
+
+
+
+Izvršili smo provjeru testnog okruženja te nismo zabilježili nijedan pokušaj plaćanja. Navedena greška trenutno ne dolazi do payment gateway sistema, zbog čega sa naše strane nije moguće izvršiti dodatnu analizu.
+
+Molimo Vas da izvršite dodatnu provjeru implementacije, obzirom da zahtjev ne dolazi do našeg sistema, te nam dostavite povratne informacije nakon dodatnog testiranja.
+
+Također, molimo Vas da nam potvrdite na koji način će banka moći izvršiti završno testiranje procesa naplate na Vašoj stranici.
+
+Na kraju, molimo Vas da dodate i logotip Raiffeisen banke kako bi stranica bila usklađena sa zahtjevima banke.

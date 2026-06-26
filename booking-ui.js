@@ -690,3 +690,160 @@ function bindPayByLinkForm() {
 
 window.bindPayByLinkForm = bindPayByLinkForm;
 bindPayByLinkForm();
+
+// ============================================================
+// MONRI WEBPAY FORM — direct POST to Monri /v2/form
+// Backend generates form params (digest, auth token, etc.) and
+// the frontend auto-submits a hidden form to Monri's server.
+// ============================================================
+function submitWebPayForm(bookingData, currency, price) {
+    var btn = document.getElementById('confirmPaymentBtn');
+    var originalText = btn ? btn.textContent : 'Complete Payment';
+    if (btn) { btn.disabled = true; btn.textContent = 'Processing...'; }
+
+    fetch('/api/csrf-token', { credentials: 'include' })
+        .then(function(r) { return r.ok ? r.json() : { token: null }; })
+        .then(function(csrf) {
+            return fetch('/api/payment/webpay-form', {
+                method: 'POST',
+                headers: Object.assign(
+                    { 'Content-Type': 'application/json' },
+                    csrf.token ? { 'X-CSRF-Token': csrf.token } : {}
+                ),
+                credentials: 'include',
+                body: JSON.stringify({
+                    name: bookingData.guestName || bookingData.name || '',
+                    email: bookingData.email || '',
+                    phone: bookingData.phone || '',
+                    checkin_date: bookingData.checkIn || bookingData.checkin_date || '',
+                    checkout_date: bookingData.checkOut || bookingData.checkout_date || '',
+                    room_id: bookingData.roomType || bookingData.room_id || '',
+                    adults_number: parseInt(bookingData.guests || bookingData.adults_number || 1),
+                    price: price,
+                    currency: currency
+                })
+            });
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (!data.success) throw new Error(data.details || data.error || 'Payment preparation failed');
+            // Build hidden form and auto-submit to Monri
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = data.action;
+            form.style.display = 'none';
+            Object.keys(data.fields).forEach(function(key) {
+                var input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = data.fields[key];
+                form.appendChild(input);
+            });
+            document.body.appendChild(form);
+            form.submit();
+        })
+        .catch(function(err) {
+            console.error('WebPay form error:', err.message);
+            if (typeof toast !== 'undefined') toast.error(err.message || 'Payment failed. Please try again.');
+            else alert(err.message || 'Payment failed. Please try again.');
+            if (btn) { btn.disabled = false; btn.textContent = originalText; }
+        });
+}
+window.submitWebPayForm = submitWebPayForm;
+
+// ============================================================
+// MONRI COMPONENTS — create payment session then confirm via SDK
+// Requires <script src="https://ipgtest.monri.com/dist/components.js">
+// Call initMonriComponents(containerEl, bookingData, currency, price)
+// ============================================================
+function initMonriComponents(cardElementId, bookingData, currency, price, onApproved, onError) {
+    if (typeof Monri === 'undefined') {
+        var msg = 'Monri Components SDK not loaded. Ensure components.js is included.';
+        console.error(msg);
+        if (typeof onError === 'function') onError(msg);
+        return;
+    }
+
+    fetch('/api/csrf-token', { credentials: 'include' })
+        .then(function(r) { return r.ok ? r.json() : { token: null }; })
+        .then(function(csrf) {
+            return fetch('/api/payment/new', {
+                method: 'POST',
+                headers: Object.assign(
+                    { 'Content-Type': 'application/json' },
+                    csrf.token ? { 'X-CSRF-Token': csrf.token } : {}
+                ),
+                credentials: 'include',
+                body: JSON.stringify({
+                    name: bookingData.guestName || bookingData.name || '',
+                    email: bookingData.email || '',
+                    phone: bookingData.phone || '',
+                    checkin_date: bookingData.checkIn || bookingData.checkin_date || '',
+                    checkout_date: bookingData.checkOut || bookingData.checkout_date || '',
+                    room_id: bookingData.roomType || bookingData.room_id || '',
+                    adults_number: parseInt(bookingData.guests || bookingData.adults_number || 1),
+                    price: price,
+                    currency: currency
+                })
+            });
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (!data.success || !data.client_secret) {
+                throw new Error(data.details || data.error || 'Failed to create payment session');
+            }
+
+            var monri = Monri(data.authenticity_token, { locale: 'en' });
+            var components = monri.components({ clientSecret: data.client_secret });
+            var card = components.create('card', {
+                style: {
+                    base: { fontSize: '16px', color: '#1a1a1a' },
+                    invalid: { color: '#dc2626' },
+                    complete: { color: '#16a34a' }
+                }
+            });
+            card.mount(cardElementId);
+
+            card.onChange(function(event) {
+                var errorEl = document.getElementById('card-errors');
+                if (errorEl) errorEl.textContent = event.error ? event.error.message : '';
+            });
+
+            // Store references so caller can trigger confirmPayment on form submit
+            data._monri = monri;
+            data._card = card;
+            data._orderNumber = data.order_number;
+            if (typeof onApproved === 'function') {
+                // Return helper for caller to invoke on submit
+                data._confirm = function(formEl) {
+                    formEl.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        monri.confirmPayment(card, {
+                            address: 'Mostar',
+                            fullName: bookingData.guestName || bookingData.name || '',
+                            city: 'Mostar',
+                            zip: '88000',
+                            phone: bookingData.phone || '',
+                            country: 'BA',
+                            email: bookingData.email || '',
+                            orderInfo: 'Hotel Sinan Han - Room Booking'
+                        }).then(function(result) {
+                            if (result.error) {
+                                var errorEl = document.getElementById('card-errors');
+                                if (errorEl) errorEl.textContent = result.error.message;
+                                if (typeof onError === 'function') onError(result.error.message);
+                            } else {
+                                onApproved(result.result, data._orderNumber);
+                            }
+                        });
+                    });
+                };
+            }
+            return data;
+        })
+        .catch(function(err) {
+            console.error('Components init error:', err.message);
+            if (typeof onError === 'function') onError(err.message);
+        });
+}
+window.initMonriComponents = initMonriComponents;
