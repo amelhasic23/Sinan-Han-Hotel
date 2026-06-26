@@ -305,6 +305,7 @@ window.lazyTemplateMarkup = Object.freeze({
                             <img src="logos/Security_programs/Mastercard%20Identity%20Check/Artwork/mc_idcheck_hrz_rgb_pos.png" alt="Mastercard Identity Check" style="height:28px;width:auto;background:#fff;border-radius:3px;padding:2px 5px;object-fit:contain;">
                             <img src="logos/Monri_badge/monri_badge.png" alt="Secured by Monri" style="height:42px;width:auto;background:#fff;border-radius:3px;padding:2px 5px;object-fit:contain;">
                             <img src="logos/UniCredit_Bank_logo_1.png" alt="UniCredit Bank" style="height:36px;width:auto;background:#fff;border-radius:3px;padding:2px 5px;object-fit:contain;">
+                            <img src="logos/download.png" alt="Raiffeisen Bank" style="height:28px;width:auto;background:#fff;border-radius:3px;padding:2px 5px;object-fit:contain;">
                         </div>
                     </div>
                     <div style="border-left:3px solid #c19a6b;padding-left:1rem;">
