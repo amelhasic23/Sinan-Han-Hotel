@@ -671,7 +671,11 @@ function bindPayByLinkForm() {
             var data = await res.json();
 
             if (!res.ok || !data.success) {
-                throw new Error(data.details || data.error || 'Payment initialization failed');
+                var details = data.details || data.error || 'Payment initialization failed';
+                if (typeof details === 'object') {
+                    details = JSON.stringify(details, null, 2);
+                }
+                throw new Error(details);
             }
 
             // Redirect to Monri hosted payment page
@@ -679,8 +683,9 @@ function bindPayByLinkForm() {
 
         } catch (err) {
             console.error('Pay By Link error:', err.message);
-            if (typeof toast !== 'undefined') toast.error(err.message || 'Payment failed. Please try again.');
-            else alert(err.message || 'Payment failed. Please try again.');
+            var userMessage = err.message || 'Payment failed. Please try again.';
+            if (typeof toast !== 'undefined') toast.error(userMessage);
+            else alert(userMessage);
             if (confirmBtn) { confirmBtn.disabled = false; confirmBtn.textContent = originalText; }
         }
     }, true); // capture:true — runs before bubble-phase listeners

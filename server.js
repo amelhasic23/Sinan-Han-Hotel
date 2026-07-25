@@ -355,17 +355,28 @@ function calcWebPayDigest(key, orderNumber, amountCents, currency) {
         .digest('hex');
 }
 
+const MONRI_TIME_DRIFT_TOLERANCE = parseInt(process.env.MONRI_TIME_DRIFT_TOLERANCE || '0', 10);
+
+function getMonriTimestamp() {
+    return Math.floor(Date.now() / 1000);
+}
+
+function formatUtcTimestamp(timestampSeconds) {
+    return new Date(timestampSeconds * 1000).toISOString();
+}
+
 // WP3-v2.1 auth used by ALL Monri REST APIs (Pay By Link, Components, Customer API)
 // Per Monri docs: digest = sha512(merchant_key + timestamp + authenticity_token + fullpath + body)
 // Header format: "WP3-v2.1 {authenticity_token} {timestamp} {digest}"
 // For GET/DELETE requests pass bodyStr as empty string ''
 function generateWP3Auth(merchantKey, authenticityToken, fullpath, bodyStr) {
-    const timestamp = Math.floor(Date.now() / 1000);
+    const timestamp = getMonriTimestamp();
     const digest = crypto.createHash('sha512')
         .update(merchantKey + String(timestamp) + authenticityToken + fullpath + (bodyStr || ''))
         .digest('hex');
     return {
         timestamp,
+        timestampIso: formatUtcTimestamp(timestamp),
         header: `WP3-v2.1 ${authenticityToken} ${timestamp} ${digest}`
     };
 }
@@ -419,11 +430,17 @@ function httpsRequest(method, url, headers, bodyStr) {
             let data = '';
             res.on('data', chunk => { data += chunk; });
             res.on('end', () => {
-                try {
-                    resolve({ status: res.statusCode, body: data ? JSON.parse(data) : {} });
-                } catch (e) {
-                    reject(new Error(`Invalid JSON from Monri: ${data}`));
+                const rawBody = data || '';
+                let parsedBody = null;
+                let jsonError = null;
+                if (rawBody) {
+                    try {
+                        parsedBody = JSON.parse(rawBody);
+                    } catch (err) {
+                        jsonError = err.message;
+                    }
                 }
+                resolve({ status: res.statusCode, body: parsedBody, rawBody, jsonError });
             });
         });
         req.on('error', reject);
@@ -561,7 +578,7 @@ app.post('/api/payment/pay-by-link', async (req, res) => {
         const auth = generateWP3Auth(MONRI_SECRET_KEY, MONRI_MERCHANT_ID, fullpath, bodyStr);
 
         console.log(`[Monri] ▶ POST ${monriBase}${fullpath}`);
-        console.log(`[Monri] merchantId=${MONRI_MERCHANT_ID} env=${MONRI_ENVIRONMENT} timestamp=${auth.timestamp}`);
+        console.log(`[Monri] merchantId=${MONRI_MERCHANT_ID} env=${MONRI_ENVIRONMENT} timestamp=${auth.timestamp} (${auth.timestampIso})`);
         console.log(`[Monri] auth header=${auth.header}`);
         console.log(`[Monri] request body=${bodyStr}`);
 
@@ -571,16 +588,22 @@ app.post('/api/payment/pay-by-link', async (req, res) => {
             'Authorization': auth.header
         }, bodyStr);
 
-        console.log(`[Monri] ◀ response status=${monriRes.status} body=${JSON.stringify(monriRes.body)}`);
+        console.log(`[Monri] ◀ response status=${monriRes.status} body=${JSON.stringify(monriRes.body)} rawBody=${monriRes.rawBody}`);
 
-        if (monriRes.status !== 200 || !monriRes.body.payment_url) {
-            console.error(`[Monri] ✗ Payment URL not received. status=${monriRes.status} details=${JSON.stringify(monriRes.body)}`);
+        const monriDetails = monriRes.body
+            ? monriRes.body.message || monriRes.body.status || monriRes.body.error || JSON.stringify(monriRes.body)
+            : monriRes.rawBody || 'No details returned';
+
+        if (monriRes.status !== 200 || !monriRes.body || !monriRes.body.payment_url) {
+            console.error(`[Monri] ✗ Payment URL not received. status=${monriRes.status} details=${monriDetails}`);
             return res.status(502).json({
                 success: false,
                 error: 'Monri API error',
                 monriStatus: monriRes.status,
-                details: monriRes.body.message || monriRes.body.status || monriRes.body.error || 'No details returned',
-                monriBody: monriRes.body
+                details: monriDetails,
+                monriBody: monriRes.body,
+                monriRawBody: monriRes.rawBody,
+                monriJsonError: monriRes.jsonError
             });
         }
 
@@ -635,10 +658,16 @@ app.get('/api/debug-monri', async (req, res) => {
         }, testBody);
         res.json({
             environment: MONRI_ENVIRONMENT,
+            serverTimeUTC: formatUtcTimestamp(getMonriTimestamp()),
+            authTimestamp: auth.timestamp,
+            authTimestampUTC: auth.timestampIso,
             monriUrl: `${monriBase}${fullpath}`,
             merchantId: MONRI_MERCHANT_ID,
             monriHttpStatus: monriRes.status,
-            monriBody: monriRes.body
+            monriBody: monriRes.body,
+            monriRawBody: monriRes.rawBody,
+            monriJsonError: monriRes.jsonError,
+            monriAuthHeaderPrefix: auth.header.split(' ').slice(0, 3).join(' ')
         });
     } catch (err) {
         res.json({ error: err.message });
