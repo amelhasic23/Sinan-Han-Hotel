@@ -8,6 +8,10 @@ const fs = require('fs');
 const compression = require('compression');
 const nodemailer = require('nodemailer');
 const https = require('https');
+// Azure Storage SDK (optional) — loaded conditionally so server still runs without it
+let azureStorage = null;
+try { azureStorage = require('@azure/storage-blob'); } catch (e) { azureStorage = null; }
+const { StorageSharedKeyCredential, generateBlobSASQueryParameters, BlobSASPermissions, SASProtocol } = azureStorage || {};
 
 const app = express();
 app.set('trust proxy', 1);
@@ -347,6 +351,8 @@ const MONRI_MERCHANT_ID = process.env.MONRI_MERCHANT_ID;
 const MONRI_SECRET_KEY = process.env.MONRI_SECRET_KEY;
 const MONRI_ENVIRONMENT = process.env.MONRI_ENVIRONMENT || 'test';
 const PAYMENT_CURRENCY = process.env.PAYMENT_CURRENCY || 'BAM';
+const MONRI_TIME_DRIFT_TOLERANCE = parseInt(process.env.MONRI_TIME_DRIFT_TOLERANCE || '0', 10);
+const MONRI_TIMESTAMP_OFFSET_SECONDS = parseInt(process.env.MONRI_TIMESTAMP_OFFSET_SECONDS || '0', 10);
 
 // WebPay form digest per Monri docs: SHA512(key + order_number + amount + currency)
 function calcWebPayDigest(key, orderNumber, amountCents, currency) {
@@ -355,15 +361,73 @@ function calcWebPayDigest(key, orderNumber, amountCents, currency) {
         .digest('hex');
 }
 
-const MONRI_TIME_DRIFT_TOLERANCE = parseInt(process.env.MONRI_TIME_DRIFT_TOLERANCE || '0', 10);
-
 function getMonriTimestamp() {
-    return Math.floor(Date.now() / 1000);
+    const baseTimestamp = Math.floor(Date.now() / 1000);
+    if (MONRI_TIMESTAMP_OFFSET_SECONDS && !Number.isNaN(MONRI_TIMESTAMP_OFFSET_SECONDS)) {
+        return baseTimestamp + MONRI_TIMESTAMP_OFFSET_SECONDS;
+    }
+    return baseTimestamp;
 }
 
 function formatUtcTimestamp(timestampSeconds) {
     return new Date(timestampSeconds * 1000).toISOString();
 }
+
+// === Azure SAS helper endpoint ===
+// Generates a short-lived SAS URL for a container or specific blob.
+// Requires AZURE_STORAGE_ACCOUNT and AZURE_STORAGE_KEY environment variables.
+app.get('/api/azure/sas', (req, res) => {
+    const account = process.env.AZURE_STORAGE_ACCOUNT;
+    const key = process.env.AZURE_STORAGE_KEY;
+    if (!account || !key) return res.status(500).json({ error: 'Azure storage not configured' });
+    if (!azureStorage) return res.status(500).json({ error: 'Azure SDK not installed on server' });
+
+    const container = (req.query.container || '').trim();
+    const blob = req.query.blob || null;
+    if (!container) return res.status(400).json({ error: 'Missing required query param: container' });
+
+    // Container whitelist (comma-separated) — optional but recommended
+    const allowed = (process.env.AZURE_ALLOWED_CONTAINERS || '').split(',').map(s => s.trim()).filter(Boolean);
+    if (allowed.length > 0 && !allowed.includes(container)) {
+        return res.status(403).json({ error: 'Container not allowed' });
+    }
+
+    // Optional API key to restrict access to this endpoint
+    const requiredKey = process.env.AZURE_SAS_API_KEY || null;
+    if (requiredKey) {
+        const provided = (req.headers['x-azure-sas-key'] || req.query.api_key || '').toString();
+        if (!provided || provided !== requiredKey) {
+            return res.status(401).json({ error: 'Missing or invalid API key' });
+        }
+    }
+
+    const ttlSeconds = parseInt(process.env.AZURE_SAS_TTL_SECONDS || '3600', 10);
+    const startMargin = parseInt(process.env.AZURE_SAS_START_MARGIN_SECONDS || '300', 10);
+
+    const startsOn = new Date(Date.now() - (startMargin * 1000));
+    const expiresOn = new Date(Date.now() + (ttlSeconds * 1000));
+
+    try {
+        const sharedKeyCred = new StorageSharedKeyCredential(account, key);
+        const permissions = BlobSASPermissions.parse('r');
+
+        const sasToken = generateBlobSASQueryParameters({
+            containerName: container,
+            blobName: blob || undefined,
+            permissions,
+            startsOn,
+            expiresOn,
+            protocol: SASProtocol.Https
+        }, sharedKeyCred).toString();
+
+        const targetPath = blob ? `${container}/${encodeURIComponent(blob)}` : `${container}`;
+        const url = `https://${account}.blob.core.windows.net/${targetPath}?${sasToken}`;
+        res.json({ sasUrl: url, startsOn: startsOn.toISOString(), expiresOn: expiresOn.toISOString(), ttlSeconds, startMargin });
+    } catch (err) {
+        console.error('Azure SAS generation error:', err && err.message ? err.message : err);
+        res.status(500).json({ error: 'Failed to generate SAS', message: err && err.message ? err.message : String(err) });
+    }
+});
 
 // WP3-v2.1 auth used by ALL Monri REST APIs (Pay By Link, Components, Customer API)
 // Per Monri docs: digest = sha512(merchant_key + timestamp + authenticity_token + fullpath + body)
@@ -603,7 +667,12 @@ app.post('/api/payment/pay-by-link', async (req, res) => {
                 details: monriDetails,
                 monriBody: monriRes.body,
                 monriRawBody: monriRes.rawBody,
-                monriJsonError: monriRes.jsonError
+                monriJsonError: monriRes.jsonError,
+                authTimestamp: auth.timestamp,
+                authTimestampUTC: auth.timestampIso,
+                monriServerTimeUTC: formatUtcTimestamp(getMonriTimestamp()),
+                monriTimestampOffsetSeconds: MONRI_TIMESTAMP_OFFSET_SECONDS,
+                monriTimeDriftTolerance: MONRI_TIME_DRIFT_TOLERANCE
             });
         }
 
@@ -667,7 +736,9 @@ app.get('/api/debug-monri', async (req, res) => {
             monriBody: monriRes.body,
             monriRawBody: monriRes.rawBody,
             monriJsonError: monriRes.jsonError,
-            monriAuthHeaderPrefix: auth.header.split(' ').slice(0, 3).join(' ')
+            monriAuthHeaderPrefix: auth.header.split(' ').slice(0, 3).join(' '),
+            monriTimestampOffsetSeconds: MONRI_TIMESTAMP_OFFSET_SECONDS,
+            monriTimeDriftTolerance: MONRI_TIME_DRIFT_TOLERANCE
         });
     } catch (err) {
         res.json({ error: err.message });
