@@ -15,5 +15,10 @@
             }
         });
     }
-    document.addEventListener('DOMContentLoaded', init);
+    // Run during idle time so it doesn't widen the DOMContentLoaded main-thread task
+    if (typeof requestIdleCallback === 'function') {
+        requestIdleCallback(init);
+    } else {
+        setTimeout(init, 0);
+    }
 }());

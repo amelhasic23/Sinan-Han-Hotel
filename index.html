@@ -649,7 +649,7 @@
 
             <div class="reviews-grid">
                 <div class="review-card" data-aos="fade-up">
-                    <div class="review-rating" aria-label="5 out of 5 stars">
+                    <div class="review-rating" role="img" aria-label="5 out of 5 stars">
                         <span aria-hidden="true" style="letter-spacing:.3rem">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
                     </div>
                     <p class="review-text" data-i18n="review-1-text">"Thank you very much for accommodating my late check-in and for the wonderful support from your front desk staff, especially for someone like me who tends to forget things. The location was very convenient, and the place was clean and well maintained. Although my stay was short, it was very comfortable and pleasant. When I visit Mostar again, I would definitely love to stay here again. Thank you once again for your kindness."</p>
@@ -660,7 +660,7 @@
                 </div>
 
                 <div class="review-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="review-rating" aria-label="5 out of 5 stars">
+                    <div class="review-rating" role="img" aria-label="5 out of 5 stars">
                         <span aria-hidden="true" style="letter-spacing:.3rem">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
                     </div>
                     <p class="review-text" data-i18n="review-2-text">"The cleanliness was truly outstanding – everything was absolutely spotless. We were kindly given a free room upgrade, which made our stay even more enjoyable. The room was super spacious, modern, and felt brand new. A special shoutout to the lovely lady at the front desk – she was incredibly welcoming and helpful! Overall, a wonderful experience."</p>
@@ -671,7 +671,7 @@
                 </div>
 
                 <div class="review-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="review-rating" aria-label="5 out of 5 stars">
+                    <div class="review-rating" role="img" aria-label="5 out of 5 stars">
                         <span aria-hidden="true" style="letter-spacing:.3rem">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
                     </div>
                     <p class="review-text" data-i18n="review-3-text">"Cleanliness, location, attention to detail on everything. Fresh new apartment, new appliances. Ardijan & Lovedrim went above and beyond with their exceptional attitude and service – they did everything and beyond. The staff truly goes the extra mile to make your stay perfect."</p>
@@ -919,7 +919,14 @@
             if (document.readyState === 'complete') {
                 hideLoader();
             } else {
-                window.addEventListener('load', hideLoader);
+                // Hide when the hero image is ready — much earlier than window.load on slow connections
+                var heroImg = document.querySelector('.hero-background-image img');
+                if (heroImg && !heroImg.complete) {
+                    heroImg.addEventListener('load', hideLoader, { once: true });
+                    heroImg.addEventListener('error', hideLoader, { once: true });
+                } else {
+                    window.addEventListener('load', hideLoader);
+                }
             }
             // Safety fallback in case 'load' never fires (e.g. a stalled resource)
             setTimeout(hideLoader, 4000);
