@@ -27,24 +27,15 @@
     <meta name="twitter:description" content="Heritage hospitality 100m from the Old Bridge. Book direct for the best rates.">
     <meta name="twitter:image" content="https://hotelsinanhan.com/Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1).jpg">
 
-        <!-- LCP hero image preload — let mobile and desktop pick separate candidates early -->
-            <link rel="preload" as="image" type="image/webp"
-                href="Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1)-mobile.webp"
-            imagesrcset="Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1)-small.webp 400w,
-                         Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1)-mobile.webp 640w,
-                     Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1)-medium.webp 800w,
-                     Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1)-large.webp 1200w,
-                     Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1).webp 1920w"
-            imagesizes="100vw"
-            media="(max-width: 767px)"
-            fetchpriority="high">
+        <!-- LCP hero image preload — srcset/sizes must exactly match the <source> below or the browser discards it -->
         <link rel="preload" as="image" type="image/webp"
             href="Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1)-large.webp"
-            imagesrcset="Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1)-medium.webp 800w,
-                     Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1)-large.webp 1200w,
-                     Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1).webp 1920w"
+            imagesrcset="Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1)-small.webp 400w,
+                         Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1)-mobile.webp 640w,
+                         Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1)-medium.webp 800w,
+                         Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1)-large.webp 1200w,
+                         Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6%20(1).webp 1920w"
             imagesizes="(max-width: 1200px) 100vw, 1200px"
-            media="(min-width: 768px)"
             fetchpriority="high">
 
         <!-- Preload local Font Awesome subset fonts to shorten the critical request chain -->
@@ -111,7 +102,7 @@
     #pageLoader{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--white);transition:opacity .45s ease,visibility .45s ease}
     #pageLoader.hidden{opacity:0;visibility:hidden;pointer-events:none}
     #pageLoader .page-loader-spin{position:relative;width:96px;height:96px;display:flex;align-items:center;justify-content:center}
-    #pageLoader .page-loader-spin::before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,transparent 0deg,var(--primary) 300deg,var(--primary) 360deg);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 5px));mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 5px));animation:pageloader-spin .9s linear infinite}
+    #pageLoader .page-loader-spin::before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,transparent 0deg,var(--primary) 300deg,var(--primary) 360deg);-webkit-mask-image:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 5px));mask-image:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 5px));animation:pageloader-spin .9s linear infinite}
     #pageLoader .page-loader-logo{width:64px;height:64px;border-radius:50%;object-fit:contain;background:var(--white);animation:pageloader-pulse 1.8s ease-in-out infinite}
     #pageLoader .page-loader-text{margin-top:18px;font-family:'Georgia',serif;font-size:1.2rem;font-weight:600;letter-spacing:.04em;color:var(--primary)}
     @keyframes pageloader-spin{to{transform:rotate(360deg)}}
@@ -162,9 +153,7 @@
     }
     </script>
 
-    <!-- Resource Hints for Critical Images (Prefetch only, not preload to avoid unused resource warning) -->
-    <link rel="prefetch" as="image" href="Rooms/Standard%20Double%20Room/390516357.jpg" type="image/jpeg">
-    <link rel="prefetch" as="image" href="Rooms/Superior%20Suite/390594090.jpg" type="image/jpeg">
+
 </head>
 <body>
     <script>

@@ -108,3 +108,29 @@ export async function refundPayment(transactionId, amount) {
         return null;
     }
 }
+
+// ─── Azure SAS URL ───────────────────────────────────────────────────────────
+// Always fetches a fresh token; throws if Azure returns an already-expired one.
+export async function getAzureSasUrl({ container, blob = null } = {}) {
+    if (!container) throw new Error('[api] getAzureSasUrl: container is required');
+    const params = new URLSearchParams({ container });
+    if (blob) params.set('blob', blob);
+
+    const res = await fetch(`/api/azure/sas?${params}`, {
+        credentials: 'include',
+        cache: 'no-store'
+    });
+    if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(`[api] SAS fetch failed (${res.status}): ${body.error || body.message || ''}`);
+    }
+
+    const data = await res.json();
+    // Reject tokens that have already expired or expire within the next 60 seconds
+    const expiresAt = new Date(data.expiresOn).getTime();
+    if (Date.now() >= expiresAt - 60_000) {
+        throw new Error(`[api] Received an already-expired SAS token (expiresOn: ${data.expiresOn})`);
+    }
+
+    return data.sasUrl;
+}

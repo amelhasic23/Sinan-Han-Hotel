@@ -422,6 +422,9 @@ app.get('/api/azure/sas', (req, res) => {
 
         const targetPath = blob ? `${container}/${encodeURIComponent(blob)}` : `${container}`;
         const url = `https://${account}.blob.core.windows.net/${targetPath}?${sasToken}`;
+        // SAS tokens are time-scoped credentials — never let any cache store them
+        res.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+        res.set('Pragma', 'no-cache');
         res.json({ sasUrl: url, startsOn: startsOn.toISOString(), expiresOn: expiresOn.toISOString(), ttlSeconds, startMargin });
     } catch (err) {
         console.error('Azure SAS generation error:', err && err.message ? err.message : err);

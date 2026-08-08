@@ -62,6 +62,11 @@ self.addEventListener('fetch', event => {
         return;
     }
 
+    // Credential endpoints must always be fetched live — never served from cache
+    if (url.pathname === '/api/azure/sas') {
+        return;
+    }
+
     // API calls - network first, fallback to cache
     if (url.pathname.startsWith('/api/')) {
         event.respondWith(
