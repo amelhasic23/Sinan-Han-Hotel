@@ -99,7 +99,7 @@
     .fa-wifi:before{content:"\f1eb"}.fa-utensils:before{content:"\f2e7"}.fa-concierge-bell:before{content:"\f562"}.fa-spa:before{content:"\f5bb"}.fa-briefcase:before{content:"\f0b1"}.fa-lock:before{content:"\f023"}.fa-bed:before{content:"\f236"}.fa-tv:before{content:"\f26c"}.fa-door-open:before{content:"\f52b"}.fa-mountain:before{content:"\f6fc"}.fa-couch:before{content:"\f4b8"}.fa-star:before{content:"\f005"}.fa-map-marker-alt:before{content:"\f3c5"}.fa-phone:before{content:"\f095"}.fa-envelope:before{content:"\f0e0"}.fa-map:before{content:"\f279"}.fa-heart:before{content:"\f004"}.fa-chevron-up:before{content:"\f077"}.fa-credit-card:before{content:"\f09d"}.fa-calendar:before{content:"\f133"}
     .fa-facebook:before{content:"\f09a"}.fa-instagram:before{content:"\f16d"}
     /* Page load preloader */
-    #pageLoader{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--white);transition:opacity .45s ease}
+    #pageLoader{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--white);transition:opacity .25s ease}
     #pageLoader.hidden{opacity:0;visibility:hidden;pointer-events:none}
     #pageLoader .page-loader-spin{position:relative;width:96px;height:96px;display:flex;align-items:center;justify-content:center}
     #pageLoader .page-loader-spin::before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,transparent 0deg,var(--primary) 300deg,var(--primary) 360deg);-webkit-mask-image:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 5px));mask-image:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 5px));animation:pageloader-spin .9s linear infinite}
@@ -914,16 +914,20 @@
                 loader.classList.add('hidden');
                 setTimeout(function () {
                     if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
-                }, 600);
+                }, 350);
             }
             if (document.readyState === 'complete') {
                 hideLoader();
             } else {
-                // Hide when the hero image is ready — much earlier than window.load on slow connections
+                // Hide as soon as the hero image is ready — much earlier than window.load on slow connections
                 var heroImg = document.querySelector('.hero-background-image img');
-                if (heroImg && !heroImg.complete) {
-                    heroImg.addEventListener('load', hideLoader, { once: true });
-                    heroImg.addEventListener('error', hideLoader, { once: true });
+                if (heroImg) {
+                    if (heroImg.complete) {
+                        hideLoader();
+                    } else {
+                        heroImg.addEventListener('load', hideLoader, { once: true });
+                        heroImg.addEventListener('error', hideLoader, { once: true });
+                    }
                 } else {
                     window.addEventListener('load', hideLoader);
                 }
