@@ -249,36 +249,15 @@
                  decoding="async"
                  style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;">
         </picture>
-        <!-- Runs here — hero img already in DOM & preloading, fires ~650 lines earlier than end-of-body -->
+        <!-- Hides immediately — critical CSS inlined, H1 in HTML; event-based trigger was blocked by deferred JS execution -->
         <script>
         (function () {
             var loader = document.getElementById('pageLoader');
             if (!loader) return;
-            var hidden = false;
-            function hideLoader() {
-                if (hidden) return;
-                hidden = true;
-                loader.classList.add('hidden');
-                setTimeout(function () {
-                    if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
-                }, 350);
-            }
-            if (document.readyState === 'complete') {
-                hideLoader();
-            } else {
-                var heroImg = document.querySelector('.hero-background-image img');
-                if (heroImg) {
-                    if (heroImg.complete) {
-                        hideLoader();
-                    } else {
-                        heroImg.addEventListener('load', hideLoader, { once: true });
-                        heroImg.addEventListener('error', hideLoader, { once: true });
-                    }
-                } else {
-                    window.addEventListener('load', hideLoader);
-                }
-            }
-            setTimeout(hideLoader, 4000);
+            loader.classList.add('hidden');
+            setTimeout(function () {
+                if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+            }, 350);
         })();
         </script>
         <div class="hero-content">
