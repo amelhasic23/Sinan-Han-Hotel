@@ -249,15 +249,18 @@
                  decoding="async"
                  style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;">
         </picture>
-        <!-- Hides immediately — critical CSS inlined, H1 in HTML; event-based trigger was blocked by deferred JS execution -->
+        <!-- Fixed 600ms delay: preloader is visible, hides without waiting for events that deferred JS blocks -->
         <script>
         (function () {
             var loader = document.getElementById('pageLoader');
             if (!loader) return;
-            loader.classList.add('hidden');
-            setTimeout(function () {
-                if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
-            }, 350);
+            function hideLoader() {
+                loader.classList.add('hidden');
+                setTimeout(function () {
+                    if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+                }, 350);
+            }
+            setTimeout(hideLoader, 600);
         })();
         </script>
         <div class="hero-content">
