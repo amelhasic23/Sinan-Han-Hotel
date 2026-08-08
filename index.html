@@ -249,6 +249,38 @@
                  decoding="async"
                  style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;">
         </picture>
+        <!-- Runs here — hero img already in DOM & preloading, fires ~650 lines earlier than end-of-body -->
+        <script>
+        (function () {
+            var loader = document.getElementById('pageLoader');
+            if (!loader) return;
+            var hidden = false;
+            function hideLoader() {
+                if (hidden) return;
+                hidden = true;
+                loader.classList.add('hidden');
+                setTimeout(function () {
+                    if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+                }, 350);
+            }
+            if (document.readyState === 'complete') {
+                hideLoader();
+            } else {
+                var heroImg = document.querySelector('.hero-background-image img');
+                if (heroImg) {
+                    if (heroImg.complete) {
+                        hideLoader();
+                    } else {
+                        heroImg.addEventListener('load', hideLoader, { once: true });
+                        heroImg.addEventListener('error', hideLoader, { once: true });
+                    }
+                } else {
+                    window.addEventListener('load', hideLoader);
+                }
+            }
+            setTimeout(hideLoader, 4000);
+        })();
+        </script>
         <div class="hero-content">
             <h1 class="hero-title" data-i18n="hero-title">Hotel Sinan Han</h1>
             <p class="hero-subtitle" data-i18n="hero-subtitle">Where Heritage Meets Comfort</p>
@@ -901,41 +933,6 @@
 
     <!-- Environment injected by server.js at runtime -->
     <script>window.SINAN_ENV = 'REPLACE_WITH_NODE_ENV';</script>
-
-    <!-- Hide page preloader once the site is fully loaded (with safety fallback) -->
-    <script>
-        (function () {
-            var loader = document.getElementById('pageLoader');
-            if (!loader) return;
-            var hidden = false;
-            function hideLoader() {
-                if (hidden) return;
-                hidden = true;
-                loader.classList.add('hidden');
-                setTimeout(function () {
-                    if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
-                }, 350);
-            }
-            if (document.readyState === 'complete') {
-                hideLoader();
-            } else {
-                // Hide as soon as the hero image is ready — much earlier than window.load on slow connections
-                var heroImg = document.querySelector('.hero-background-image img');
-                if (heroImg) {
-                    if (heroImg.complete) {
-                        hideLoader();
-                    } else {
-                        heroImg.addEventListener('load', hideLoader, { once: true });
-                        heroImg.addEventListener('error', hideLoader, { once: true });
-                    }
-                } else {
-                    window.addEventListener('load', hideLoader);
-                }
-            }
-            // Safety fallback in case 'load' never fires (e.g. a stalled resource)
-            setTimeout(hideLoader, 4000);
-        })();
-    </script>
 
     <style>
         @keyframes successModalIn {
