@@ -7,7 +7,7 @@ const fs = require('fs');
 const path = require('path');
 
 const targets = [
-    { file: 'Rooms/queen standard room/706475810-mobile.webp', quality: 35 },
+    { file: 'Rooms/queen standard room/706475810-mobile.webp', quality: 25 },
     { file: 'Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6 (1)-medium.webp',  quality: 50 },
 ];
 
