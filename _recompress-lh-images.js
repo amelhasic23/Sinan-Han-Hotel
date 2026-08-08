@@ -4,24 +4,28 @@
 'use strict';
 const sharp = require('sharp');
 const fs = require('fs');
+const path = require('path');
 
 const targets = [
-    { file: 'Rooms/queen standard room/706475810-mobile.webp', quality: 45 },
-    { file: 'Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6 (1)-medium.webp',  quality: 58 },
+    { file: 'Rooms/queen standard room/706475810-mobile.webp', quality: 35 },
+    { file: 'Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6 (1)-medium.webp',  quality: 50 },
 ];
 
 (async () => {
     for (const { file, quality } of targets) {
-        const before = fs.statSync(file).size;
-        const buf = await sharp(file).webp({ quality, lossless: false, effort: 6 }).toBuffer();
+        const abs = path.join(__dirname, file);
+        const before = fs.statSync(abs).size;
+        // Read into buffer first — avoids Windows file-handle lock from a prior sharp run
+        const inputBuf = fs.readFileSync(abs);
+        const buf = await sharp(inputBuf).webp({ quality, lossless: false, effort: 6 }).toBuffer();
         const saved = before - buf.length;
         if (saved > 0) {
-            fs.writeFileSync(file, buf);
+            fs.writeFileSync(abs, buf);
             console.log(`${file}\n  ${kb(before)} → ${kb(buf.length)}  (saved ${kb(saved)})\n`);
         } else {
             console.log(`${file}: already optimal — skipped\n`);
         }
     }
-})();
+})().catch(err => { console.error('Error:', err.message); process.exit(1); });
 
 function kb(b) { return (b / 1024).toFixed(1) + ' KB'; }

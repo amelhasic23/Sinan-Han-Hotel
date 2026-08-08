@@ -8,9 +8,9 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOMS_DIR = path.join(__dirname, 'Rooms');
-const QUALITY_SMALL = 50;
-const QUALITY_MOBILE = 45;
-const QUALITY_DEFAULT = 58;
+const QUALITY_SMALL = 48;
+const QUALITY_MOBILE = 35;
+const QUALITY_DEFAULT = 50;
 const mobileOnly = process.argv.includes('--mobile-only');
 
 function walkDir(dir) {
@@ -30,7 +30,8 @@ async function compressWebp(filePath) {
     } else if (filePath.endsWith('-mobile.webp')) {
         quality = QUALITY_MOBILE;
     }
-    const inputBuf = fs.readFileSync(filePath);
+    // Read into buffer first — avoids Windows file-handle lock on re-runs
+    const inputBuf = Buffer.from(fs.readFileSync(filePath));
     const buf = await sharp(inputBuf)
         .webp({ quality, lossless: false, effort: 6 })
         .toBuffer();
