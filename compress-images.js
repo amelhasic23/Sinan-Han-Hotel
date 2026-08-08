@@ -8,9 +8,9 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOMS_DIR = path.join(__dirname, 'Rooms');
-const QUALITY_SMALL = 60;
-const QUALITY_MOBILE = 60;
-const QUALITY_DEFAULT = 75;
+const QUALITY_SMALL = 50;
+const QUALITY_MOBILE = 45;
+const QUALITY_DEFAULT = 58;
 const mobileOnly = process.argv.includes('--mobile-only');
 
 function walkDir(dir) {
