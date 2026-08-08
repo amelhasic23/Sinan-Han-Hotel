@@ -2412,6 +2412,12 @@ window.addEventListener('load', function () {
         desktopSelector.addEventListener('change', function () { changeLanguage(this.value); });
     }
     if (mobileSelector) {
+        // Populate mobile options from desktop selector at runtime to avoid duplicate HTML
+        if (mobileSelector.options.length === 0 && desktopSelector) {
+            Array.from(desktopSelector.options).forEach(opt => {
+                mobileSelector.add(new Option(opt.value.toUpperCase(), opt.value));
+            });
+        }
         mobileSelector.value = defaultLang;
         mobileSelector.addEventListener('change', function () { changeLanguage(this.value); });
     }
@@ -2740,14 +2746,14 @@ function setBackToTopVisible(shouldBeVisible) {
 }
 
 function initBackToTopObserver() {
-    const sentinel = document.getElementById('backToTopSentinel');
-    if (!backToTopBtn || !sentinel) return;
+    const anchor = document.getElementById('home');
+    if (!backToTopBtn || !anchor) return;
 
     if ('IntersectionObserver' in window) {
         const observer = new IntersectionObserver(entries => {
             setBackToTopVisible(!entries[0].isIntersecting);
         }, { threshold: 0 });
-        observer.observe(sentinel);
+        observer.observe(anchor);
         return;
     }
 

@@ -185,15 +185,7 @@
 
             <!-- Mobile: Language + Hamburger (Outside Menu) -->
             <div class="mobile-nav-controls">
-                <select id="language-selector-mobile" class="language-dropdown language-mobile" aria-label="Select language">
-                    <option value="en">EN</option>
-                    <option value="bs">BS</option>
-                    <option value="de">DE</option>
-                    <option value="fr">FR</option>
-                    <option value="it">IT</option>
-                    <option value="tr">TR</option>
-                    <option value="ar">AR</option>
-                </select>
+                <select id="language-selector-mobile" class="language-dropdown language-mobile" aria-label="Select language"></select>
 
                 <button class="nav-hamburger" id="navHamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navMenu">
                     <span aria-hidden="true"></span>
@@ -227,7 +219,7 @@
         </div>
     </nav>
 
-    <div id="backToTopSentinel" aria-hidden="true" style="position:absolute;top:300px;left:0;width:1px;height:1px;pointer-events:none;opacity:0;"></div>
+
 
     <!-- Main Content -->
     <main id="main-content">
@@ -609,49 +601,37 @@
 
             <div class="amenities-grid">
                 <div class="amenity-card" data-aos="fade-up">
-                    <div class="amenity-icon">
-                        <i class="fas fa-wifi"></i>
-                    </div>
+                    <i class="fas fa-wifi amenity-icon"></i>
                     <h3 data-i18n="amenity-wifi-title">Free WiFi</h3>
                     <p data-i18n="amenity-wifi-desc">High-speed internet throughout</p>
                 </div>
 
                 <div class="amenity-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="amenity-icon">
-                        <i class="fas fa-utensils"></i>
-                    </div>
+                    <i class="fas fa-utensils amenity-icon"></i>
                     <h3 data-i18n="amenity-restaurant-title">Restaurant</h3>
                     <p data-i18n="amenity-restaurant-desc">Authentic Bosnian cuisine</p>
                 </div>
 
                 <div class="amenity-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="amenity-icon">
-                        <i class="fas fa-concierge-bell"></i>
-                    </div>
+                    <i class="fas fa-concierge-bell amenity-icon"></i>
                     <h3 data-i18n="amenity-service-title">24/7 Service</h3>
                     <p data-i18n="amenity-service-desc">Dedicated concierge assistance</p>
                 </div>
 
                 <div class="amenity-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="amenity-icon">
-                        <i class="fas fa-spa"></i>
-                    </div>
+                    <i class="fas fa-spa amenity-icon"></i>
                     <h3 data-i18n="amenity-wellness-title">Wellness</h3>
                     <p data-i18n="amenity-wellness-desc">Spa and massage services</p>
                 </div>
 
                 <div class="amenity-card" data-aos="fade-up" data-aos-delay="400">
-                    <div class="amenity-icon">
-                        <i class="fas fa-briefcase"></i>
-                    </div>
+                    <i class="fas fa-briefcase amenity-icon"></i>
                     <h3 data-i18n="amenity-business-title">Business Center</h3>
                     <p data-i18n="amenity-business-desc">Full office facilities</p>
                 </div>
 
                 <div class="amenity-card" data-aos="fade-up" data-aos-delay="500">
-                    <div class="amenity-icon">
-                        <i class="fas fa-lock"></i>
-                    </div>
+                    <i class="fas fa-lock amenity-icon"></i>
                     <h3 data-i18n="amenity-security-title">Security</h3>
                     <p data-i18n="amenity-security-desc">Safe deposit boxes</p>
                 </div>
@@ -669,12 +649,8 @@
 
             <div class="reviews-grid">
                 <div class="review-card" data-aos="fade-up">
-                    <div class="review-rating">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+                    <div class="review-rating" aria-label="5 out of 5 stars">
+                        <span aria-hidden="true" style="letter-spacing:.3rem">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
                     </div>
                     <p class="review-text" data-i18n="review-1-text">"Thank you very much for accommodating my late check-in and for the wonderful support from your front desk staff, especially for someone like me who tends to forget things. The location was very convenient, and the place was clean and well maintained. Although my stay was short, it was very comfortable and pleasant. When I visit Mostar again, I would definitely love to stay here again. Thank you once again for your kindness."</p>
                     <div class="review-author">
@@ -684,12 +660,8 @@
                 </div>
 
                 <div class="review-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="review-rating">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+                    <div class="review-rating" aria-label="5 out of 5 stars">
+                        <span aria-hidden="true" style="letter-spacing:.3rem">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
                     </div>
                     <p class="review-text" data-i18n="review-2-text">"The cleanliness was truly outstanding – everything was absolutely spotless. We were kindly given a free room upgrade, which made our stay even more enjoyable. The room was super spacious, modern, and felt brand new. A special shoutout to the lovely lady at the front desk – she was incredibly welcoming and helpful! Overall, a wonderful experience."</p>
                     <div class="review-author">
@@ -699,12 +671,8 @@
                 </div>
 
                 <div class="review-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="review-rating">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+                    <div class="review-rating" aria-label="5 out of 5 stars">
+                        <span aria-hidden="true" style="letter-spacing:.3rem">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
                     </div>
                     <p class="review-text" data-i18n="review-3-text">"Cleanliness, location, attention to detail on everything. Fresh new apartment, new appliances. Ardijan & Lovedrim went above and beyond with their exceptional attitude and service – they did everything and beyond. The staff truly goes the extra mile to make your stay perfect."</p>
                     <div class="review-author">
