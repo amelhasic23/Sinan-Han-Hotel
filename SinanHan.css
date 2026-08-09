@@ -1333,7 +1333,7 @@ body.nav-open {
     background: var(--light);
 }
 
-.booking-wrapper {
+.booking-section .container {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
@@ -2003,7 +2003,7 @@ body.nav-open {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .booking-wrapper {
+    .booking-section .container {
         gap: 2rem;
     }
 }
@@ -2024,7 +2024,7 @@ body.nav-open {
         box-shadow: 0 12px 30px rgba(0, 0, 0, 0.13);
     }
 
-    .booking-wrapper {
+    .booking-section .container {
         grid-template-columns: 1fr;
     }
 
@@ -2129,7 +2129,7 @@ body.nav-open {
     }
 
     .about-grid,
-    .booking-wrapper {
+    .booking-section .container {
         grid-template-columns: 1fr;
     }
 

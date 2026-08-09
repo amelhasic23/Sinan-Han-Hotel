@@ -72,7 +72,7 @@
     .language-desktop{display:inline-block}
     .btn-book{background:var(--primary);color:#1a1a1a;border:none;padding:.75rem 1.5rem;border-radius:5px;font-weight:600;cursor:pointer}
     .container{max-width:1200px;margin:0 auto;padding:0 2rem}
-    .hero{position:relative;height:100vh;min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;background-size:cover;background-position:center;overflow:hidden;contain:layout paint;padding-top:70px}
+    .hero{position:relative;height:100vh;min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;background-size:cover;background-position:center;overflow:hidden;contain:layout;padding-top:70px}
     .hero-background-image{aspect-ratio:16/9}
     .hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,rgba(0,0,0,.6),rgba(193,154,107,.3));z-index:1}
     .hero-content{position:relative;z-index:2;text-align:center;color:var(--white);max-width:800px;padding:2rem;contain:layout}
@@ -110,8 +110,8 @@
     @media (prefers-reduced-motion:reduce){#pageLoader .page-loader-spin::before{animation-duration:2s}#pageLoader .page-loader-logo{animation:none}}
     </style>
     <!-- Full CSS -->
-    <link rel="preload" as="style" href="SinanHan.min.css?v=8" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="SinanHan.min.css?v=8"></noscript>
+    <link rel="preload" as="style" href="SinanHan.min.css?v=9" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="SinanHan.min.css?v=9"></noscript>
     <!-- Structured Data (JSON-LD) for Google rich results -->
     <script type="application/ld+json">
     {
@@ -249,7 +249,7 @@
                  decoding="async"
                  style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;">
         </picture>
-        <!-- Fixed 600ms delay: preloader is visible, hides without waiting for events that deferred JS blocks -->
+        <!-- Reduced to 100ms: minimises LCP render delay on the hero heading -->
         <script>
         (function () {
             var loader = document.getElementById('pageLoader');
@@ -260,7 +260,7 @@
                     if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
                 }, 350);
             }
-            setTimeout(hideLoader, 600);
+            setTimeout(hideLoader, 100);
         })();
         </script>
         <div class="hero-content">
@@ -709,8 +709,7 @@
     <!-- Booking Section -->
     <section id="contact" class="booking-section" aria-labelledby="booking-heading">
         <div class="container">
-            <div class="booking-wrapper">
-                <div class="booking-form-container" data-aos="fade-right">
+            <div class="booking-form-container" data-aos="fade-right">
                     <h2 id="booking-heading" data-i18n="booking-title">Check Availability</h2>
                     <p data-i18n="booking-subtitle">Find your perfect dates and book with ease</p>
 
@@ -825,7 +824,6 @@
                         <a href="https://www.booking.com/hotel/ba/sinan-han.en-gb.html?aid=2375516&label=01J1X42R3M4D4ZBF77BKWAKKWV_01KJYSEFYH68GT6ZJXMJVZXK8K&sid=f7a6b00623c7c93c3c26551ddff2dbd5&age=10&all_sr_blocks=187755904_360715149_3_2_0&checkin=2026-03-13&checkout=2026-03-15&dest_id=-89574&dest_type=city&dist=0&group_adults=2&group_children=1&hapos=1&highlighted_blocks=187755904_360715149_3_2_0&hpos=1&matching_block_id=187755904_360715149_3_2_0&no_rooms=1&req_adults=2&req_age=10&req_children=1&room1=A%2CA%2C10&sb_price_type=total&sr_order=popularity&sr_pri_blocks=187755904_360715149_3_2_0__12158&srepoch=1772707339&srpvid=1a214b43f7c304a6&type=total&ucfs=1&activeTab=main#policies" class="social-icon" target="_blank" rel="noopener noreferrer" title="Book on Booking.com" data-i18n-title="social-booking-title"><img src="logo-58.webp" alt="Sinan Han" width="28" height="28" style="width:28px;height:28px;object-fit:cover;border-radius:4px;vertical-align:middle;"></a>
                     </div>
                 </div>
-            </div>
         </div>
     </section>
 
@@ -909,9 +907,6 @@
 
     <!-- Deferred Booking UI Module (Desktop Optimized - Phase 6) - depends on SiminHan.min.js -->
     <script defer src="booking-ui.min.js?v=5"></script>
-
-    <!-- Share modal — null-safe, Web Share API with clipboard fallback -->
-    <script defer src="share-modal.js?v=1"></script>
 
     <!-- Environment injected by server.js at runtime -->
     <script>window.SINAN_ENV = 'REPLACE_WITH_NODE_ENV';</script>
