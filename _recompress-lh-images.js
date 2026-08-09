@@ -1,14 +1,12 @@
-// One-off: recompress the two images Lighthouse flagged for oversized delivery.
-// Run: node _recompress-lh-images.js
-// Delete this file after running.
+// One-off: recompress Lighthouse-flagged image. Run: node _recompress-lh-images.js
 'use strict';
 const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
 
+// quality 30 targets the ~33 KiB Lighthouse recommends for this 640 w mobile crop
 const targets = [
-    { file: 'Rooms/queen standard room/706475810-mobile.webp', quality: 25 },
-    { file: 'Rooms/ea3336c4-76ab-4989-8cfa-51d2aaf569a6 (1)-medium.webp',  quality: 50 },
+    { file: 'Rooms/queen standard room/706475810-mobile.webp', quality: 30 },
 ];
 
 (async () => {
