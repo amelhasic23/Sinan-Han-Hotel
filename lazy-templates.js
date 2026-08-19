@@ -48,71 +48,111 @@ window.lazyTemplateMarkup = Object.freeze({
                     <p style="margin: 8px 0;"><strong>Phone:</strong> <span id="confirmGuestPhone"></span></p>
                 </div>
 
-                <form id="bookingPaymentForm" style="background: #ecf0f1; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                    <h3 style="margin-bottom: 15px; color: #34495e; font-size: 16px;">Payment Information</h3>
+                <form id="bookingPaymentForm" style="background:linear-gradient(135deg,#fafaf8,#f5f2ec);border:1px solid rgba(193,154,107,0.18);padding:24px;border-radius:16px;margin-bottom:20px;">
+                    <h3 style="margin-bottom:22px;color:#1a1a1a;font-size:16px;font-weight:700;display:flex;align-items:center;gap:9px;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c19a6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                        Payment Information
+                    </h3>
 
-                    <div style="margin-bottom: 15px;">
-                        <label for="paymentMethod" style="display: block; margin-bottom: 5px; font-weight: bold; color: #34495e;">Payment Method <span style="color: #e74c3c;">*</span></label>
-                        <select id="paymentMethod" name="paymentMethod" required style="width: 100%; padding: 8px; border: 1px solid #bdc3c7; border-radius: 4px; font-size: 14px;">
-                            <option value="">Select Payment Method</option>
-                            <option value="credit-card">Credit Card</option>
-                            <option value="debit-card">Debit Card</option>
-                            <option value="bank-transfer">Bank Transfer</option>
-                        </select>
+                    <!-- Hidden field keeps JS compatibility — value set by card buttons below -->
+                    <input type="hidden" id="paymentMethod" name="paymentMethod">
+
+                    <div style="margin-bottom:20px;">
+                        <p style="font-size:11.5px;font-weight:700;color:#9ca3af;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;">Payment Method <span style="color:#e74c3c;">*</span></p>
+                        <div id="pmCardGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                            <button type="button" class="pm-opt-card" data-value="credit-card"
+                                onclick="(function(btn){var h=document.getElementById('paymentMethod');h.value=btn.dataset.value;h.dispatchEvent(new Event('change'));btn.closest('#pmCardGrid').querySelectorAll('.pm-opt-card').forEach(function(b){b.style.borderColor='#e5e7eb';b.style.background='#fff';b.style.boxShadow='none';b.querySelector('.pm-tick').style.display='none';});btn.style.borderColor='#c19a6b';btn.style.background='#fdf8f0';btn.style.boxShadow='0 0 0 3px rgba(193,154,107,0.15)';btn.querySelector('.pm-tick').style.display='flex';})(this)"
+                                style="position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px 12px;background:#fff;border:2px solid #e5e7eb;border-radius:12px;cursor:pointer;font-family:inherit;transition:all 0.18s;">
+                                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c19a6b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                                <span style="font-size:13px;font-weight:600;color:#374151;">Credit Card</span>
+                                <div class="pm-tick" style="display:none;position:absolute;top:-9px;right:-9px;width:20px;height:20px;background:#c19a6b;border-radius:50%;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(193,154,107,0.4);">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                            </button>
+                            <button type="button" class="pm-opt-card" data-value="debit-card"
+                                onclick="(function(btn){var h=document.getElementById('paymentMethod');h.value=btn.dataset.value;h.dispatchEvent(new Event('change'));btn.closest('#pmCardGrid').querySelectorAll('.pm-opt-card').forEach(function(b){b.style.borderColor='#e5e7eb';b.style.background='#fff';b.style.boxShadow='none';b.querySelector('.pm-tick').style.display='none';});btn.style.borderColor='#c19a6b';btn.style.background='#fdf8f0';btn.style.boxShadow='0 0 0 3px rgba(193,154,107,0.15)';btn.querySelector('.pm-tick').style.display='flex';})(this)"
+                                style="position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px 12px;background:#fff;border:2px solid #e5e7eb;border-radius:12px;cursor:pointer;font-family:inherit;transition:all 0.18s;">
+                                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c19a6b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></svg>
+                                <span style="font-size:13px;font-weight:600;color:#374151;">Debit Card</span>
+                                <div class="pm-tick" style="display:none;position:absolute;top:-9px;right:-9px;width:20px;height:20px;background:#c19a6b;border-radius:50%;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(193,154,107,0.4);">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                            </button>
+                        </div>
                     </div>
 
                     <div id="cardDetails" style="display:none;"></div>
 
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: flex; align-items: center; cursor: pointer;">
-                            <input type="checkbox" id="billingAddress" name="billingAddress" style="margin-right: 8px;">
-                            <span style="color: #34495e;">Add Billing Address</span>
+                    <!-- Toggle switch: billing address -->
+                    <div style="margin-bottom:14px;">
+                        <label style="display:flex;align-items:center;gap:14px;cursor:pointer;padding:13px 16px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;">
+                            <div style="position:relative;width:42px;height:24px;flex-shrink:0;">
+                                <input type="checkbox" id="billingAddress" name="billingAddress"
+                                    style="opacity:0;width:0;height:0;position:absolute;"
+                                    onchange="var tr=this.parentElement.querySelector('[data-track]');tr.style.background=this.checked?'#c19a6b':'#d1d5db';tr.querySelector('span').style.transform=this.checked?'translateX(18px)':'translateX(2px)';">
+                                <div data-track style="position:absolute;inset:0;background:#d1d5db;border-radius:12px;transition:background 0.2s;pointer-events:none;">
+                                    <span style="position:absolute;top:3px;left:0;width:18px;height:18px;background:#fff;border-radius:50%;transition:transform 0.2s;transform:translateX(2px);display:block;box-shadow:0 1px 4px rgba(0,0,0,0.25);pointer-events:none;"></span>
+                                </div>
+                            </div>
+                            <span style="font-size:14px;color:#374151;font-weight:500;">Add Billing Address</span>
                         </label>
                     </div>
 
-                    <div id="billingAddressForm" style="display: none; background: white; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
-                        <div style="margin-bottom: 12px;">
-                            <input type="text" id="billingStreet" name="billingStreet" placeholder="Street Address" style="width: 100%; padding: 8px; border: 1px solid #bdc3c7; border-radius: 4px; box-sizing: border-box;">
+                    <div id="billingAddressForm" style="display:none;background:#fff;border:1px solid #e5e7eb;padding:16px;border-radius:10px;margin-bottom:14px;">
+                        <div style="margin-bottom:10px;">
+                            <input type="text" id="billingStreet" name="billingStreet" placeholder="Street Address" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:14px;box-sizing:border-box;outline:none;font-family:inherit;color:#374151;">
                         </div>
-                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-bottom: 12px;">
-                            <input type="text" id="billingCity" name="billingCity" placeholder="City" style="padding: 8px; border: 1px solid #bdc3c7; border-radius: 4px; box-sizing: border-box;">
-                            <input type="text" id="billingPostal" name="billingPostal" placeholder="Postal Code" style="padding: 8px; border: 1px solid #bdc3c7; border-radius: 4px; box-sizing: border-box;">
+                        <div style="display:grid;grid-template-columns:2fr 1fr;gap:10px;margin-bottom:10px;">
+                            <input type="text" id="billingCity" name="billingCity" placeholder="City" style="padding:10px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:14px;box-sizing:border-box;outline:none;font-family:inherit;color:#374151;">
+                            <input type="text" id="billingPostal" name="billingPostal" placeholder="Postal Code" style="padding:10px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:14px;box-sizing:border-box;outline:none;font-family:inherit;color:#374151;">
                         </div>
-                        <input type="text" id="billingCountry" name="billingCountry" placeholder="Country" style="width: 100%; padding: 8px; border: 1px solid #bdc3c7; border-radius: 4px; box-sizing: border-box;">
+                        <input type="text" id="billingCountry" name="billingCountry" placeholder="Country" style="width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:14px;box-sizing:border-box;outline:none;font-family:inherit;color:#374151;">
                     </div>
 
-                    <div style="margin-bottom: 20px;">
-                        <label style="display: flex; align-items: flex-start; cursor: pointer;">
-                            <input type="checkbox" id="agreeTerms" name="agreeTerms" required style="margin-right: 8px; margin-top: 3px;">
-                            <span style="color: #34495e; font-size: 13px;">I agree to the <a href="#" onclick="return openInfoModal('termsModal');" style="color: #3498db; text-decoration: none;">Terms &amp; Conditions</a> and <a href="#" onclick="return openInfoModal('termsModal');" style="color: #3498db; text-decoration: none;">Cancellation Policy</a></span>
+                    <!-- Custom checkbox: terms -->
+                    <div style="margin-bottom:20px;padding:13px 16px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;">
+                        <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;">
+                            <div style="position:relative;width:20px;height:20px;flex-shrink:0;margin-top:1px;">
+                                <input type="checkbox" id="agreeTerms" name="agreeTerms" required
+                                    style="opacity:0;width:0;height:0;position:absolute;"
+                                    onchange="var box=this.parentElement.querySelector('[data-box]');box.style.background=this.checked?'#c19a6b':'#fff';box.style.borderColor=this.checked?'#c19a6b':'#d1d5db';box.querySelector('svg').style.opacity=this.checked?'1':'0';">
+                                <div data-box style="position:absolute;inset:0;background:#fff;border:2px solid #d1d5db;border-radius:5px;transition:all 0.15s;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0;transition:opacity 0.15s;pointer-events:none;"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                            </div>
+                            <span style="font-size:13px;color:#374151;line-height:1.6;">I agree to the <a href="#" onclick="return openInfoModal('termsModal');" style="color:#c19a6b;text-decoration:none;font-weight:600;">Terms &amp; Conditions</a> and <a href="#" onclick="return openInfoModal('termsModal');" style="color:#c19a6b;text-decoration:none;font-weight:600;">Cancellation Policy</a></span>
                         </label>
                     </div>
 
-                    <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
-                        <span data-i18n="secure-payments-via" style="font-size:0.78rem;opacity:0.7;flex-shrink:0;">Secure payments via</span>
+                    <!-- Payment logos -->
+                    <div style="display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:22px;flex-wrap:wrap;padding:14px 12px;background:#fff;border-radius:10px;border:1px solid #e5e7eb;">
+                        <span data-i18n="secure-payments-via" style="font-size:0.7rem;color:#9ca3af;letter-spacing:0.07em;text-transform:uppercase;width:100%;text-align:center;margin-bottom:8px;">Secure payments via</span>
                         <a href="https://www.visaeurope.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit Visa">
-                            <img src="logos/Acceptance_mark/Visa_actual/Visa%202015%2050.gif" alt="Visa" width="36" height="22" style="border-radius:3px;background:#fff;padding:2px 4px;width:36px;height:22px;object-fit:contain;">
+                            <img src="logos/Acceptance_mark/Visa_actual/Visa%202015%2050.gif" alt="Visa" width="38" height="24" style="border-radius:4px;background:#fff;padding:2px 5px;width:38px;height:24px;object-fit:contain;">
                         </a>
                         <a href="http://www.mastercard.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit Mastercard">
-                            <img src="logos/Acceptance_mark/Mastercard_actual/Artwork/Mastercard%20Brand%20Mark%20Vertical%2053px%20PNG/mc_vrt_opt_pos_53_1x.png" alt="Mastercard" width="36" height="22" style="border-radius:3px;background:#fff;padding:2px 4px;width:36px;height:22px;object-fit:contain;">
+                            <img src="logos/Acceptance_mark/Mastercard_actual/Artwork/Mastercard%20Brand%20Mark%20Vertical%2053px%20PNG/mc_vrt_opt_pos_53_1x.png" alt="Mastercard" width="38" height="24" style="border-radius:4px;background:#fff;padding:2px 5px;width:38px;height:24px;object-fit:contain;">
                         </a>
                         <a href="https://brand.mastercard.com/brandcenter/more-about-our-brands.html" target="_blank" rel="noopener noreferrer" aria-label="Visit Maestro">
-                            <img src="logos/Acceptance_mark/Maestro_actual/Artwork/PNG%20for%20Web/Horizontal/Positive/75px%20x%2021px/ms_hrz_opt_pos_75_1x.png" alt="Maestro" width="36" height="22" style="border-radius:3px;background:#fff;padding:2px 4px;width:36px;height:22px;object-fit:contain;">
+                            <img src="logos/Acceptance_mark/Maestro_actual/Artwork/PNG%20for%20Web/Horizontal/Positive/75px%20x%2021px/ms_hrz_opt_pos_75_1x.png" alt="Maestro" width="38" height="24" style="border-radius:4px;background:#fff;padding:2px 5px;width:38px;height:24px;object-fit:contain;">
                         </a>
-                        <img src="logos/Security_programs/Visa%20Secure/Visa%20Blue/visa-secure_blu_72dpi.jpg" alt="Visa Secure" width="36" height="22" style="border-radius:3px;background:#fff;padding:2px 4px;width:36px;height:22px;object-fit:contain;">
-                        <img src="logos/Security_programs/Mastercard%20Identity%20Check/Artwork/mc_idcheck_hrz_rgb_pos.png" alt="Mastercard Identity Check" width="36" height="22" style="border-radius:3px;background:#fff;padding:2px 4px;width:36px;height:22px;object-fit:contain;">
+                        <img src="logos/Security_programs/Visa%20Secure/Visa%20Blue/visa-secure_blu_72dpi.jpg" alt="Visa Secure" width="38" height="24" style="border-radius:4px;background:#fff;padding:2px 5px;width:38px;height:24px;object-fit:contain;">
+                        <img src="logos/Security_programs/Mastercard%20Identity%20Check/Artwork/mc_idcheck_hrz_rgb_pos.png" alt="Mastercard Identity Check" width="38" height="24" style="border-radius:4px;background:#fff;padding:2px 5px;width:38px;height:24px;object-fit:contain;">
                         <a href="http://monri.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit Monri">
-                            <img src="logos/Monri_badge/monri_badge.png" alt="pay@web · Secured by Monri · UniCredit Bank" width="90" height="42" style="border-radius:3px;background:#fff;padding:2px 4px;width:90px;height:42px;object-fit:contain;">
+                            <img src="logos/Monri_badge/monri_badge.png" alt="Monri" width="80" height="38" style="border-radius:4px;background:#fff;padding:2px 5px;width:80px;height:38px;object-fit:contain;">
                         </a>
-                        <img src="logos/UniCredit_Bank_logo_1.png" alt="UniCredit Bank" width="70" height="42" style="border-radius:3px;background:#fff;padding:2px 4px;width:70px;height:42px;object-fit:contain;">
                         <a href="https://www.raiffeisenbank.ba/" target="_blank" rel="noopener noreferrer" aria-label="Visit Raiffeisen Bank">
-                            <img src="logos/download.png" alt="Raiffeisen Bank" width="36" height="22" style="border-radius:3px;background:#fff;padding:2px 4px;width:36px;height:22px;object-fit:contain;">
+                            <img src="logos/download.png" alt="Raiffeisen Bank" width="38" height="24" style="border-radius:4px;background:#fff;padding:2px 5px;width:38px;height:24px;object-fit:contain;">
                         </a>
                     </div>
 
-                    <div style="display: flex; gap: 10px;">
-                        <button type="submit" id="confirmPaymentBtn" class="btn btn-primary" style="flex: 1; padding: 12px;">Complete Payment</button>
-                        <button type="button" id="cancelConfirmBtn" class="btn btn-secondary" style="flex: 1; padding: 12px;">Cancel</button>
+                    <!-- Action buttons -->
+                    <div style="display:flex;gap:12px;align-items:center;">
+                        <button type="submit" id="confirmPaymentBtn" class="btn btn-primary" style="flex:1;padding:14px;font-size:15px;font-weight:700;border-radius:10px;display:flex;align-items:center;justify-content:center;gap:8px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                            Complete Payment
+                        </button>
+                        <button type="button" id="cancelConfirmBtn" style="padding:14px 20px;background:none;border:none;cursor:pointer;font-size:14px;font-weight:600;color:#6b7280;font-family:inherit;border-radius:10px;transition:color 0.15s;" onmouseover="this.style.color='#374151'" onmouseout="this.style.color='#6b7280'">Cancel</button>
                     </div>
                 </form>
             </div>
