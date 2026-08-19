@@ -13,13 +13,13 @@ services:
 
       # Monri Payment Gateway
       - key: MONRI_MERCHANT_ID
-        value: key-e44802b0354106a6c00a380a3c614bf7
+        sync: false
       - key: MONRI_SECRET_KEY
-        value: 34c501f4170bf70c2b0828fc90707a87f23319e9
+        sync: false
       - key: MONRI_ENVIRONMENT
-        value: test
+        value: production
       - key: MONRI_TEST_MODE
-        value: true
+        value: false
       - key: PAYMENT_CURRENCY
         value: BAM
 
@@ -29,7 +29,7 @@ services:
 
       # Security
       - key: CSRF_SECRET
-        value: d05a27e534103197ff40d5328477fa8354eed4666d755688dedf357e3a825529
+        sync: false
 
       # Email Configuration
       - key: EMAIL_HOST
@@ -39,7 +39,7 @@ services:
       - key: EMAIL_USER
         value: about@hotelsinanhan.com
       - key: EMAIL_PASSWORD
-        value: lnze cxnz xeny mdvx
+        sync: false
       - key: BOOKING_REQUEST_EMAIL
         value: about@hotelsinanhan.com
 
