@@ -2,7 +2,10 @@ services:
   - type: web
     name: sinan-han-hotel
     env: node
+    runtime: node
+    plan: starter
     rootDir: .
+    nodeVersion: "22"
     buildCommand: npm install --omit=dev && node scripts/minify-js.js && node scripts/minify-css.js
     startCommand: node server.js
     envVars:
