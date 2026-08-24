@@ -2242,6 +2242,10 @@ function applyTranslationsToRoot(root, lang = document.documentElement.lang || '
         if (key === 'nav-logo-title') {
             return;
         }
+        // prices are language-neutral; skip to prevent decimal-separator changes
+        if (el.classList.contains('price')) {
+            return;
+        }
 
         const localizedValue = translation[lang] && translation[lang][key];
         const fallbackValue = translation.en && translation.en[key];
