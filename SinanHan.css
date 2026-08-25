@@ -128,8 +128,8 @@ body {
     inset: 0;
     border-radius: 50%;
     background: conic-gradient(from 0deg, transparent 0deg, var(--primary) 300deg, var(--primary) 360deg);
-    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 5px));
-    mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 5px));
+    -webkit-mask-image: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 5px));
+    mask-image: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 5px));
     animation: pageloader-spin 0.9s linear infinite;
 }
 
@@ -2610,6 +2610,7 @@ body.nav-open {
     .room-price {
         padding: 0.95rem 1rem 1rem;
     }
+    .room-title {
         font-size: 0.75rem;
         margin-bottom: 0.2rem;
     }
@@ -2650,7 +2651,7 @@ body.nav-open {
         transform: translateY(-2px);
         box-shadow: 0 5px 14px rgba(0, 0, 0, 0.08);
     }
-}
+
 
 /* Desktop Large screens (min-width: 1200px) */
 @media (min-width: 1200px) {
@@ -3418,3 +3419,11 @@ img[loading="lazy"].loaded {
     h1, h2, h3 { page-break-after: avoid; }
 }
 
+}
+
+@keyframes successModalIn {
+    from { opacity:0; transform:scale(0.85) translateY(20px); }
+    to   { opacity:1; transform:scale(1) translateY(0); }
+}
+#bookingSuccessModal.open { display:flex !important; }
+#successModalBtn:hover { opacity:0.88; }
