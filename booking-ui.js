@@ -5,6 +5,8 @@
 
 'use strict';
 
+function onDOMReady(fn) { if (document.readyState !== 'loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+
 // Note: BAM_TO_EUR is provided by SiminHan.min.js
 
 // Room data
@@ -378,7 +380,7 @@ function closeModal() {
 }
 
 // Language and booking form setup
-document.addEventListener('DOMContentLoaded', function() {
+onDOMReady(function() {
     const savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
     const languageSelector = document.getElementById('language-selector');
     if (languageSelector) {
@@ -456,7 +458,7 @@ function isValidEmail(email) {
 }
 
 // Form Validation and Submission
-document.addEventListener('DOMContentLoaded', function() {
+onDOMReady(function() {
     const bookingForm = document.getElementById('bookingForm');
     if (!bookingForm) return;
 
