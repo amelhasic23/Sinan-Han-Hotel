@@ -33,7 +33,7 @@ async function compressWebp(filePath) {
     // Read into buffer first — avoids Windows file-handle lock on re-runs
     const inputBuf = Buffer.from(fs.readFileSync(filePath));
     const buf = await sharp(inputBuf)
-        .webp({ quality, lossless: false, effort: 6 })
+        .webp({ quality, lossless: false, effort: 6, smartSubsample: true })
         .toBuffer();
     if (buf.length < before) {
         try {
